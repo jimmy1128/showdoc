@@ -2,7 +2,7 @@
   <div class="hello">
     <el-container>
       <el-header >
-        <div class="header_title">ShowDoc</div>
+        <div class="header_title">Doc</div>
         <router-link class="goback" to="/item/index">{{$t('goback')}}</router-link>
       </el-header>
       <el-container>
@@ -96,7 +96,7 @@ body > .el-container {
 }
 .header_title {
   float: left;
-  padding-right: 35px;
+  padding-right: 85px;
   padding-left: 25px;
   font-size: 20px;
   background-color: rgb(84, 92, 100);

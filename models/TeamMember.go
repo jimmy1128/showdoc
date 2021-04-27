@@ -27,13 +27,15 @@ func  SaveTeamMember (id int , uid uint, memberUsername string )(TeamMember,int)
 		return teammember , errmsg.ERROR
 	}
 	member_username_array = strings.Split(memberUsername,",")
+
 	for _,v := range member_username_array{
 		db.Table("User").Where("username =?",v).Find(&memberInfo)
 	db.Table("TeamMember").Where("member_uid=?",memberInfo.ID).Where("team_id=?",id)
+		teammember.Team_id = uint(id)
+		teammember.Member_uid = memberInfo.ID
+		teammember.Member_username = memberInfo.Username
 	}
-teammember.Team_id = uint(id)
-teammember.Member_uid = memberInfo.ID
-teammember.Member_username = memberInfo.Username
+
 	db.Model(TeamMember{}).Where("team_id =?",id).Find(&teamItem)
 	for _,v := range teamItem {
 		teamitemMember.Team_id = v.Team_id

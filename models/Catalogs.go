@@ -27,6 +27,9 @@ func GetOneCatalogs(id int)(Catalogs,int){
 }
 
 func CreateCatalogs(data *Catalogs)int{
+	if data.Name == "" {
+		return errmsg.ERROR_CATE_NOT_EXIST
+	}
 
 	err := db.Create(&data).Error
 	if err !=nil{
@@ -37,6 +40,9 @@ func CreateCatalogs(data *Catalogs)int{
 
 func EditCatalogs (id int,v int) int{
 	var catalogs Catalogs
+	if catalogs.Name == "" {
+		return errmsg.ERROR_CATE_NOT_EXIST
+	}
 	var maps = make(map[string]interface{})
 	maps["item_id"]=catalogs.ItemId
 	maps["name"] = catalogs.Name

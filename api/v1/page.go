@@ -6,6 +6,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"net/url"
 	"strconv"
 )
 
@@ -40,6 +41,10 @@ func SavePage (c * gin.Context){
 	page_title := c.PostForm("page_title")
 	page_content := c.PostForm("page_content")
 	cat_id,_  := strconv.Atoi(c.PostForm("cat_id"))
+	Urlencode,_ := strconv.Atoi(c.PostForm("is_urlencode"))
+	if Urlencode == 1{
+		page_content, _ = UrlDecode(page_content)
+	}
 
 
 	page.ID = uint(id)
@@ -107,4 +112,7 @@ func SetLock(c *gin.Context){
 		"data":data,
 		"message":errmsg.GetErrMsg(code),
 	})
+}
+func UrlDecode(str string) (string, error) {
+	return url.QueryUnescape(str)
 }

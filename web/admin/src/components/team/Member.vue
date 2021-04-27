@@ -65,7 +65,7 @@ export default {
         id: '',
         member_username: ''
       },
-      list: [],
+      list: {},
       loading: false,
       dialogFormVisible: false,
       team_id: '',

@@ -7,7 +7,7 @@
       <el-row class="masthead" >
           <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
           <div class="logo-title" >
-              <h2 class="muted"><img src="static/logo/logo.png" style="width:50px;height:50px;margin-bottom:-16px;" alt="">Doc</h2>
+              <h2 class="muted">Doc</h2>
           </div>
           <div class="header-btn-group pull-right" style="display: flex; align-items: center;">
           <el-tooltip class="item" effect="dark" :content="$t('language')" placement="top">

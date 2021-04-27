@@ -22,6 +22,7 @@ func init (){
 	file , err := ini.Load("conf/config.ini")
 	if err !=nil {
 		fmt.Println("配置文件读取错误")
+		fmt.Println(file)
 	}
 	LoadServer(file)
 	LoadData(file)
@@ -34,7 +35,7 @@ func LoadServer(file *ini.File){
 }
 func LoadData (file *ini.File){
 	Db = file.Section("database").Key("Db").MustString("mysql")
-	DbHost = file.Section("database").Key("DbHost").MustString("localhost")
+	DbHost = file.Section("database").Key("DbHost").MustString("localhost1")
 	DbPort = file.Section("database").Key("DbPort").MustString("3306")
 	DbUser  = file.Section("database").Key("DbUser").MustString("root")
 	DbPassWord  = file.Section("database").Key("DbPassWord").MustString("Dreamfuture88")
