@@ -1,0 +1,110 @@
+<template>
+  <div class="hello">
+    <Header></Header>
+    <!-- 展示常规项目 -->
+    <ShowRegularItem
+      :item_info="item_info"
+      :search_item="search_item"
+      :keyword="keyword"
+      v-if="item_info && (item_info.itemtype == 1 || item_info.itemtype == 3 || item_info.itemtype === '0' || item_info.itemtype === 0 ) "
+    ></ShowRegularItem>
+
+    <!-- 展示单页项目 -->
+    <ShowSinglePageItem :item_info="item_info" v-if="item_info && item_info.itemtype == 2 "></ShowSinglePageItem>
+
+    <!-- 展示表格项目 -->
+    <ShowTableItem :item_info="item_info" v-if="item_info && item_info.itemtype == 4 "></ShowTableItem>
+
+    <Footer></Footer>
+  </div>
+</template>
+
+<script>
+import ShowRegularItem from './show_regular_item/Index'
+import ShowSinglePageItem from './show_single_page_item/Index'
+import ShowTableItem from './show_table_item/Index'
+export default {
+  data () {
+    return {
+      item_info: '',
+      keyword: ''
+    }
+  },
+  components: {
+    ShowRegularItem,
+    ShowSinglePageItem,
+    ShowTableItem
+  },
+  methods: {
+    // 获取菜单
+
+    async get_item_menu (keyword) {
+      if (!keyword) {
+        keyword = ''
+      }
+
+      var loading = this.$loading()
+      var item_id = this.$route.params.item_id ? this.$route.params.item_id : 0
+      var page_id = this.$route.query.page_id ? this.$route.query.page_id : 0
+
+      var url = this.DocConfig.server + '/item/info'
+      var formdata = new FormData()
+      formdata.append('id', item_id)
+      formdata.append('keyword', keyword)
+      if (!this.keyword) {
+        formdata.append('defaultpageid', page_id)
+      }
+      loading.close()
+      const { data: res } = await this.$http.post(url, formdata)
+
+      if (res.status === 200) {
+        var json = res.data
+        if (json.defaultpageid <= 0) {
+          if (json.menu.pages[0]) {
+            json.defaultpageid = json.menu.pages[0].page_id
+          }
+        }
+        this.item_info = json
+        if (json.unread_count > 0) {
+          this.$message({
+            showClose: true,
+            duration: 10000,
+            dangerouslyUseHTMLString: true,
+            message: '<a href="#/notice/index">你有新的未读消息，点击查看</a>'
+          })
+        }
+      } else if (res.status === 10307) {
+        // 需要输入密码
+        this.$router.replace({
+          path: '/item/password/' + item_id,
+          query: { page_id: page_id, redirect: this.$router.currentRoute.fullPath }
+        })
+      } else {
+        this.$alert(res.message)
+      }
+      // 设置一个最长关闭时间
+      setTimeout(() => {
+        loading.close()
+      }, 20000)
+    },
+    search_item (keyword) {
+      this.item_info = ''
+      this.$store.dispatch('changeItemInfo', '')
+      this.keyword = keyword
+      this.get_item_menu(keyword)
+    }
+  },
+  mounted () {
+    this.get_item_menu()
+    console.log(this.item_info)
+  },
+  beforeDestroy () {
+    this.$message.closeAll()
+    document.title = 'ShowDoc'
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+</style>
