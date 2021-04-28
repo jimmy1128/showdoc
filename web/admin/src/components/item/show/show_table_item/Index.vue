@@ -11,7 +11,7 @@
         </el-button>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item :command="shareItem">{{$t('share')}}</el-dropdown-item>
-          <router-link :to="'/item/setting/'+item_info.item_id" v-if="item_info.itemcreator">
+          <router-link :to="'/item/setting/'+item_info.id" v-if="item_info.itemcreator">
             <el-dropdown-item>{{$t('item_setting')}}</el-dropdown-item>
           </router-link>
           <el-dropdown-item :command="()=>{importDialogVisible = true}">{{$t('import_file')}}</el-dropdown-item>
@@ -173,7 +173,7 @@ export default {
     shareItem () {
       const path = this.item_info.item_domain
         ? this.item_info.item_domain
-        : this.item_info.item_id
+        : this.item_info.id
       this.share_item_link = this.getRootPath() + '#/' + path
       this.qr_item_link =
         this.DocConfig.server +
@@ -181,7 +181,7 @@ export default {
         encodeURIComponent(this.share_item_link)
       this.dialogVisible = true
       this.copyText =
-        this.item_info.item_name + '  -- ShowDoc \r\n' + this.share_item_link
+        this.item_info.item_name + '  -- Doc \r\n' + this.share_item_link
     },
     onCopy () {
       this.$message(this.$t('copy_success'))

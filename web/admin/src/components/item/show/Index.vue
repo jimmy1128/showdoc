@@ -100,7 +100,7 @@ export default {
   },
   beforeDestroy () {
     this.$message.closeAll()
-    document.title = 'ShowDoc'
+    document.title = 'Doc'
   }
 }
 </script>

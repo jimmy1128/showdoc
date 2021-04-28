@@ -46,7 +46,7 @@
           <el-input
             v-model="form.ldap_form.base_dn"
             class="form-el"
-            placeholder="例如 dc=showdoc,dc=com"
+            placeholder="例如 dc=doc,dc=com"
           ></el-input>
         </el-form-item>
 
@@ -54,7 +54,7 @@
           <el-input
             v-model="form.ldap_form.bind_dn"
             class="form-el"
-            placeholder="cn=admin,dc=showdoc,dc=com"
+            placeholder="cn=admin,dc=doc,dc=com"
           ></el-input>
         </el-form-item>
 

@@ -1,9 +1,11 @@
 package models
 
 import (
+	"awesomeProject3/utils"
 	"awesomeProject3/utils/errmsg"
 	"github.com/jinzhu/gorm"
 	"gorm.io/plugin/soft_delete"
+	"html"
 	"time"
 )
 
@@ -18,6 +20,7 @@ type Page struct {
 	SNumber uint `gorm:"type:int;not null" json:"snumber"`
 	IsDel soft_delete.DeletedAt `gorm:"softDelete:flag;default:0"`
 	DelName string `gorm:"type:varchar(255)" json:"del_name"`
+	PageComments string `gorm:"type:text" json:"pagecomments"`
 }
 type PageLock struct {
 	gorm.Model
@@ -32,6 +35,18 @@ type CheckLock struct {
 	LockUid      int `gorm:"type:int" json:"lockUid"`
 	LockUsername string `gorm:"type:varchar(255)" json:"lockUsername"`
 	IsCurUser    int `gorm:"type:int" json:"isCurUser"`
+}
+type PageHistory struct {
+	gorm.Model
+	PageId int `gorm:"type:int;not null" json:"page_id"`
+	ItemId int `gorm:"type:int;not null" json:"item_id"`
+	CatId int `gorm:"type:int;not null" json:"cat_id"`
+	PageTitle string  `gorm:"type:varchar(255);not null" json:"pagetitle"`
+	PageContent string `gorm:"type:longtext" json:"pagecontent"`
+	SNumber int `gorm:"type:int;not null" json:"snumber"`
+	AuthorUid int `gorm:"type:int;not null" json:"authoruid"`
+	AuthorUsername string `gorm:"type:varchar(255)" json:"authorusername"`
+	PageComment string `gorm:"type:text" json:"pagecomment"`
 }
 
 
@@ -127,6 +142,20 @@ func (data *Page) SavePage()(*Page,int){
 		return data,errmsg.SUCCESE
 	}
 }
+func (data *PageHistory) SaveHistoryPage()([]PageHistory,int) {
+	var count int
+	var pagehistory []PageHistory
+
+	err := db.Model(PageHistory{}).Create(&data).Error
+	if err != nil {
+		 return pagehistory, errmsg.ERROR
+	}
+	db.Model(PageHistory{}).Where("page_id =?",data.PageId).Count(&count)
+	if count > 20 {
+			db.Model(PageHistory{}).Where("page_id =?",data.PageId).Limit(1).Last(&pagehistory).Delete(pagehistory)
+	}
+	return pagehistory , errmsg.SUCCESE
+}
 
 func IsLock(pageId int,uid uint)(int,CheckLock) {
 
@@ -178,3 +207,58 @@ func SetLock (pageId int , itemId int ,lockTo int, uid uint)(int,PageLock){
 	db.Model(PageLock{}).Where("lock_to < ?",lockTo).Delete(&pageLock)
 	return errmsg.SUCCESE,pageLock
 }
+
+func History(pageId int,uid uint) (int,[]PageHistory){
+	var page Page
+	var pagehistory []PageHistory
+	db.Model(Page{}).Where("id = ?",pageId).Find(&page)
+	if checkItemVisit(uid , int(page.ItemId),"") != errmsg.SUCCESE {
+		return errmsg.ERROR , pagehistory
+	}
+	db.Model(PageHistory{}).Where("page_id =?",pageId).Order("created_at desc").Limit(20).Scan(&pagehistory)
+
+	if &pagehistory != nil {
+		for _, history := range pagehistory {
+			PageContent, _ := utils.GUnzipData([]byte(history.PageContent))
+			if PageContent != nil {
+				history.PageContent = html.UnescapeString(string(PageContent))
+			}
+		}
+		return errmsg.SUCCESE,pagehistory
+	}
+return errmsg.SUCCESE , pagehistory
+}
+
+func UpdateHistoryComments(uid uint ,pageId int, pageComments string,pageHistoryId int)int {
+	var page Page
+	db.Model(Page{}).Where("id =?",pageId).Find(&page)
+	if CheckItemPermn(uid , int(page.ItemId)) != errmsg.SUCCESE {
+		 return errmsg.ERROR
+	}
+	err := db.Model(PageHistory{}).Where("id = ?",pageHistoryId).Update("pagecomment",pageComments).Error
+	if err != nil {
+		return errmsg.ERROR
+	}
+return errmsg.SUCCESE
+}
+func Diff(pageId int, pagehistoryId int,uid uint)(bool,PageHistory) {
+	var page Page
+	var pagehistory PageHistory
+	if pageId != 0{
+		return false,pagehistory
+	}
+	db.Model(Page{}).Where("page_id = ?",pageId).Find(&page)
+	if &page != nil {
+		time.Sleep(1)
+		return false,pagehistory
+	}
+	if checkItemVisit( uid, int(page.ItemId),"") != errmsg.SUCCESE {
+		return true,pagehistory
+	}
+	db.Model(PageHistory{}).Where("id = ?",pagehistoryId).Find(&pagehistory)
+	page_content, _ := utils.GUnzipData([]byte(pagehistory.PageContent))
+	pagehistory.PageContent = string(page_content)
+
+return true , pagehistory
+}
+

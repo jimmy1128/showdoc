@@ -3,6 +3,7 @@ package models
 import (
 	"awesomeProject3/utils"
 	"awesomeProject3/utils/errmsg"
+	"fmt"
 	"github.com/jinzhu/gorm"
 )
 
@@ -164,6 +165,7 @@ func DeleteItem(id int,password string,v uint)int{
 
 	db.Where("id =?",v).Find(&user)
 	_ , code :=CheckLogin(user.Username,password)
+	fmt.Println(id)
 	if code == errmsg.SUCCESE{
 	err :=db.Where("id =?",id).Delete(&item).Error
 	if err != nil{

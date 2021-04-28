@@ -45,6 +45,7 @@ func IniRouter(){
 		auth.POST("page/save",v1.SavePage)
 		auth.POST("page/setLock",v1.SetLock)
 		auth.POST("page/isLock",v1.IsLock)
+		auth.POST("page/history",v1.History)
 
 		//catalogs 模块
 		auth.POST("delcatalogs/:id",v1.DeleteCatalogs)

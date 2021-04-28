@@ -41,7 +41,7 @@
       <p >{{$t('single_page_address')}} : <code id="share-single-link">{{share_single_link}}</code>
       </p>
         <p style="border-bottom: 1px solid #eee;"><img  id="qr-single-link" style="width:114px;height:114px;" :src="qr_single_link"> </p>
-     <p><a href="https://www.showdoc.cc/page/63882" target="_blank">{{$t('page_diff_tips')}}</a></p><p>
+     <p><a href="https://www.doc.cc/page/63882" target="_blank">{{$t('page_diff_tips')}}</a></p><p>
       </p>
 
     <span slot="footer" class="dialog-footer">

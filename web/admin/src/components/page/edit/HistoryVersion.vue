@@ -6,8 +6,8 @@
 
       <el-dialog :title="$t('history_version')" :visible.sync="dialogTableVisible">
         <el-table :data="content">
-          <el-table-column property="addtime" :label="$t('update_time')" width="170"></el-table-column>
-          <el-table-column property="author_username" :label="$t('update_by_who')" ></el-table-column>
+          <el-table-column property="CreatedAt" :label="$t('update_time')" width="170"></el-table-column>
+          <el-table-column property="authorusername" :label="$t('update_by_who')" ></el-table-column>
           <el-table-column
             label="操作"
             width="150">
@@ -47,12 +47,12 @@ export default {
   methods: {
     get_content () {
       var that = this
-      var url = this.DocConfig.server + '/api/page/history'
+      var url = this.DocConfig.server + '/page/history'
       var params = new URLSearchParams()
       params.append('page_id', that.$route.params.page_id)
-      that.axios.post(url, params)
+      that.$http.post(url, params)
         .then(function (response) {
-          if (response.data.status === 0) {
+          if (response.data.status === 200) {
             // that.$message.success("加载成功");
             var json = response.data.data
             if (json.length > 0) {
@@ -64,7 +64,7 @@ export default {
             }
           } else {
             that.dialogTableVisible = false
-            that.$alert(response.data.error_message)
+            that.$alert(response.data.message)
           }
         })
         .catch(function (error) {

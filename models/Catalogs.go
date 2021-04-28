@@ -2,6 +2,7 @@ package models
 
 import (
 	"awesomeProject3/utils/errmsg"
+	"fmt"
 	"github.com/jinzhu/gorm"
 )
 
@@ -61,7 +62,8 @@ func EditCatalogs (id int,v int) int{
 
 func DeleteCatalogs(itemid int , id int,v int)int{
 	var catalogs Catalogs
-	err = db.Where("item_id=?",itemid).Where("id =?",id).Delete(&catalogs).Error
+	fmt.Println(itemid , id)
+	err := db.Where("item_id=?",itemid).Where("id =?",id).Delete(&catalogs).Error
 	if v <= 1 {
 		return errmsg.ERROR_USER_NO_RIGHT
 	}

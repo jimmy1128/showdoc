@@ -32,7 +32,7 @@
               :label="$t('operation')">
               <template slot-scope="scope">
                 <el-button @click="edit(scope.row)" type="text" size="small" :disabled=" scope.row.level > 0 ? false : true ">{{$t('edit')}}</el-button>
-                <el-button @click="delete_cat(scope.row.ID)" type="text" size="small" >{{$t('delete')}}</el-button>
+                <el-button @click="delete_cat(scope.row.ID)" type="text" size="small" :disabled=" scope.row.level > 0 ? false : true ">{{$t('delete')}}</el-button>
               </template>
             </el-table-column>
           </el-table>

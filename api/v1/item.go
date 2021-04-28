@@ -15,7 +15,7 @@ func DeleteItem(c *gin.Context){
 	session := sessions.Default(c)
 	user := session.Get("id")
 	v , _ := user.(uint)
-	id ,_:= strconv.Atoi(c.Param("item_id"))
+	id ,_:= strconv.Atoi(c.PostForm("item_id"))
 	password := c.PostForm("password")
 	code =models.DeleteItem(id,password,v)
 	c.JSON(http.StatusOK,gin.H{

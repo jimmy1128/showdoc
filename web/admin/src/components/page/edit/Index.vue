@@ -267,7 +267,7 @@ export default {
           if (response.data.status === 200) {
             // that.$message.success("加载成功")
             var json = response.data.data
-            that.cat_id2 = json.default_cat_id2
+            that.cat_id2 = json.defaultcatid2
             that.get_cat3(json.default_cat_id2, function () {
               that.cat_id3 = json.default_cat_id3
             })
@@ -306,7 +306,7 @@ export default {
       childRef.dialogFormVisible = true
     },
     ShowRunApi () {
-      window.open('http://runapi.showdoc.cc/')
+      window.open('http://runapi.doc.cc/')
     },
     // 更多模板、模板列表
     ShowTemplateList () {
@@ -460,7 +460,7 @@ export default {
       this.get_page_content(this.page_id)
     } else {
       this.item_id = this.$route.params.item_id
-      this.content = this.$t('welcome_use_showdoc')
+      this.content = this.$t('welcome_use_doc')
     }
     this.get_cat2(this.$route.params.item_id)
     that.on_paste()

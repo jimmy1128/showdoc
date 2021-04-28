@@ -3,27 +3,27 @@ export const EN_US = {
   demo: 'Demo',
   index_login_or_register: 'Login / Register',
   my_item: 'My items',
-  section_title1: 'ShowDoc',
+  section_title1: 'Doc',
   section_description1: ' A tool greatly applicable for an IT team',
   section_title2: 'API Document',
   section_description2:
-    'ShowDoc can compile exquisite API documents <br>in a very fast and convenient way',
+    'Doc can compile exquisite API documents <br>in a very fast and convenient way',
   section_title3: 'Data Dictionary',
   section_description3:
-    'A good Data Dictionary can easily exhibit database structure to other people<br>ShowDoc can compile exquisite Data Dictionary',
+    'A good Data Dictionary can easily exhibit database structure to other people<br>Doc can compile exquisite Data Dictionary',
   section_title4: 'Explanation Document',
   section_description4:
-    'You can absolutely use ShowDoc to compile the explanation documents for some tools',
+    'You can absolutely use Doc to compile the explanation documents for some tools',
   section_title5: 'Team Work',
-  section_description5: 'Your team will work with ShowDoc together very well ',
+  section_description5: 'Your team will work with Doc together very well ',
   section_title6: 'Open Source',
   section_description6:
-    'ShowDoc is a free, open source tool that <br>you can deploy it to your own server',
+    'Doc is a free, open source tool that <br>you can deploy it to your own server',
   section_title7: 'Hosted online',
   section_description7:
-    'Www.showdoc.cc provide security and stability of the document hosting service',
+    'Www.doc.cc provide security and stability of the document hosting service',
   section_title8: 'Try it now',
-  section_description8: 'Over 6000+ IT team is using ShowDoc',
+  section_description8: 'Over 6000+ IT team is using Doc',
   login: 'Login',
   background: 'backend management',
   username: 'Username',
@@ -163,7 +163,7 @@ export const EN_US = {
   manage_members: 'manage members',
   more_item: 'more item',
   login_or_register: 'login/register',
-  about_showdoc: 'about ShowDoc',
+  about_showdoc: 'about Doc',
   new_page: 'new page',
   edit_page: 'edit page',
   new_catalog: 'new/manage catalog ',
@@ -223,7 +223,7 @@ export const EN_US = {
   save_templ_title: 'input template title',
   save_templ_text:
     'The template has been saved. When you create or edit an edit page later, click the "More Templates" button to use your saved template.',
-  welcome_use_showdoc: 'Welcome to ShowDoc！',
+  welcome_use_showdoc: 'Welcome to Doc！',
   templ_list: 'template list',
   templ_title: 'template title',
   no_templ_text:
@@ -281,11 +281,11 @@ export const EN_US = {
   auth_success: 'saved successfully',
   all_cat2: 'Catalogs permissions: all',
   open_api_tips1:
-    'Showdoc opens the API for document editing, making it easier for users to manipulate document data. <br>With the open API, you can do a lot of things automatically',
+    'doc opens the API for document editing, making it easier for users to manipulate document data. <br>With the open API, you can do a lot of things automatically',
   open_api_tips2:
-    'If you want to automate the generation of API documentation, you can refer to<a target="_bank" href="https://www.showdoc.cc/page/741656402509783">API documentation</a>',
+    'If you want to automate the generation of API documentation, you can refer to<a target="_bank" href="https://www.doc.cc/page/741656402509783">API documentation</a>',
   open_api_tips3:
-    'If you want to automate the generation of a data dictionary, you can refer to<a target="_bank" href="https://www.showdoc.cc/page/312209902620725">Data dictionary</a>',
+    'If you want to automate the generation of a data dictionary, you can refer to<a target="_bank" href="https://www.doc.cc/page/312209902620725">Data dictionary</a>',
   open_api_tips4:
-    'If you are more free to generate the format you need, you can refer to<a target="_bank" href="https://www.showdoc.cc/page/102098">Open API</a>'
+    'If you are more free to generate the format you need, you can refer to<a target="_bank" href="https://www.doc.cc/page/102098">Open API</a>'
 }

@@ -125,7 +125,7 @@ export default {
       })
     },
     feedback () {
-      this.$alert('对showdoc.cc的任何疑问、建议都可以反馈到 xing7th@gmail.com')
+      this.$alert('对doc.cc的任何疑问、建议都可以反馈到 xing7th@gmail.com')
     }
   },
   mounted () {
