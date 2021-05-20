@@ -120,10 +120,8 @@ export default {
       }
       var formdata = new FormData()
       formdata.append('page_id', page_id)
-      console.log(this.page_id)
       const { data: res } = await this.$http.post(url, formdata)
       if (res.status !== 200) return this.$message.error(res.message)
-      console.log(res.data)
       if (res.data.pagecontent) {
         let objData
         try {
@@ -143,7 +141,6 @@ export default {
           objData = JSON.parse(
             unescapeHTML(res.data.pagecontent)
           )
-          console.log(objData)
         } catch (error) {
           objData = {}
         }
@@ -388,8 +385,6 @@ export default {
   mounted () {
     this.menu = this.item_info.menu
     this.page_id = this.menu.pages[0].ID
-    console.log(this.item_info)
-
     // 加载依赖""
     $s(['static/xspreadsheet/xspreadsheet.js'], () => {
       $s(

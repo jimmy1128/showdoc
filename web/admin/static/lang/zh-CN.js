@@ -188,12 +188,18 @@ export const ZH_CN = {
   welcome_use_showdoc: '欢迎使用Doc！',
   templ_list: '模板列表',
   templ_title: '模板标题',
+  lang_setting: '语言设置',
+  language1: '语言',
+  lang_choose: '语言选项',
+  cat_lang: '语言目录',
+  icon: '图标',
   no_templ_text:
     '你尚未保存过任何模板。你可以在编辑页面时，在“保存”按钮右边点击，在下拉菜单中选择“另存为模板”。把页面内容保存为模板后，你下次新建或者编辑页面时便可以使用你之前保存的模板',
   save_time: '保存时间',
   insert_templ: '插入此模板',
   delete_templ: '删除模板',
-
+  default: '显示默认',
+  default1: '默认',
   add_cat: '添加目录',
   cat_name: '目录名',
   input_cat_name: '请输入目录名',
@@ -207,6 +213,7 @@ export const ZH_CN = {
   user_management: '用户管理',
   item_management: '项目管理',
   add_user: '新增用户',
+  add_language: '新增语言',
   search: '查询',
 
   team_mamage: '团队管理',

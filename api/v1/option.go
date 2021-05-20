@@ -6,6 +6,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
 func SaveConfig (c *gin.Context){
@@ -28,6 +29,27 @@ func SaveConfig (c *gin.Context){
 
 func LoadConfig (c *gin.Context){
 	data,code := models.LoadConfig()
+	c.JSON(http.StatusOK,gin.H{
+		"status":code,
+		"data":data,
+		"message":errmsg.GetErrMsg(code),
+	})
+}
+
+func SaveLangConfig(c *gin.Context) {
+	session := sessions.Default(c)
+	user := session.Get("id")
+	conf,_ := strconv.Atoi(c.PostForm("lang"))
+	v , _ := user.(uint)
+
+	code = models.SaveLangConfig(v , conf)
+	c.JSON(http.StatusOK,gin.H{
+		"status":code,
+		"message":errmsg.GetErrMsg(code),
+	})
+}
+func LoadLangConfig(c *gin.Context) {
+	data,code := models.LoadLangConfig()
 	c.JSON(http.StatusOK,gin.H{
 		"status":code,
 		"data":data,

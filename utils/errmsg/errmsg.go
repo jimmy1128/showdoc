@@ -31,8 +31,14 @@ const (
 	// code = 6000 Admin 模块的报错
 	ERROR_EXITING_ITEM = 6001
 
+	//code = 7000 Lang 语言模块的报错
+	ERROR_LANG_USED = 7001
+	ERROR_LANG_NOT_EXIST =7002
+	ERROR_LANG_EMPTY = 7003
+
 	// code = 10000 条件和需求
 	REQUIRE_PASSWORD_PERMISSION = 10307
+
 
 )
 var codeMsg = map[int]string{
@@ -54,6 +60,9 @@ var codeMsg = map[int]string{
 	REQUIRE_PASSWORD_PERMISSION: "需要项目密码",
 	ERROR_EXITING_ITEM:"该用户名下还有项目，不允许删除。请先将其项目删除或者重新分配/转让",
 	ERROR_APPLY_NEW_ACCOUNT: "ADMINISTRATOR 没有开启申请账号权限",
+	ERROR_LANG_USED: "该语言已存在",
+	ERROR_LANG_NOT_EXIST: "该语言查询不存在",
+	ERROR_LANG_EMPTY:"请选择其中一种语言",
 }
 
 func GetErrMsg(code int)string {

@@ -48,6 +48,7 @@ func SavePage (c * gin.Context){
 	page_content := c.PostForm("page_content")
 	cat_id,_  := strconv.Atoi(c.PostForm("cat_id"))
 	Urlencode,_ := strconv.Atoi(c.PostForm("is_urlencode"))
+	langId , _ := strconv.Atoi(c.PostForm("cid"))
 	if Urlencode == 1{
 		page_content, _ = UrlDecode(page_content)
 	}
@@ -59,6 +60,7 @@ func SavePage (c * gin.Context){
 	page.PageTitle = page_title
 	page.PageContent = page_content
 	page.CatId = uint(cat_id)
+	page.Cid = langId
 	page.AuthorUid = v
 
 	pagehistory.PageId = int(page.ID)
@@ -147,4 +149,19 @@ func History(c *gin.Context) {
 		"data":data,
 		"message":errmsg.GetErrMsg(code),
 	})
+}
+func Sort(c *gin.Context){
+	session := sessions.Default(c)
+	user := session.Get("id")
+	v , _ := user.(uint)
+	itemId ,_ := strconv.Atoi(c.PostForm("item_id"))
+	pages := c.PostForm("pages")
+	code = models.Sort(pages,itemId,v)
+	c.JSON(http.StatusOK,gin.H{
+		"status":code ,
+		"message":errmsg.GetErrMsg(code),
+	})
+
+
+
 }

@@ -18,7 +18,7 @@
               <Copy></Copy>
             </el-tab-pane>
 
-            <el-tab-pane :label="$t('import_file')" name="four" disabled>
+            <el-tab-pane :label="$t('import_file')" name="four" >
               <Import></Import>
             </el-tab-pane>
 

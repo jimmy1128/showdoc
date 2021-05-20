@@ -11,8 +11,6 @@ type Options struct {
 	OptionValue string `gorm:"type:varchar(255)" json:"optionValue"`
 }
 func SaveConfig (uid uint,id int)int{
-
-
 	if checkAdmin(uid) != errmsg.SUCCESE{
 		return errmsg.ERROR
 	}
@@ -55,3 +53,24 @@ func LoadConfig() ([]Options,int){
 return result,errmsg.SUCCESE
 }
 
+func SaveLangConfig(uid uint , id int) int{
+	if checkAdmin(uid) != errmsg.SUCCESE{
+		return errmsg.ERROR
+	}
+	err =db.Model(Options{}).Where("option_name = ?","lang").Update("option_value",id).Error
+	if err != nil {
+		return errmsg.ERROR
+	}
+	return errmsg.SUCCESE
+}
+func LoadLangConfig() (Lang,int){
+	var option Options
+	var lang Lang
+	//var result []Options
+	err = db.Model(Options{}).Where("option_name = ?","lang").Find(&option).Error
+	db.Model(Lang{}).Where("id =?",option.OptionValue).Find(&lang)
+	if err != nil {
+		return lang,errmsg.ERROR
+	}
+	return lang,errmsg.SUCCESE
+}

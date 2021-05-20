@@ -24,7 +24,7 @@
         background-color="#fafafa"
         text-color
         active-text-color="#008cff"
-        :default-active="item_info && item_info.defaultpageid"
+        :default-active="item_info.defaultpageid"
         :default-openeds="openeds"
       >
         <el-input
@@ -38,9 +38,9 @@
 
         <!-- 一级页面 -->
         <template v-if="menu.pages && menu.pages.length">
-          <el-menu-item v-for="(page ) in menu.pages" :index="page.ID.toString()" :key="page.id">
+          <el-menu-item v-for="(page ) in menu.pages" :index="page.ID.toString()" :key="page.ID">
             <i class="el-icon-document"></i>
-            <span :title="page.pagetitle" :id="'left_page_'+page.id">{{page.pagetitle}}</span>
+            <span :title="page.pagetitle" :id="'left_page_'+page.ID">{{page.pagetitle}}</span>
           </el-menu-item>
         </template>
 
@@ -69,7 +69,8 @@ export default {
       show_menu_btn: false,
       hideScrollbar: true,
       asideWidth: '250px',
-      menuMarginLeft: 'menu-margin-left1'
+      menuMarginLeft: 'menu-margin-left1',
+      scrollIntoView: ''
     }
   },
   components: {
@@ -248,7 +249,7 @@ export default {
 </style>
 <style type="text/css">
 #left-side-menu .el-input__inner {
-  background-color: #fafafa !important;
+  background-color: #fafafa;
   padding-right: 10px;
 }
 .hide-scrollbar .el-submenu__title {

@@ -25,8 +25,11 @@ func DeleteCatalogs(c *gin.Context){
 }
 
 func CatListGroup(c *gin.Context){
+	session := sessions.Default(c)
+	user := session.Get("id")
+	v , _ := user.(uint)
 	id, _ := strconv.Atoi(c.PostForm("item_id"))
-	data, code := models.GetCatalogsByItemId(uint(id),"")
+	data, code := models.CatListName(uint(id),"",v)
 	c.JSON(http.StatusOK,gin.H{
 		"status": code,
 		"data" : data,
@@ -89,22 +92,24 @@ func ChildCatList(c *gin.Context){
 }
 
 func GetDefaultCat(c *gin.Context){
-	var temp struct{
-		DefaultCatId2 string `json:"default_cat_id2"`
-		DefaultCatId3 string `json:"default_cat_id3"`
-	}
-	//session := sessions.Default(c)
-	//user := session.Get("id")
-	// v := user.(uint)
-	temp.DefaultCatId2 =""
-	temp.DefaultCatId3 =""
-	//pageId ,_ := strconv.Atoi(c.PostForm("page_id"))
-	//copyPageId ,_ := strconv.Atoi(c.PostForm("copy_page_id"))
-	//data , code := models.Getdefaultcat(pageId,copyPageId,v)
+	//var temp struct{
+	//	DefaultCatId2 string `json:"default_cat_id2"`
+	//	DefaultCatId3 string `json:"default_cat_id3"`
+	//}
+	session := sessions.Default(c)
+	user := session.Get("id")
+	 v := user.(uint)
+
+	pageId ,_ := strconv.Atoi(c.PostForm("page_id"))
+	itemId ,_ := strconv.Atoi(c.PostForm("item_id"))
+	copyPageId ,_ := strconv.Atoi(c.PostForm("copy_page_id"))
+	page_history_id ,_ := strconv.Atoi(c.PostForm("page_history_id"))
+
+	data , code := models.Getdefaultcat(pageId,copyPageId,v,itemId,page_history_id)
 
 	c.JSON(http.StatusOK,gin.H{
 		"status" : 200 ,
-		//"data" : data,
+		"data" : data,
 		"message" : errmsg.GetErrMsg(code),
 	})
 
@@ -122,11 +127,14 @@ func SaveCatalogs(c *gin.Context){
 		s_number ,_ := strconv.Atoi(c.PostForm("snumber"))
 		cat_id ,_ := strconv.Atoi(c.PostForm("catid"))
 		parent_cat_id ,_ := strconv.Atoi(c.PostForm("parentcatid"))
+		langid,_ := strconv.Atoi(c.PostForm("cid"))
+
 		var catalog models.Catalogs
 		catalog.Name = cat_name
 		catalog.SNumber = uint(s_number)
 		catalog.ID = uint(cat_id)
 		catalog.ItemId = uint(item_id)
+		catalog.Cid = langid
 
 		var parent_id int
 		if parent_cat_id == 0 {

@@ -1,23 +1,37 @@
 <template>
- <div>
-  <el-dialog :title="$t('json_to_table')" :visible.sync="dialogFormVisible">
-    <el-form >
-     <el-input type="textarea" class="dialoContent" :placeholder="$t('json_to_table_description')" :rows="10" v-model="content"></el-input>
-    </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button @click="dialogFormVisible = false">{{$t('cancel')}}</el-button>
-      <el-button type="primary" @click="transform">{{$t('confirm')}}</el-button>
-    </div>
-  </el-dialog>
- </div>
+  <div>
+    <el-dialog
+      :title="$t('json_to_table')"
+      :visible.sync="dialogFormVisible"
+      :close-on-click-modal="false"
+    >
+      <el-form>
+        <el-input
+          type="textarea"
+          class="dialoContent"
+          :placeholder="$t('json_to_table_description')"
+          :rows="10"
+          v-model="content"
+        ></el-input>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">{{
+          $t('cancel')
+        }}</el-button>
+        <el-button type="primary" @click="transform">{{
+          $t('confirm')
+        }}</el-button>
+      </div>
+    </el-dialog>
+  </div>
 </template>
+
 <script>
-/* eslint-disable */
 export default {
   name: 'JsonToTable',
   props: {
-    formLabelWidth: { width: '120px' },
-    callback: {}
+    formLabelWidth: '120px',
+    callback: ''
   },
   data () {
     return {
@@ -30,7 +44,8 @@ export default {
     transform () {
       try {
         var jsonData = JSON.parse(this.content)
-        this.json_table_data = '|参数|类型|描述|\n|:-------|:-------|:-------|\n'
+        this.json_table_data =
+          '|参数|类型|描述|\n|:-------|:-------|:-------|\n'
         this.Change(jsonData)
         this.callback(this.json_table_data)
       } catch (e) {
@@ -43,16 +58,17 @@ export default {
       var level_str = '- '
       if (arguments.length > 1) {
         var level
-        arguments[1] > 0 ? level = arguments[1] : level = 1
+        arguments[1] > 0 ? (level = arguments[1]) : (level = 1)
         for (var i = 0; i < level; i++) {
           level_str += '- '
         }
       }
       for (var key in data) {
         var value = data[key]
-        var type = typeof (value)
+        var type = typeof value
         if (type === 'object') {
-          that.json_table_data += '| ' + level_str + key + ' |' + type + '  | 无 |\n'
+          that.json_table_data +=
+            '| ' + level_str + key + ' |' + type + '  | 无 |\n'
           if (value instanceof Array) {
             var j = level + 1
             this.Change(value[0], j)
@@ -70,6 +86,6 @@ export default {
   }
 }
 </script>
+
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-</style>
+<style scoped></style>

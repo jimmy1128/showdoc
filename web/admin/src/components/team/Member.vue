@@ -65,8 +65,7 @@ export default {
         id: '',
         member_username: ''
       },
-      list: {},
-      loading: false,
+      list: [],
       dialogFormVisible: false,
       team_id: '',
       memberOptions: []
@@ -161,7 +160,6 @@ export default {
               key: newInfo[index].value
             })
           }
-          console.log(that.memberOptions)
         } else {
           that.$alert(response.data.message)
         }

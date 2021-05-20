@@ -18,8 +18,13 @@ import { EN_US } from '../static/lang/en'
 import { ZH_CN } from '../static/lang/zh-CN'
 import store from './store/'
 import VueCookies from 'vue-cookies'
+import 'e-icon-picker/dist/symbol.js'
+import 'e-icon-picker/dist/index.css'
 // import LANG from '../static/lang/language'
-
+import eIconPicker, { analyzingIconForIconfont } from 'e-icon-picker'
+import iconfont from '../static/fonts/iconfont.json'
+import '../static/fonts/iconfont.js'
+const forIconfont = analyzingIconForIconfont(iconfont)
 Vue.use(util)
 Vue.config.productionTip = false
 Vue.component('Header', Header)
@@ -29,8 +34,15 @@ Vue.use(VueI18n)
 Vue.use(VueClipboard)
 Vue.use(VueCookies)
 Vue.use(VueDND)
+Vue.use(eIconPicker, {
+  FontAwesome: false,
+  ElementUI: false,
+  eIcon: false,
+  eIconSymbol: true,
+  addIconList: forIconfont.list,
+  removeIconList: []
+})
 // Vue.config.lang = this.DocConfig.lang
-
 const i18n = new VueI18n({
   fallbackLocale: 'ZH_CN',
   messages: {
@@ -39,6 +51,7 @@ const i18n = new VueI18n({
   }
 })
 export default i18n
+
 // 多语言相关
 // 将axios挂载到prototype上，在组件中可以直接使用this.axios访问
 

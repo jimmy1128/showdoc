@@ -78,9 +78,9 @@
           <el-select v-model="MyForm.cat_id" :placeholder="$t('all_cat2')">
             <el-option
               v-for="item in catalogs"
-              :key="item.ID"
-              :label="item.catname"
-              :value="item.ID"
+              :key="item.cat_id"
+              :label="item.cat_name"
+              :value="item.cat_id"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -163,7 +163,7 @@
               <el-option
                 v-for="item in catalogs"
                 :key="item.cat_id"
-                :label="item.catname"
+                :label="item.cat_name"
                 :value="item.cat_id"
               ></el-option>
             </el-select>

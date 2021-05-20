@@ -6,7 +6,8 @@
       :item_info="item_info"
       :search_item="search_item"
       :keyword="keyword"
-      v-if="item_info && (item_info.itemtype == 1 || item_info.itemtype == 3 || item_info.itemtype === '0' || item_info.itemtype === 0 ) "
+      v-on:itemlangId2="item_langId2"
+      v-if="item_info && (item_info.itemtype == 1 || item_info.itemtype == 3 || item_info.itemtype === '0' || item_info.itemtype === 0 )"
     ></ShowRegularItem>
 
     <!-- 展示单页项目 -->
@@ -27,7 +28,10 @@ export default {
   data () {
     return {
       item_info: '',
-      keyword: ''
+      keyword: '',
+      itemlangId2: '',
+      itemlangId3: ''
+      // loading: false
     }
   },
   components: {
@@ -36,32 +40,38 @@ export default {
     ShowTableItem
   },
   methods: {
+    item_langId2 (value) {
+      this.itemlangId2 = value
+      if (value !== undefined) {
+        this.item_info = ''
+        this.get_item_menu()
+      }
+    },
     // 获取菜单
-
     async get_item_menu (keyword) {
       if (!keyword) {
         keyword = ''
       }
-
-      var loading = this.$loading()
+      // var loading = this.$loading()
       var item_id = this.$route.params.item_id ? this.$route.params.item_id : 0
       var page_id = this.$route.query.page_id ? this.$route.query.page_id : 0
-
       var url = this.DocConfig.server + '/item/info'
       var formdata = new FormData()
       formdata.append('id', item_id)
       formdata.append('keyword', keyword)
+      formdata.append('lang_id', this.itemlangId2)
       if (!this.keyword) {
         formdata.append('defaultpageid', page_id)
       }
-      loading.close()
       const { data: res } = await this.$http.post(url, formdata)
-
       if (res.status === 200) {
+        // loading.close()
         var json = res.data
-        if (json.defaultpageid <= 0) {
+        console.log(json.defaultpageid)
+        if (json.defaultpageid <= 0 || json.defaultpageid === undefined) {
           if (json.menu.pages[0]) {
-            json.defaultpageid = json.menu.pages[0].page_id
+            json.defaultpageid = String(json.menu.pages[0].ID)
+            // console.log(json.defaultpageid)
           }
         }
         this.item_info = json
@@ -84,19 +94,38 @@ export default {
       }
       // 设置一个最长关闭时间
       setTimeout(() => {
-        loading.close()
-      }, 20000)
+        // loading.close()
+      }, 10000)
     },
     search_item (keyword) {
       this.item_info = ''
       this.$store.dispatch('changeItemInfo', '')
       this.keyword = keyword
       this.get_item_menu(keyword)
+    },
+    loadConfig () {
+      var that = this
+      var url = this.DocConfig.server + '/adminSetting/loadLangConfig'
+      var params = new URLSearchParams()
+      that.$http.get(url, params).then(function (response) {
+        if (response.data.status === 200) {
+          if (response.data.data.length === 0) {
+            return
+          }
+          that.itemlangId2 = 0
+        } else {
+          this.$alert(response.data.message)
+        }
+      })
+        .catch(function (error) {
+          console.log(error)
+        })
     }
   },
   mounted () {
+    this.loadConfig()
     this.get_item_menu()
-    console.log(this.item_info)
+    this.$store.dispatch('changeOpenCatId', 0)
   },
   beforeDestroy () {
     this.$message.closeAll()

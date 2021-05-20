@@ -1,0 +1,1083 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 2526931 */
+  src: url('iconfont.woff2?t=1620190617495') format('woff2'),
+       url('iconfont.woff?t=1620190617495') format('woff'),
+       url('iconfont.ttf?t=1620190617495') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-world-flag_-AUS--Australia:before {
+  content: "\e800";
+}
+
+.icon-world-flag_-BRB--Barbados:before {
+  content: "\e801";
+}
+
+.icon-world-flag_-BLR--Belarus:before {
+  content: "\e802";
+}
+
+.icon-world-flag_-BEL--Belgium:before {
+  content: "\e803";
+}
+
+.icon-world-flag_-BEN--Benin:before {
+  content: "\e804";
+}
+
+.icon-world-flag_-BLZ--Belize:before {
+  content: "\e805";
+}
+
+.icon-world-flag_-BMU--Bermuda:before {
+  content: "\e806";
+}
+
+.icon-world-flag_-BTN--Bhutan:before {
+  content: "\e807";
+}
+
+.icon-world-flag_-BWA--Botswana:before {
+  content: "\e808";
+}
+
+.icon-world-flag_-BVT--BouvetIsland:before {
+  content: "\e809";
+}
+
+.icon-world-flag_-BIH--BosniaandHerzegovina:before {
+  content: "\e80a";
+}
+
+.icon-world-flag_-BOL--Bolivia:before {
+  content: "\e80b";
+}
+
+.icon-world-flag_-BRA--Brazil:before {
+  content: "\e80c";
+}
+
+.icon-world-flag_-VGB--BritishVirginIslands:before {
+  content: "\e80d";
+}
+
+.icon-world-flag_-IOT--BritishIndianOceanTerritory:before {
+  content: "\e80e";
+}
+
+.icon-world-flag_-BFA--BurkinaFaso:before {
+  content: "\e80f";
+}
+
+.icon-world-flag_-BGR--Bulgaria:before {
+  content: "\e810";
+}
+
+.icon-world-flag_-BRN--BruneiDarussalam:before {
+  content: "\e811";
+}
+
+.icon-world-flag_-BDI--Burundi:before {
+  content: "\e812";
+}
+
+.icon-world-flag_-CMR--Cameroon:before {
+  content: "\e813";
+}
+
+.icon-world-flag_-KHM--Cambodia:before {
+  content: "\e814";
+}
+
+.icon-world-flag_-CAN--Canada:before {
+  content: "\e815";
+}
+
+.icon-world-flag_-BES--CaribbeanNetherlands:before {
+  content: "\e816";
+}
+
+.icon-world-flag_-CPV--CapeVerde:before {
+  content: "\e817";
+}
+
+.icon-world-flag_-CHL--Chile:before {
+  content: "\e818";
+}
+
+.icon-world-flag_-TCD--Chad:before {
+  content: "\e819";
+}
+
+.icon-world-flag_-CAF--CentralAfricanRepublic:before {
+  content: "\e81a";
+}
+
+.icon-world-flag_-CHN--China:before {
+  content: "\e81b";
+}
+
+.icon-world-flag_-CYM--CaymanIslands:before {
+  content: "\e81c";
+}
+
+.icon-world-flag_-CXR--ChristmasIsland:before {
+  content: "\e81d";
+}
+
+.icon-world-flag_-CCK--CocosKeelingIslands:before {
+  content: "\e81e";
+}
+
+.icon-world-flag_-COL--Colombia:before {
+  content: "\e81f";
+}
+
+.icon-world-flag_-COG--CongoBrazzaville:before {
+  content: "\e820";
+}
+
+.icon-world-flag_-COD--CongoKinshasa:before {
+  content: "\e821";
+}
+
+.icon-world-flag_-COM--Comoros:before {
+  content: "\e822";
+}
+
+.icon-world-flag_-COK--CookIslands:before {
+  content: "\e823";
+}
+
+.icon-world-flag_-CIV--CtedIvoire:before {
+  content: "\e824";
+}
+
+.icon-world-flag_-CRI--CostaRica:before {
+  content: "\e825";
+}
+
+.icon-world-flag_-HRV--Croatia:before {
+  content: "\e826";
+}
+
+.icon-world-flag_-CUB--Cuba:before {
+  content: "\e827";
+}
+
+.icon-world-flag_-CUW--Curaao:before {
+  content: "\e828";
+}
+
+.icon-world-flag_-CYP--Cyprus:before {
+  content: "\e829";
+}
+
+.icon-world-flag_-CZE--CzechRepublic:before {
+  content: "\e82a";
+}
+
+.icon-world-flag_-DNK--Denmark:before {
+  content: "\e82b";
+}
+
+.icon-world-flag_-DJI--Djibouti:before {
+  content: "\e82c";
+}
+
+.icon-world-flag_-DMA--Dominica:before {
+  content: "\e82d";
+}
+
+.icon-world-flag_-DOM--DominicanRepublic:before {
+  content: "\e82e";
+}
+
+.icon-world-flag_-ECU--Ecuador:before {
+  content: "\e82f";
+}
+
+.icon-world-flag_-EGY--Egypt:before {
+  content: "\e830";
+}
+
+.icon-world-flag_-SLV--ElSalvador:before {
+  content: "\e831";
+}
+
+.icon-world-flag_-GB-ENG--England:before {
+  content: "\e832";
+}
+
+.icon-world-flag_-GNQ--EquatorialGuinea:before {
+  content: "\e833";
+}
+
+.icon-world-flag_-EST--Estonia:before {
+  content: "\e834";
+}
+
+.icon-world-flag_-ETH--Ethiopia:before {
+  content: "\e835";
+}
+
+.icon-world-flag_-ERI--Eritrea:before {
+  content: "\e836";
+}
+
+.icon-world-flag_-FRO--FaroeIslands:before {
+  content: "\e837";
+}
+
+.icon-world-flag_-FLK--FalklandIslandsMalvinas:before {
+  content: "\e838";
+}
+
+.icon-world-flag_-FRA--France:before {
+  content: "\e839";
+}
+
+.icon-world-flag_-FIN--Finland:before {
+  content: "\e83a";
+}
+
+.icon-world-flag_-FJI--Fiji:before {
+  content: "\e83b";
+}
+
+.icon-world-flag_-GUF--FrenchGuiana:before {
+  content: "\e83c";
+}
+
+.icon-world-flag_-GMB--Gambia:before {
+  content: "\e83d";
+}
+
+.icon-world-flag_-GAB--Gabon:before {
+  content: "\e83e";
+}
+
+.icon-world-flag_-PYF--FrenchPolynesia:before {
+  content: "\e83f";
+}
+
+.icon-world-flag_-ATF--FrenchSouthernTerritories:before {
+  content: "\e840";
+}
+
+.icon-world-flag_-GEO--Georgia:before {
+  content: "\e841";
+}
+
+.icon-world-flag_-GRL--Greenland:before {
+  content: "\e842";
+}
+
+.icon-world-flag_-GHA--Ghana:before {
+  content: "\e843";
+}
+
+.icon-world-flag_-GRC--Greece:before {
+  content: "\e844";
+}
+
+.icon-world-flag_-DEU--Germany:before {
+  content: "\e845";
+}
+
+.icon-world-flag_-GIB--Gibraltar:before {
+  content: "\e846";
+}
+
+.icon-world-flag_-GRD--Grenada:before {
+  content: "\e847";
+}
+
+.icon-world-flag_-GUM--Guam:before {
+  content: "\e848";
+}
+
+.icon-world-flag_-GTM--Guatemala:before {
+  content: "\e849";
+}
+
+.icon-world-flag_-GIN--Guinea:before {
+  content: "\e84a";
+}
+
+.icon-world-flag_-GNB--GuineaBissau:before {
+  content: "\e84b";
+}
+
+.icon-world-flag_-GUY--Guyana:before {
+  content: "\e84c";
+}
+
+.icon-world-flag_-GGY--Guernsey:before {
+  content: "\e84d";
+}
+
+.icon-world-flag_-HTI--Haiti:before {
+  content: "\e84e";
+}
+
+.icon-world-flag_-VAT--HolySeeVaticanCityState:before {
+  content: "\e84f";
+}
+
+.icon-world-flag_-HMD--HeardandMcdonaldIslands:before {
+  content: "\e850";
+}
+
+.icon-world-flag_-HND--Honduras:before {
+  content: "\e851";
+}
+
+.icon-world-flag_-HKG--HongKongSARChina:before {
+  content: "\e852";
+}
+
+.icon-world-flag_-HUN--Hungary:before {
+  content: "\e853";
+}
+
+.icon-world-flag_-IND--India:before {
+  content: "\e854";
+}
+
+.icon-world-flag_-ISL--Iceland:before {
+  content: "\e855";
+}
+
+.icon-world-flag_-IDN--Indonesia:before {
+  content: "\e856";
+}
+
+.icon-world-flag_-IRQ--Iraq:before {
+  content: "\e857";
+}
+
+.icon-world-flag_-IRN--IranIslamicRepublicof:before {
+  content: "\e858";
+}
+
+.icon-world-flag_-IRL--Ireland:before {
+  content: "\e859";
+}
+
+.icon-world-flag_-IMN--IsleofMan:before {
+  content: "\e85a";
+}
+
+.icon-world-flag_-ISR--Israel:before {
+  content: "\e85b";
+}
+
+.icon-world-flag_-ITA--Italy:before {
+  content: "\e85c";
+}
+
+.icon-world-flag_-JAM--Jamaica:before {
+  content: "\e85d";
+}
+
+.icon-world-flag_-JPN--Japan:before {
+  content: "\e85e";
+}
+
+.icon-world-flag_-JEY--Jersey:before {
+  content: "\e85f";
+}
+
+.icon-world-flag_-JOR--Jordan:before {
+  content: "\e860";
+}
+
+.icon-world-flag_-KEN--Kenya:before {
+  content: "\e861";
+}
+
+.icon-world-flag_-PRK--KoreaNorth:before {
+  content: "\e862";
+}
+
+.icon-world-flag_-KOR--KoreaSouth:before {
+  content: "\e863";
+}
+
+.icon-world-flag_-KIR--Kiribati:before {
+  content: "\e864";
+}
+
+.icon-world-flag_-LAO--LaosPDR:before {
+  content: "\e865";
+}
+
+.icon-world-flag_-KWT--Kuwait:before {
+  content: "\e866";
+}
+
+.icon-world-flag_-KGZ--Kyrgyzstan:before {
+  content: "\e867";
+}
+
+.icon-world-flag_-XKX--Kosovo:before {
+  content: "\e868";
+}
+
+.icon-world-flag_-KAZ--Kazakhstan:before {
+  content: "\e869";
+}
+
+.icon-world-flag_-LVA--Latvia:before {
+  content: "\e86a";
+}
+
+.icon-world-flag_-LBN--Lebanon:before {
+  content: "\e86b";
+}
+
+.icon-world-flag_-LBR--Liberia:before {
+  content: "\e86c";
+}
+
+.icon-world-flag_-LSO--Lesotho:before {
+  content: "\e86d";
+}
+
+.icon-world-flag_-LBY--Libya:before {
+  content: "\e86e";
+}
+
+.icon-world-flag_-LUX--Luxembourg:before {
+  content: "\e86f";
+}
+
+.icon-world-flag_-LTU--Lithuania:before {
+  content: "\e870";
+}
+
+.icon-world-flag_-LIE--Liechtenstein:before {
+  content: "\e871";
+}
+
+.icon-world-flag_-MAC--MacaoSARChina:before {
+  content: "\e872";
+}
+
+.icon-world-flag_-MDG--Madagascar:before {
+  content: "\e873";
+}
+
+.icon-world-flag_-MKD--MacedoniaRepublicof:before {
+  content: "\e874";
+}
+
+.icon-world-flag_-MLI--Mali:before {
+  content: "\e875";
+}
+
+.icon-world-flag_-MDV--Maldives:before {
+  content: "\e876";
+}
+
+.icon-world-flag_-MWI--Malawi:before {
+  content: "\e877";
+}
+
+.icon-world-flag_-MYS--Malaysia:before {
+  content: "\e878";
+}
+
+.icon-world-flag_-MHL--MarshallIslands:before {
+  content: "\e879";
+}
+
+.icon-world-flag_-MLT--Malta:before {
+  content: "\e87a";
+}
+
+.icon-world-flag_-MRT--Mauritania:before {
+  content: "\e87b";
+}
+
+.icon-world-flag_-MUS--Mauritius:before {
+  content: "\e87c";
+}
+
+.icon-world-flag_-MTQ--Martinique:before {
+  content: "\e87d";
+}
+
+.icon-world-flag_-MYT--Mayotte:before {
+  content: "\e87e";
+}
+
+.icon-world-flag_-MEX--Mexico:before {
+  content: "\e87f";
+}
+
+.icon-world-flag_-MCO--Monaco:before {
+  content: "\e880";
+}
+
+.icon-world-flag_-MDA--Moldova:before {
+  content: "\e881";
+}
+
+.icon-world-flag_-FSM--MicronesiaFederatedStatesof:before {
+  content: "\e882";
+}
+
+.icon-world-flag_-MNG--Mongolia:before {
+  content: "\e883";
+}
+
+.icon-world-flag_-MNE--Montenegro:before {
+  content: "\e884";
+}
+
+.icon-world-flag_-MAR--Morocco:before {
+  content: "\e885";
+}
+
+.icon-world-flag_-MOZ--Mozambique:before {
+  content: "\e886";
+}
+
+.icon-world-flag_-MMR--Myanmar:before {
+  content: "\e887";
+}
+
+.icon-world-flag_-MSR--Montserrat:before {
+  content: "\e888";
+}
+
+.icon-world-flag_-NAM--Namibia:before {
+  content: "\e889";
+}
+
+.icon-world-flag_-NLD--Netherlands:before {
+  content: "\e88a";
+}
+
+.icon-world-flag_-NRU--Nauru:before {
+  content: "\e88b";
+}
+
+.icon-world-flag_-NPL--Nepal:before {
+  content: "\e88c";
+}
+
+.icon-world-flag_-ANT--NetherlandsAntilles:before {
+  content: "\e88d";
+}
+
+.icon-world-flag_-NCL--NewCaledonia:before {
+  content: "\e88e";
+}
+
+.icon-world-flag_-NZL--NewZealand:before {
+  content: "\e88f";
+}
+
+.icon-world-flag_-NIC--Nicaragua:before {
+  content: "\e890";
+}
+
+.icon-world-flag_-NGA--Nigeria:before {
+  content: "\e891";
+}
+
+.icon-world-flag_-NER--Niger:before {
+  content: "\e892";
+}
+
+.icon-world-flag_-NIU--Niue:before {
+  content: "\e893";
+}
+
+.icon-world-flag_-NFK--NorfolkIsland:before {
+  content: "\e894";
+}
+
+.icon-world-flag_-MNP--NorthernMarianaIslands:before {
+  content: "\e895";
+}
+
+.icon-world-flag_-NOR--Norway:before {
+  content: "\e896";
+}
+
+.icon-world-flag_-GB-NIR--NorthernIreland:before {
+  content: "\e897";
+}
+
+.icon-world-flag_-OMN--Oman:before {
+  content: "\e898";
+}
+
+.icon-world-flag_-PSE--PalestinianTerritory:before {
+  content: "\e899";
+}
+
+.icon-world-flag_-PAK--Pakistan:before {
+  content: "\e89a";
+}
+
+.icon-world-flag_-PLW--Palau:before {
+  content: "\e89b";
+}
+
+.icon-world-flag_-PAN--Panama:before {
+  content: "\e89c";
+}
+
+.icon-world-flag_-PNG--PapuaNewGuinea:before {
+  content: "\e89d";
+}
+
+.icon-world-flag_-PRY--Paraguay:before {
+  content: "\e89e";
+}
+
+.icon-world-flag_-PHL--Philippines:before {
+  content: "\e89f";
+}
+
+.icon-world-flag_-PER--Peru:before {
+  content: "\e8a0";
+}
+
+.icon-world-flag_-POL--Poland:before {
+  content: "\e8a1";
+}
+
+.icon-world-flag_-PRT--Portugal:before {
+  content: "\e8a2";
+}
+
+.icon-world-flag_-PRI--PuertoRico:before {
+  content: "\e8a3";
+}
+
+.icon-world-flag_-QAT--Qatar:before {
+  content: "\e8a4";
+}
+
+.icon-world-flag_-REU--Runion:before {
+  content: "\e8a5";
+}
+
+.icon-world-flag_-ROU--Romania:before {
+  content: "\e8a6";
+}
+
+.icon-world-flag_-RUS--RussianFederation:before {
+  content: "\e8a7";
+}
+
+.icon-world-flag_-RWA--Rwanda:before {
+  content: "\e8a8";
+}
+
+.icon-world-flag_-PCN--Pitcairn:before {
+  content: "\e8a9";
+}
+
+.icon-world-flag_-BLM--SaintBarthlemy:before {
+  content: "\e8aa";
+}
+
+.icon-world-flag_-LCA--SaintLucia:before {
+  content: "\e8ab";
+}
+
+.icon-world-flag_-MAF--SaintMartin:before {
+  content: "\e8ac";
+}
+
+.icon-world-flag_-KNA--SaintKittsandNevis:before {
+  content: "\e8ad";
+}
+
+.icon-world-flag_-SHN--SaintHelena:before {
+  content: "\e8ae";
+}
+
+.icon-world-flag_-VCT--SaintVincentandGrenadines:before {
+  content: "\e8af";
+}
+
+.icon-world-flag_-SPM--SaintPierreandMiquelon:before {
+  content: "\e8b0";
+}
+
+.icon-world-flag_-STP--SaoTomeandPrincipe:before {
+  content: "\e8b1";
+}
+
+.icon-world-flag_-SMR--SanMarino:before {
+  content: "\e8b2";
+}
+
+.icon-world-flag_-WSM--Samoa:before {
+  content: "\e8b3";
+}
+
+.icon-world-flag_-GB-SCT--Scotland:before {
+  content: "\e8b4";
+}
+
+.icon-world-flag_-SAU--SaudiArabia:before {
+  content: "\e8b5";
+}
+
+.icon-world-flag_-SEN--Senegal:before {
+  content: "\e8b6";
+}
+
+.icon-world-flag_-SYC--Seychelles:before {
+  content: "\e8b7";
+}
+
+.icon-world-flag_-SLE--SierraLeone:before {
+  content: "\e8b8";
+}
+
+.icon-world-flag_-SRB--Serbia:before {
+  content: "\e8b9";
+}
+
+.icon-world-flag_-SGP--Singapore:before {
+  content: "\e8ba";
+}
+
+.icon-world-flag_-SXM--SintMaarten:before {
+  content: "\e8bb";
+}
+
+.icon-world-flag_-SVK--Slovakia:before {
+  content: "\e8bc";
+}
+
+.icon-world-flag_-SVN--Slovenia:before {
+  content: "\e8bd";
+}
+
+.icon-world-flag_-SLB--SolomonIslands:before {
+  content: "\e8be";
+}
+
+.icon-world-flag_-SOM--Somalia:before {
+  content: "\e8bf";
+}
+
+.icon-world-flag_-ZAF--SouthAfrica:before {
+  content: "\e8c0";
+}
+
+.icon-world-flag_-SSD--SouthSudan:before {
+  content: "\e8c1";
+}
+
+.icon-world-flag_-SGS--SouthGeorgiaandtheSouthSa:before {
+  content: "\e8c2";
+}
+
+.icon-world-flag_-ESP--Spain:before {
+  content: "\e8c3";
+}
+
+.icon-world-flag_-LKA--SriLanka:before {
+  content: "\e8c4";
+}
+
+.icon-world-flag_-SDN--Sudan:before {
+  content: "\e8c5";
+}
+
+.icon-world-flag_-SUR--Suriname:before {
+  content: "\e8c6";
+}
+
+.icon-world-flag_-SWZ--Swaziland:before {
+  content: "\e8c7";
+}
+
+.icon-world-flag_-SYR--SyrianArabRepublicSyria:before {
+  content: "\e8c8";
+}
+
+.icon-world-flag_-SWE--Sweden:before {
+  content: "\e8c9";
+}
+
+.icon-world-flag_-SJM--SvalbardandJanMayenIslands:before {
+  content: "\e8ca";
+}
+
+.icon-world-flag_-CHE--Switzerland:before {
+  content: "\e8cb";
+}
+
+.icon-world-flag_-TWN--TaiwanRepublicofChina:before {
+  content: "\e8cc";
+}
+
+.icon-world-flag_-UMI--USMinorOutlyingIslands:before {
+  content: "\e8cd";
+}
+
+.icon-world-flag_-WLF--WallisandFutunaIslands:before {
+  content: "\e8ce";
+}
+
+.icon-world-flag_-GBR--UnitedKingdom:before {
+  content: "\e8cf";
+}
+
+.icon-world-flag_-URY--Uruguay:before {
+  content: "\e8d0";
+}
+
+.icon-world-flag_-TTO--TrinidadandTobago:before {
+  content: "\e8d1";
+}
+
+.icon-world-flag_-UKR--Ukraine:before {
+  content: "\e8d2";
+}
+
+.icon-world-flag_-TZA--TanzaniaUnitedRepublicof:before {
+  content: "\e8d3";
+}
+
+.icon-world-flag_-TLS--Timor-Leste:before {
+  content: "\e8d4";
+}
+
+.icon-world-flag_-TON--Tonga:before {
+  content: "\e8d5";
+}
+
+.icon-world-flag_-ARE--UnitedArabEmirates:before {
+  content: "\e8d6";
+}
+
+.icon-world-flag_-TUN--Tunisia:before {
+  content: "\e8d7";
+}
+
+.icon-world-flag_-VNM--VietNam:before {
+  content: "\e8d8";
+}
+
+.icon-world-flag_-TGO--Togo:before {
+  content: "\e8d9";
+}
+
+.icon-world-flag_-YEM--Yemen:before {
+  content: "\e8da";
+}
+
+.icon-world-flag_-THA--Thailand:before {
+  content: "\e8db";
+}
+
+.icon-world-flag_-TUR--Turkey:before {
+  content: "\e8dc";
+}
+
+.icon-world-flag_-ZMB--Zambia:before {
+  content: "\e8dd";
+}
+
+.icon-world-flag_-TKL--Tokelau:before {
+  content: "\e8de";
+}
+
+.icon-world-flag_---NorthernCyprus:before {
+  content: "\e8df";
+}
+
+.icon-world-flag_---World:before {
+  content: "\e8e0";
+}
+
+.icon-world-flag_-ZWE--Zimbabwe:before {
+  content: "\e8e1";
+}
+
+.icon-world-flag_-ESH--WesternSaharaSahrawiArab:before {
+  content: "\e8e2";
+}
+
+.icon-world-flag_---ASEAN:before {
+  content: "\e8e3";
+}
+
+.icon-world-flag_-VEN--VenezuelaBolivarianRepublic:before {
+  content: "\e8e4";
+}
+
+.icon-world-flag_-TCA--TurksandCaicosIslands:before {
+  content: "\e8e5";
+}
+
+.icon-world-flag_-TJK--Tajikistan:before {
+  content: "\e8e6";
+}
+
+.icon-world-flag_-VUT--Vanuatu:before {
+  content: "\e8e7";
+}
+
+.icon-world-flag_-UZB--Uzbekistan:before {
+  content: "\e8e8";
+}
+
+.icon-world-flag_---Transnistria:before {
+  content: "\e8e9";
+}
+
+.icon-world-flag_-UGA--Uganda:before {
+  content: "\e8ea";
+}
+
+.icon-world-flag_-TKM--Turkmenistan:before {
+  content: "\e8eb";
+}
+
+.icon-world-flag_---EuropeUnion:before {
+  content: "\e8ec";
+}
+
+.icon-world-flag_-TUV--Tuvalu:before {
+  content: "\e8ed";
+}
+
+.icon-world-flag_-ALA--AlandIslands:before {
+  content: "\e7ee";
+}
+
+.icon-world-flag_-VIR--VirginIslandsUS:before {
+  content: "\e8ee";
+}
+
+.icon-world-flag_-AFG--Afghanistan:before {
+  content: "\e7ef";
+}
+
+.icon-world-flag_---UnitedNation:before {
+  content: "\e8ef";
+}
+
+.icon-world-flag_-ALB--Albania:before {
+  content: "\e7f0";
+}
+
+.icon-world-flag_-GB-WLS--Wales:before {
+  content: "\e8f0";
+}
+
+.icon-world-flag_-DZA--Algeria:before {
+  content: "\e7f1";
+}
+
+.icon-world-flag_-USA--UnitedStatesofAmerica:before {
+  content: "\e8f1";
+}
+
+.icon-world-flag_-ASM--AmericanSamoa:before {
+  content: "\e7f2";
+}
+
+.icon-world-flag_-TZA--TanzaniaUnitedRepublicof1:before {
+  content: "\e8f2";
+}
+
+.icon-world-flag_-AND--Andorra:before {
+  content: "\e7f3";
+}
+
+.icon-world-flag_-THA--Thailand1:before {
+  content: "\e8f3";
+}
+
+.icon-world-flag_-AGO--Angola:before {
+  content: "\e7f4";
+}
+
+.icon-world-flag_-TJK--Tajikistan1:before {
+  content: "\e8f4";
+}
+
+.icon-world-flag_-AIA--Anguilla:before {
+  content: "\e7f5";
+}
+
+.icon-world-flag_-TLS--Timor-Leste1:before {
+  content: "\e8f5";
+}
+
+.icon-world-flag_-ATA--Antarctica:before {
+  content: "\e7f6";
+}
+
+.icon-world-flag_-TGO--Togo1:before {
+  content: "\e8f6";
+}
+
+.icon-world-flag_-ABW--Aruba:before {
+  content: "\e7f7";
+}
+
+.icon-world-flag_-TKL--Tokelau1:before {
+  content: "\e8f7";
+}
+
+.icon-world-flag_-ARM--Armenia:before {
+  content: "\e7f8";
+}
+
+.icon-world-flag_-TON--Tonga1:before {
+  content: "\e8f8";
+}
+
+.icon-world-flag_-ATG--AntiguaandBarbuda:before {
+  content: "\e7f9";
+}
+
+.icon-world-flag_-ARG--Argentina:before {
+  content: "\e7fa";
+}
+
+.icon-world-flag_-AZE--Azerbaijan:before {
+  content: "\e7fb";
+}
+
+.icon-world-flag_-BHS--Bahamas:before {
+  content: "\e7fc";
+}
+
+.icon-world-flag_-BGD--Bangladesh:before {
+  content: "\e7fd";
+}
+
+.icon-world-flag_-AUT--Austria:before {
+  content: "\e7fe";
+}
+
+.icon-world-flag_-BHR--Bahrain:before {
+  content: "\e7ff";
+}
+

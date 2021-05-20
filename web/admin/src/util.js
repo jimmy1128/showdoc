@@ -7,7 +7,7 @@ export default {
       console.log('我是插件中的方法')
     }
     Vue.prototype.DocConfig = {
-      server: 'http://103.118.81.227:8080/api/v1'
+      server: 'http://103.118.82.117:8080/api/v1'
     // "server":'../server/index.php?s=',
     }
     Vue.prototype.request = function () {

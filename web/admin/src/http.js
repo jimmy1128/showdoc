@@ -2,7 +2,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import router from '@/router/index'
 
-const Url = 'http://103.118.81.227:8080/api/v1'
+const Url = 'http://103.118.82.117:8080/api/v1'
 
 // axios 配置
 axios.defaults.timeout = 20000

@@ -275,7 +275,6 @@ export default {
               that.isOpenItem = false
             }
             that.MyForm = Info
-            console.log(that.MyForm)
           } else {
             that.$alert(response.data.message)
           }

@@ -292,8 +292,6 @@ a {
 
 <script>
 import draggable from 'vuedraggable'
-// import VueCookies from 'vue-cookies'
-// import LANG from '../../../static/lang/language'
 var $s = require('scriptjs')
 var $ = require('jquery')
 
@@ -423,6 +421,12 @@ export default {
       }).then(() => {
         var url = this.DocConfig.server + '/item/exitItem'
         var params = new URLSearchParams()
+        var keys = document.cookies.match(/[^ =;]+(?=)/g)
+        if (keys) {
+          for (var i = keys.length; i--;) {
+            document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString()
+          }
+        }
         params.append('item_id', itemId)
         that.$http.post(url, params).then(function (response) {
           if (response.data.status === 200) {
@@ -457,7 +461,7 @@ export default {
       params.append('data', JSON.stringify(data))
       that.$http.post(url, params).then(function (response) {
         if (response.data.status === 200) {
-          that.get_item_list()
+          this.get_item_list()
           // window.location.reload();
         } else {
           that.$alert(response.data.message, '', {
@@ -486,7 +490,7 @@ export default {
         this.itemList = list
       })
       for (var i = 0; i < list.length; i++) {
-        const key = list[i].itemId
+        const key = list[i].ID
         data[key] = i + 1
       }
       this.sort_item(data)

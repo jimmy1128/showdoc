@@ -25,16 +25,45 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
-
     <div class="op-bar" v-if="show_op_bar">
-      <span v-if="!item_info.is_login">
-           <el-tooltip class="item" effect="dark" :content="$t('language')" placement="top" style="display: flex; align-items: center;">
-            <router-link :to="link" title :key="$route.params.ID" v-on:click.native="$router.go(0)">
-              <i class="material-icons md-20" style="display: flex; align-items: baseline;" :key="lang? 'ZH_CN':'EN_US'" @click="changeLang()">language</i>
-            </router-link>
-          </el-tooltip>
-      </span>
 
+      <div >
+      <!-- Comment
+      <el-form >
+      <el-form-item >
+        <el-select  v-model="selected" :placeholder="$t('lang_choose')" @change="LangChange" class='el-select-lang'>
+          <el-option
+            v-for="itemlang in langs"
+            :key="itemlang.id"
+            :label="itemlang.name"
+            :value="itemlang">
+            <span style="float: left">{{ itemlang.name }}</span>
+            <svg class="icon" aria-hidden="true" style="float: right; color: #8492a6; font-size: 13px" v-html="itemlang.icon" >
+            </svg>
+          </el-option>
+        </el-select>
+      </el-form-item>
+      </el-form >-->
+     <el-tooltip class="item" effect="dark" :content="$t('language1')" placement="top">
+     <el-dropdown trigger="click" class='el-select-lang' @command="LangChange" style="padding-left:40px" placement="top-start" v-if="selected != null">
+      <span class="el-dropdown-link" >
+        <svg class="icons" aria-hidden="true" style="float: left; color: #8492a6; font-size: 14px" v-html="selected">
+            </svg>
+      </span>
+      <el-dropdown-menu slot="dropdown">
+        <el-dropdown-item
+        v-for="itemlang in langs"
+        :key="itemlang.id"
+        :label="itemlang.name"
+        :value="itemlang"
+        :command="itemlang"> {{itemlang.name}}
+        <svg class="icon" aria-hidden="true" style="float: left; color: #8492a6; font-size: 13px" v-html="itemlang.icon" >
+            </svg>
+        </el-dropdown-item>
+      </el-dropdown-menu>
+    </el-dropdown>
+    </el-tooltip>
+     </div>
       <span v-if="item_info.is_login">
         <el-tooltip class="item" effect="dark" :content="$t('goback')" placement="left">
           <router-link to="/item/index">
@@ -181,7 +210,7 @@
 .op-bar {
   color: #333;
   position: fixed;
-  top: 110px;
+  top: 100px;
   margin-left: 840px;
   max-width: 250px;
 }
@@ -215,10 +244,31 @@ a {
 .el-icon-document-copy {
   cursor: pointer;
 }
+.icon {
+  width: 1.9em;
+  height: 1.9em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+  padding-top: 5px;
+}
+.el-select-lang{
+    border: none;
+    border-radius: 0px;
+}
+.icons {
+  width: 5em;
+  height: 5em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+
 </style>
 
 <script>
 import HistoryVersion from '@/components/page/edit/HistoryVersion'
+import '../../../../../static/fonts/iconfont.js'
 export default {
   props: {
     item_id: {},
@@ -226,6 +276,7 @@ export default {
     page_id: {},
     item_info: {},
     page_info: {}
+
   },
   data () {
     return {
@@ -243,7 +294,12 @@ export default {
       show_menu_btn: false,
       show_op_bar: true,
       link: {},
-      locale: 'ZH_CN'
+      langs: [],
+      locale: '',
+      selected: '',
+      itemlang: [],
+      icon: '',
+      value: {}
     }
   },
   components: {
@@ -262,6 +318,38 @@ export default {
       this.$cookies.set('lng', this.locale === 'ZH_CN' ? this.locale : this.locale, '30d')
       // this.$cookies.config('30d')
       // window.location.reload() // 进行刷新改变cookie里的值
+    },
+    get_lang () {
+      var that = this
+      var url = this.DocConfig.server + '/lang'
+      var params = new URLSearchParams()
+      that.$http.get(url, params)
+        .then(function (response) {
+          if (response.data.status === 200) {
+            that.langs = response.data.data
+          } else {
+            that.$alert(response.data.message)
+          }
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+    LangChange (value) {
+      this.$emit('itemlangId', value.id)
+      this.selected = value
+      if (this.$cookies.get('selected') === null) {
+        this.$cookies.set('selected', value.icon)
+      }
+
+      if (value.name === 'English') {
+        this.locale = 'EN_US'
+        this.lang = true
+      } else {
+        this.lang = false
+        this.locale = 'ZH_CN'
+      }
+      this.$cookies.set('lng', this.locale === 'ZH_CN' ? this.locale : this.locale, '30d')
     },
     edit_page () {
       var page_id = this.page_id > 0 ? this.page_id : 0
@@ -453,10 +541,32 @@ export default {
         .catch(function (error) {
           console.log(error)
         })
+    },
+    loadConfig () {
+      var that = this
+      var url = this.DocConfig.server + '/adminSetting/loadLangConfig'
+      var params = new URLSearchParams()
+      that.$http.get(url, params).then(function (response) {
+        if (response.data.status === 200) {
+          if (response.data.data.id === 0) {
+            return
+          }
+          that.selected = '<use xlink:href="' + response.data.data.icon + '"></use>'
+          that.$cookies.set('selected', that.selected)
+          that.value = response.data.data
+          that.LangChange(that.value)
+        } else {
+          this.$alert(response.data.message)
+        }
+      })
     }
   },
   mounted () {
     this.get_item_info()
+    this.get_lang()
+    if (this.$cookies.get('selected') === null) {
+      this.loadConfig()
+    }
     var that = this
     if (this.page_info.unique_key) {
       this.isCreateSiglePage = true
@@ -470,6 +580,8 @@ export default {
       this.locale = 'ZH_CN'
       this.lang = false
     }
+    this.selected = this.$cookies.get('selected')
+    this.$cookies.remove('selected')
     this.lang = this.$cookies.get('lng', this.locale === 'ZH_CN' ? this.locale : this.locale, 50)
     document.onkeydown = function (e) {
       // 对整个页面文档监听 其键盘快捷键

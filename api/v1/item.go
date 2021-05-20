@@ -27,12 +27,13 @@ func DeleteItem(c *gin.Context){
 func ItemsInfo(c *gin.Context){
 	id ,_ := strconv.Atoi(c.PostForm("id"))
 	keyword := c.PostForm("keyword")
+	langId,_ := strconv.Atoi(c.PostForm("lang_id"))
 	session := sessions.Default(c)
 	user := session.Get("id")
 	v , _ := user.(uint)
 	i , _ :=c.Cookie("visit_item")
 	item, code := models.GetOneItem(v,id,i)
-	itemInfo := item.GetItemInfo(keyword)
+	itemInfo := item.GetItemInfo(keyword,langId)
 
 	if user == nil {
 		itemInfo.IsLogin = false
@@ -217,5 +218,15 @@ func Pwd (c *gin.Context){
 		"status":code,
 		"message":errmsg.GetErrMsg(code),
 	})
-
+}
+func SortByItem(c *gin.Context){
+	session := sessions.Default(c)
+	user := session.Get("id")
+	v , _ := user.(uint)
+	data:= c.PostForm("data")
+	code := models.SortByItem(int(v), data)
+	c.JSON(http.StatusOK,gin.H{
+		"status":code,
+		"message":errmsg.GetErrMsg(code),
+	})
 }

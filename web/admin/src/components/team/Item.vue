@@ -91,7 +91,7 @@
                 <el-option
                   v-for="item in catalogs"
                   :key="item.cat_id"
-                  :label="item.catname"
+                  :label="item.cat_name"
                   :value="item.cat_id"
                 ></el-option>
               </el-select>
@@ -270,7 +270,6 @@ export default {
       that.$http.post(url, params).then(function (response) {
         if (response.data.status === 200) {
           var Info = response.data.data
-          console.log(response.data.data)
           Info.unshift({
             cat_id: 0,
             catname: that.$t('all_cat')

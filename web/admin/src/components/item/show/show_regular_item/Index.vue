@@ -51,6 +51,7 @@
           :item_id="item_info.id"
           :item_info="item_info"
           :page_info="page_info"
+           v-on:itemlangId="item_langId"
         ></OpBar>
 
       </div>
@@ -101,7 +102,8 @@ export default {
       fullPage: false,
       showfullPageBtn: false,
       showToc: true,
-      showComp: true
+      showComp: true,
+      itemlangId: ''
     }
   },
   components: {
@@ -113,6 +115,10 @@ export default {
     AttachmentList
   },
   methods: {
+    item_langId (value) {
+      this.itemlangId = value
+      this.$emit('itemlangId2', this.itemlangId)
+    },
     // 获取页面内容
     get_page_content (page_id) {
       if (page_id <= 0) {
@@ -125,19 +131,19 @@ export default {
       var params = new URLSearchParams()
       params.append('page_id', page_id)
       that.$http.post(url, params).then(function (response) {
-        // loading.close();
+        // loading.close()
         if (response.data.status === 200) {
           that.content = rederPageContent(response.data.data.pagecontent, that.$store.state.item_info.global_param)
+          that.$store.dispatch('changeOpenCatId', response.data.data.catid)
           that.page_title = response.data.data.pagetitle
           that.page_info = response.data.data
-          that.page_id = response.data.data.ID
           that.attachment_count =
           response.data.attachment_count > 0
             ? response.data.attachment_count
             : ''
           // 切换变量让它重新加载、渲染子组件
           that.page_id = 0
-          that.item_info.defaultpageid = page_id
+          // that.item_info.defaultpageid = page_id
           that.$nextTick(() => {
             that.page_id = page_id
             // 页面回到顶部
@@ -221,7 +227,7 @@ export default {
   },
   mounted () {
     this.adaptScreen()
-    // this.set_bg_grey()
+    this.set_bg_grey()
   }
 }
 </script>

@@ -46,6 +46,7 @@ func IniRouter(){
 		auth.POST("page/setLock",v1.SetLock)
 		auth.POST("page/isLock",v1.IsLock)
 		auth.POST("page/history",v1.History)
+		auth.POST("page/sort",v1.Sort)
 
 		//catalogs 模块
 		auth.POST("delcatalogs/:id",v1.DeleteCatalogs)
@@ -65,6 +66,7 @@ func IniRouter(){
 		auth.POST("item/exitItem",v1.ExitItem)
 		auth.POST("item/archive",v1.ArchiveItem)
 		auth.POST("item/attorn",v1.AttornItem)
+		auth.POST("item/sort",v1.SortByItem)
 
 		//team
 		auth.POST("team/save",v1.SaveTeam)
@@ -109,18 +111,25 @@ func IniRouter(){
 		// adminConfig
 		auth.POST("adminSetting/saveConfig",v1.SaveConfig)
 		auth.GET("adminSetting/loadConfig",v1.LoadConfig)
+		auth.POST("adminSetting/saveLangConfig",v1.SaveLangConfig)
+
+
+		// LangConfig
+		auth.POST("lang/add",v1.AddLang)
+		auth.GET("admin/lang",v1.GetLang)
+		auth.POST("lang/edit",v1.EditLang)
+		auth.POST("lang/delete",v1.DeleteLang)
 
 	}
 	router := r.Group("api/v1")
 
 	{
 		//用户信息模块
-
 		router.POST("user/info",v1.GetUserInfo)
 		//router.GET("users",v1.GetUsers)
 		router.POST("admin/check_token",v1.CheckToken)
 		router.POST("login",v1.Login)
-		router.GET("/exit", v1.ExitGet)
+		router.GET("exit", v1.ExitGet)
 		router.POST("item/info",v1.ItemsInfo)
 
 		// 上传模块
@@ -134,6 +143,10 @@ func IniRouter(){
 		//page 模块
 		router.POST("admin/page",v1.GetInfo)
 		//router.GET("cookie", v1.Cookie)
+		router.GET("lang/info",v1.GetLangInfo)
+		router.GET("lang",v1.GetLang)
+		// config
+		router.GET("adminSetting/loadLangConfig",v1.LoadLangConfig)
 
 
 	}
