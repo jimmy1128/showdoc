@@ -70,7 +70,7 @@ func LoadLangConfig() (Lang,int){
 	err = db.Model(Options{}).Where("option_name = ?","lang").Find(&option).Error
 	db.Model(Lang{}).Where("id =?",option.OptionValue).Find(&lang)
 	if err != nil {
-		return lang,errmsg.ERROR
+		return lang,errmsg.SUCCESE
 	}
 	return lang,errmsg.SUCCESE
 }

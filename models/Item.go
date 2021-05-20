@@ -139,6 +139,7 @@ func GetMyItem(uid uint) ([]Item, int) {
 			i3.IsPrivate = 0
 		}
 		result = append(result, i3)
+
 	}
 	db.Model(ItemSort{}).Where("uid = ?", uid).Find(&item_sort)
 	if item_sort.Id > 0{
@@ -165,8 +166,9 @@ func GetMyItem(uid uint) ([]Item, int) {
 				}
 			}
 		}
+	}else {
+		result3= result
 	}
-
 	return result3, errmsg.SUCCESE
 }
 func GetOneItem(uid uint, id int, sid string) (Item, int) {
