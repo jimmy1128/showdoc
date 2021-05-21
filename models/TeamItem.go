@@ -100,13 +100,13 @@ func GetTeamItemList(uid uint, itemId int)([]TeamItemInfo2,int){
 }
 
 func GetListByTeam (teamId int ,uid uint )([]TeamItemInfo,int) {
-	var item []Item
+	var team [] Team
 	var teamItemInfo []TeamItemInfo
-	err =db.Table("Team").Where("id =?",teamId). Where("uid=?",uid).Find(&item).Error
+	err =db.Model(Team{}).Where("id =?",teamId). Where("uid=?",uid).Find(&team).Error
 	if err != nil {
-		return teamItemInfo,errmsg.ERROR
+		return teamItemInfo,errmsg.ERROR_USER_NO_RIGHT
 	}
-	err=db.Model(&Item{}).Select("item.*,team_item.team_id,team_item.id").Where("team_item.team_id=?",teamId).Where("team_item.deleted_at is NULL").Joins("LEFT JOIN team_item on item.id = team_item.item_id").Scan(&teamItemInfo).Error
+	err=db.Model(Item{}).Select("item.*,team_item.team_id,team_item.id").Where("team_item.team_id=?",teamId).Where("team_item.deleted_at is NULL").Joins("LEFT JOIN team_item on item.id = team_item.item_id").Scan(&teamItemInfo).Error
 
 return teamItemInfo , errmsg.SUCCESE
 }

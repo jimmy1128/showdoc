@@ -22,15 +22,15 @@ func  SaveTeamMember (id int , uid uint, memberUsername string )(TeamMember,int)
 	var teamInfo Team
 	var teamItem []TeamItem
 	var teamitemMember TeamItemMember
-	err = db.Table("Team").Where("id =?",id).Where("uid =?",uid).Find(&teamInfo).Error
+	err = db.Model(Team{}).Where("id =?",id).Where("uid =?",uid).Find(&teamInfo).Error
 	if err != nil{
 		return teammember , errmsg.ERROR
 	}
 	member_username_array = strings.Split(memberUsername,",")
 
 	for _,v := range member_username_array{
-		db.Table("User").Where("username =?",v).Find(&memberInfo)
-	db.Table("TeamMember").Where("member_uid=?",memberInfo.ID).Where("team_id=?",id)
+		db.Model(User{}).Where("username =?",v).Find(&memberInfo)
+	db.Model(TeamMember{}).Where("member_uid=?",memberInfo.ID).Where("team_id=?",id)
 		teammember.Team_id = uint(id)
 		teammember.Member_uid = memberInfo.ID
 		teammember.Member_username = memberInfo.Username
@@ -71,7 +71,7 @@ func DeleteTeamMember(id int,uid uint )int{
 
 	err = db.Model(TeamMember{}).Where("id=?",id).Find(&teamMember).Error
 
-	err =db.Table("Team").Where("id=?",teamMember.Team_id).Where("uid=?",uid).Find(&teamInfo).Error
+	err =db.Model(Team{}).Where("id=?",teamMember.Team_id).Where("uid=?",uid).Find(&teamInfo).Error
 	if err != nil {
 		return errmsg.ERROR
 	}

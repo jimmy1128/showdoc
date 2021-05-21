@@ -150,7 +150,6 @@ func GetSecondCatalogsItemId(id int, level int, v int) ([]*Catalogs, int) {
 func (data *Catalogs) Save() (*Catalogs, int) {
 	var option Options
 	db.Model(Catalogs{}).Where("option_name=?","lang1").Find(&option)
-	fmt.Println(option)
 	if data.Cid == 0 && option.OptionName != ""{
 		return data, errmsg.ERROR_LANG_EMPTY
 	}
