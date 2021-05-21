@@ -4,6 +4,7 @@ import (
 	"awesomeProject3/utils"
 	"awesomeProject3/utils/errmsg"
 	"encoding/json"
+	"fmt"
 	"github.com/jinzhu/gorm"
 	"sort"
 	"time"
@@ -105,8 +106,10 @@ func GetMyItem(uid uint) ([]Item, int) {
 	var itemMember []ItemMember
 	var member_item_ids []uint
 	var item_sort ItemSort
+	//var result4 []Item
 
 	err = db.Where("user_id =?", uid).Where("deleted_at is NULL").Find(&item).Error
+
 	for _, i2 := range item {
 		member_item_ids = append(member_item_ids, i2.ID)
 	}
@@ -120,11 +123,10 @@ func GetMyItem(uid uint) ([]Item, int) {
 		member_item_ids = append(member_item_ids, member.Item_id)
 	}
 
-	db.Model(Item{}).Where("user_id=?", uid).Or("id IN (?)", member_item_ids).Order("").Scan(&item)
+	db.Model(Item{}).Where("user_id=?", uid).Or("id IN (?)", member_item_ids).Scan(&item)
 	if uid <= 0 {
 		return nil, errmsg.ERROR_USER_NO_RIGHT
 	}
-
 	var result []Item
 	var result3 []Item
 	for _, i3 := range item {
@@ -138,6 +140,7 @@ func GetMyItem(uid uint) ([]Item, int) {
 		} else {
 			i3.IsPrivate = 0
 		}
+
 		result = append(result, i3)
 
 	}
@@ -150,18 +153,26 @@ func GetMyItem(uid uint) ([]Item, int) {
 			Value int
 		}
 		var ss []kv
+		for _, i2 := range result {
+			ss = append(ss , kv{int(i2.ID),99})
+		}
 		for k, v := range result2 {
 			ss = append(ss, kv{k, v})
 		}
+		amap := make(map[int]int)
+		for _, s := range ss {
+           amap[s.Key] = s.Value
+		}
+		fmt.Println(amap)
 		sort.Slice(ss, func(i, j int) bool {
 			return ss[i].Value < ss[j].Value
 		})
 		if err != nil {
 			return nil, errmsg.ERROR
 		}
-		for _,kv := range ss {
+		for k,_ := range amap {
 			for _, i2 := range result {
-				if kv.Key == int(i2.ID) {
+				if int(i2.ID)== k {
 					result3 = append(result3, i2)
 				}
 			}

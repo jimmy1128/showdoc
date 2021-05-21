@@ -215,10 +215,8 @@ func filterMemberCat(uid uint, catData []*CatalogsTitle) []CatalogsTitle {
 	if catId > 0 {
 		for _, datum := range catData {
 			if datum.ID != catId{
-
 			}
 		}
-
 		return catData2
 	}
 	return catData2
@@ -265,10 +263,8 @@ func getList(itemId uint, isGroup bool) []*CatalogsTitle {
 
 }
 func _getChlid(catId uint, data []*CatalogsTitle) []*CatalogsTitle {
-	//var itemData []*CatalogsTitle
 	var itemData2 []*CatalogsTitle
 
-	//var itemData3 CatalogsTitle
 	amap := make(map[uint]*CatalogsTitle)
 	if data != nil && catId > 0 {
 		for _, datum := range data {
