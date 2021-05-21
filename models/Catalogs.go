@@ -48,8 +48,9 @@ func GetOneCatalogs(id int) (Catalogs, int) {
 }
 
 func CreateCatalogs(data *Catalogs) int {
+
 	if data.Name == "" {
-		return errmsg.ERROR_CATE_NOT_EXIST
+			return errmsg.ERROR_CATE_NOT_EXIST
 	}
 
 	err := db.Create(&data).Error
@@ -147,7 +148,10 @@ func GetSecondCatalogsItemId(id int, level int, v int) ([]*Catalogs, int) {
 }
 
 func (data *Catalogs) Save() (*Catalogs, int) {
-	if data.Cid == 0 {
+	var option Options
+	db.Model(Catalogs{}).Where("option_name=?","lang1").Find(&option)
+	fmt.Println(option)
+	if data.Cid == 0 && option.OptionName != ""{
 		return data, errmsg.ERROR_LANG_EMPTY
 	}
 	if data.ID == 0 {
