@@ -24,7 +24,7 @@ func (team *Team)SaveTeam()(*Team,int) {
 		}
 		return team,errmsg.SUCCESE
 	}else {
-		err := db.Table("Team").Where("id=?",team.ID).Update(&team).Error
+		err := db.Model(Team{}).Where("id=?",team.ID).Update(&team).Error
 		if err!= nil{
 			return team,errmsg.ERROR
 		}
@@ -73,16 +73,16 @@ func Attorn(id int ,uid int,username string,password string)int {
 	if code != 200 {
 		return  errmsg.ERROR
 	}
-	db.Table("User").Where("username =?", username).Find(&user)
+	db.Model(User{}).Where("username =?", username).Find(&user)
 
 	team.Username = user.Username
 	team.Uid = user.ID
-	db.Table("Team").Where("id=?",id).Update(team)
+	db.Model(Team{}).Where("id=?",id).Update(team)
 
 
 	//读取出该团队的所有项目，准备转上
 	db.Model(TeamItem{}).Where("team_id =?",id).Find(&teamItem)
-	db.Table("Item").Where("id =? ",teamItem.Item_id).Update(team)
+	db.Model(Item{}).Where("id =? ",teamItem.Item_id).Update(team)
 
 
 return errmsg.SUCCESE

@@ -34,6 +34,7 @@ func  SaveTeamMember (id int , uid uint, memberUsername string )(TeamMember,int)
 		teammember.Team_id = uint(id)
 		teammember.Member_uid = memberInfo.ID
 		teammember.Member_username = memberInfo.Username
+		teammember.Name = memberInfo.Name
 	}
 
 	db.Model(TeamMember{}).Where("team_id =?",id).Find(&teamItem)

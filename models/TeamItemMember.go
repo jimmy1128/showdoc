@@ -30,7 +30,7 @@ func SaveTeamItemMember(id int , catId int , uid uint , memberGroupId int) (Team
 	if checkItemCreator(uid,item_id) != errmsg.SUCCESE{
 		return teamItemMemberInfo,errmsg.ERROR
 	}
-	err =db.Table("Team").Where("id =?",team_id).Where("uid =?",uid).Error
+	err =db.Model(Team{}).Where("id =?",team_id).Where("uid =?",uid).Error
 	if err != nil {
 		 return teamItemMemberInfo,errmsg.ERROR
 	}
