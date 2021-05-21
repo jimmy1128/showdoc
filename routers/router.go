@@ -58,6 +58,7 @@ func IniRouter(){
 		auth.POST("getDefaultCat",v1.GetDefaultCat)
 		auth.POST("catalogs/save",v1.SaveCatalogs)
 		auth.POST("catalog/getPagesBycat",v1.GetPagesByCat)
+		auth.POST("catalog/batUpdate",v1.BatUpdates)
 		//item 模块
 
 		auth.POST("item/delete",v1.DeleteItem)

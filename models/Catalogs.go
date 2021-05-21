@@ -2,6 +2,8 @@ package models
 
 import (
 	"awesomeProject3/utils/errmsg"
+	"encoding/json"
+	"fmt"
 	"github.com/jinzhu/gorm"
 )
 
@@ -26,6 +28,14 @@ type CatalogsTitle struct {
 	SNumber     uint             `gorm:"type:int;not null" json:"s_number"`
 	Cid         int              `gorm:"type:int;not null" json:"cid"`
 	Sub         []*CatalogsTitle `json:"sub"`
+}
+type CatalogsMap struct {
+	ID          uint             `gorm:"type:int;not null" json:"cat_id"`
+	Name        string           `gorm:"type:varchar(255);not null" json:"cat_name"`
+	Level       uint             `gorm:"type:int;not null" json:"level"`
+	ParentCatId uint             `gorm:"type:int;not null" json:"parent_cat_id"`
+	SNumber     uint             `gorm:"type:int;not null" json:"s_number"`
+	Cid         int              `gorm:"type:int;not null" json:"cid"`
 }
 
 func GetOneCatalogs(id int) (Catalogs, int) {
@@ -227,12 +237,12 @@ func CatListName(itemId uint, keyword string, uid uint) ([]*CatalogsTitle, int) 
 	var catalogsData []CatalogsTitle
 	if itemId > 0 {
 		catalogs = getList(itemId, true)
+		fmt.Println(catalogs)
 		catalogsData = filterMemberCat(uid, catalogs)
 		if catalogsData == nil {
 			return catalogs, errmsg.SUCCESE
 		}
 	}
-
 	return catalogs, errmsg.SUCCESE
 }
 
@@ -253,6 +263,7 @@ func getList(itemId uint, isGroup bool) []*CatalogsTitle {
 				if catalogs.ParentCatId == 0 {
 
 					ret2 = append( ret2 , catalogs)
+
 				}
 			}
 		}
@@ -262,6 +273,7 @@ func getList(itemId uint, isGroup bool) []*CatalogsTitle {
 	}
 
 }
+// 找子目录
 func _getChlid(catId uint, data []*CatalogsTitle) []*CatalogsTitle {
 	var itemData2 []*CatalogsTitle
 
@@ -277,4 +289,16 @@ func _getChlid(catId uint, data []*CatalogsTitle) []*CatalogsTitle {
 		itemData2 = append(itemData2, v)
 	}
 	return itemData2
+}
+// catalogs 移动更新
+func BatUpdate(cats string , itemId int )([]CatalogsMap,int) {
+	var batchUpdate []CatalogsMap
+	err = json.Unmarshal([]byte(cats), &batchUpdate)
+	for _, s2 := range batchUpdate {
+		err = db.Model(Catalogs{}).Where("item_id =?",itemId).Where("id =?",s2.ID).Updates(s2).Error
+		if err != nil{
+			return nil,errmsg.ERROR
+		}
+	}
+return nil , errmsg.SUCCESE
 }

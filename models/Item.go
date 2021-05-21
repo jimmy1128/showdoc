@@ -4,7 +4,6 @@ import (
 	"awesomeProject3/utils"
 	"awesomeProject3/utils/errmsg"
 	"encoding/json"
-	"fmt"
 	"github.com/jinzhu/gorm"
 	"sort"
 	"time"
@@ -153,6 +152,7 @@ func GetMyItem(uid uint) ([]Item, int) {
 			Value int
 		}
 		var ss []kv
+		var arrss []kv
 		for _, i2 := range result {
 			ss = append(ss , kv{int(i2.ID),99})
 		}
@@ -163,16 +163,20 @@ func GetMyItem(uid uint) ([]Item, int) {
 		for _, s := range ss {
            amap[s.Key] = s.Value
 		}
-		fmt.Println(amap)
-		sort.Slice(ss, func(i, j int) bool {
-			return ss[i].Value < ss[j].Value
+		for k, i2 := range amap {
+			arrss = append(arrss , kv{k,i2})
+		}
+
+
+		sort.Slice(arrss, func(i, j int) bool {
+			return arrss[i].Value < arrss[j].Value
 		})
 		if err != nil {
 			return nil, errmsg.ERROR
 		}
-		for k,_ := range amap {
+		for _,k := range arrss {
 			for _, i2 := range result {
-				if int(i2.ID)== k {
+				if int(i2.ID)== k.Key {
 					result3 = append(result3, i2)
 				}
 			}

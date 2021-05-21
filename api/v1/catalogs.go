@@ -153,7 +153,6 @@ func SaveCatalogs(c *gin.Context){
 
 		}
 	}
-
 	func GetPagesByCat(c *gin.Context){
 		item_id ,_ := strconv.Atoi(c.PostForm("item_id"))
 		cat_id ,_ := strconv.Atoi(c.PostForm("cat_id"))
@@ -165,5 +164,15 @@ func SaveCatalogs(c *gin.Context){
 			"status" : code ,
 			"data" : data,
 			"message" : errmsg.GetErrMsg(code),
+		})
+	}
+	func BatUpdates(c *gin.Context){
+		arrCat := c.PostForm("cats")
+		itemId ,_ := strconv.Atoi(c.PostForm("item_id"))
+		data, code := models.BatUpdate(arrCat , itemId)
+		c.JSON(http.StatusOK,gin.H{
+			"status":code ,
+			"data":data,
+			"message": errmsg.GetErrMsg(code),
 		})
 	}

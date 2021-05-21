@@ -138,7 +138,7 @@ func EditPage(id int, page *Page) int {
 
 func (data *Page) SavePage() (*Page, int) {
 	var option []Options
-	db.Model(Options{}).Where("option_name =?","lang").Find(option)
+	db.Model(Options{}).Where("option_name =?","lang").Find(&option)
 	if data.Cid == 0 && option == nil  {
 		return data, errmsg.ERROR_LANG_EMPTY
 	}
