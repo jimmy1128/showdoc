@@ -18,10 +18,11 @@ type TeamMember struct{
 func  SaveTeamMember (id int , uid uint, memberUsername string )(TeamMember,int){
 	var teammember TeamMember
 	var member_username_array []string
-	var memberInfo User
+	var teammember2 []TeamMember
 	var teamInfo Team
 	var teamItem []TeamItem
 	var teamitemMember TeamItemMember
+	var teamitemMember2 []TeamItemMember
 	err = db.Model(Team{}).Where("id =?",id).Where("uid =?",uid).Find(&teamInfo).Error
 	if err != nil{
 		return teammember , errmsg.ERROR
@@ -29,27 +30,33 @@ func  SaveTeamMember (id int , uid uint, memberUsername string )(TeamMember,int)
 	member_username_array = strings.Split(memberUsername,",")
 
 	for _,v := range member_username_array{
-		db.Model(User{}).Where("username =?",v).Find(&memberInfo)
-	db.Model(TeamMember{}).Where("member_uid=?",memberInfo.ID).Where("team_id=?",id)
+		var memberInfo User
+		db.Model(User{}).Where("username = ?",v).Find(&memberInfo)
 		teammember.Team_id = uint(id)
 		teammember.Member_uid = memberInfo.ID
 		teammember.Member_username = memberInfo.Username
 		teammember.Name = memberInfo.Name
+		teammember2 = append(teammember2 , teammember)
+	}
+	for _, member := range teammember2 {
+		db.Create(&member)
 	}
 
 	db.Model(TeamMember{}).Where("team_id =?",id).Find(&teamItem)
 	for _,v := range teamItem {
-		teamitemMember.Team_id = v.Team_id
-		teamitemMember.Member_uid = memberInfo.ID
-		teamitemMember.Member_username =memberInfo.Username
-		teamitemMember.Item_id= v.Item_id
-		teamitemMember.Member_group_id=1
+		for _, member := range teammember2 {
+			teamitemMember.Team_id = v.Team_id
+			teamitemMember.Member_uid = member.Member_uid
+			teamitemMember.Member_username = member.Member_username
+			teamitemMember.Item_id = v.Item_id
+			teamitemMember.Member_group_id = 1
+			teamitemMember2 = append(teamitemMember2 , teamitemMember)
+		}
 	}
-	db.Create(&teamitemMember)
-err := db.Create(&teammember).Error
-if err != nil{
-	return teammember,errmsg.ERROR
-}
+	for _, member := range teamitemMember2 {
+		db.Create(&member)
+	}
+
 // 检查该团队已经加入了那些项目
 return teammember,errmsg.SUCCESE
 }

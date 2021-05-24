@@ -15,10 +15,11 @@ type Lang struct {
 func CheckLang(name string)(code int){
 	var cate Lang
 	var options Options
-	options.OptionId = 2
-	options.OptionName = "lang"
-	options.OptionValue = "0"
-	if options.OptionName != "lang"{
+	err = db.Model(Options{}). Where("option_name=?","lang").Find(&options).Error
+	if err == gorm.ErrRecordNotFound{
+		options.OptionId = 2
+		options.OptionName = "lang"
+		options.OptionValue = "0"
 		db.Model(Options{}).Create(&options)
 	}
 
