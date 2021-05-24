@@ -2,7 +2,6 @@ package models
 
 import (
 	"awesomeProject3/utils/errmsg"
-	"fmt"
 	"github.com/jinzhu/gorm"
 )
 
@@ -64,7 +63,6 @@ func AdminDeleteUser (uid uint,id int)int{
 		return errmsg.ERROR
 	}
 	db.Model(Item{}).Where("user_id = ?",id).Find(&item)
-	 fmt.Println(item)
 	 if item.ID < 0 {
 	 	return errmsg.ERROR_EXITING_ITEM
 	 }

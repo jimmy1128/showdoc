@@ -3,7 +3,6 @@ package models
 import (
 	"awesomeProject3/utils/errmsg"
 	"encoding/json"
-	"fmt"
 	"github.com/jinzhu/gorm"
 )
 
@@ -240,7 +239,6 @@ func CatListName(itemId uint, keyword string, uid uint) ([]*CatalogsTitle, int) 
 	var catalogsData []CatalogsTitle
 	if itemId > 0 {
 		catalogs = getList(itemId, true)
-		fmt.Println(catalogs)
 		catalogsData = filterMemberCat(uid, catalogs)
 		if catalogsData == nil {
 			return catalogs, errmsg.SUCCESE

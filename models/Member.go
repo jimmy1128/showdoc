@@ -2,7 +2,6 @@ package models
 
 import (
 	"awesomeProject3/utils/errmsg"
-	"fmt"
 	"github.com/jinzhu/gorm"
 	"strings"
 )
@@ -85,7 +84,6 @@ func DeleteMember (itemId int,uid uint,itemMemberId int)int {
 	if checkItemCreator(uid, itemId) != errmsg.SUCCESE {
 		return errmsg.ERROR_USER_NO_RIGHT
 	}
-	fmt.Println(itemId,itemMemberId)
 	db.Model(ItemMember{}).Where("item_id=?",itemId).Where("id =?", itemMemberId).Find(&itemMember)
 	err := db.Model(ItemMember{}).Where("item_id=?",itemId).Where("id =?", itemMemberId).Delete(&itemMember).Error
 	if err != nil{
