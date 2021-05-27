@@ -20,29 +20,37 @@ type ItemMember struct {
 func SaveMember(itemId int ,catId int ,uid uint ,username string , membergroupid int)(ItemMember, int){
 	var usernameArray [] string
 	var itemMember ItemMember
-	var user User
+
+	var userdata []User
+	var itemMemberdata []ItemMember
 	if checkItemCreator(uid , itemId) != errmsg.SUCCESE{
 		return itemMember, errmsg.ERROR_USER_NO_RIGHT
 	}
      usernameArray = strings.Split(username,",")
 
 	for _, s := range usernameArray {
-		db.Where("username =?",s).Find(&user)
-		if user != user {
-			continue
-		}
+		var user User
+		db.Where("username in (?)",s).Find(&user)
+		userdata = append(userdata , user)
 	}
+
 	db.Where("uid = ?" ,uid).Where("item_id =?",itemId).Find(&itemMember)
 
-	itemMember.Username = user.Username
-	itemMember.Uid = user.ID
-	itemMember.Item_id = itemId
-	itemMember.Member_group_id = membergroupid
-	itemMember.Cat_id = catId
-	err := db.Model(ItemMember{}).Create(&itemMember).Error
-	if err != nil {
-		 return itemMember,errmsg.ERROR
+	for _, userdatum := range userdata {
+		itemMember.Username = userdatum.Username
+		itemMember.Uid = userdatum.ID
+		itemMember.Item_id = itemId
+		itemMember.Member_group_id = membergroupid
+		itemMember.Cat_id = catId
+		itemMemberdata= append(itemMemberdata , itemMember)
 	}
+	for _, memberdatum := range itemMemberdata {
+		err := db.Model(ItemMember{}).Create(&memberdatum).Error
+		if err != nil {
+			return itemMember,errmsg.ERROR
+		}
+	}
+
 	return itemMember,errmsg.SUCCESE
 
 }

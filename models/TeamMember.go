@@ -39,7 +39,7 @@ func  SaveTeamMember (id int , uid uint, memberUsername string )(TeamMember,int)
 		teammember2 = append(teammember2 , teammember)
 	}
 	for _, member := range teammember2 {
-		db.Create(&member)
+		db.Model(TeamMember{}).Create(&member)
 	}
 
 	db.Model(TeamMember{}).Where("team_id =?",id).Find(&teamItem)

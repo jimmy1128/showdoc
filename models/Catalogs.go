@@ -3,6 +3,7 @@ package models
 import (
 	"awesomeProject3/utils/errmsg"
 	"encoding/json"
+	"fmt"
 	"github.com/jinzhu/gorm"
 )
 
@@ -202,49 +203,57 @@ func GetPagesbycat(catId int, itemId int, uid uint) ([]Page, int) {
 	return page, errmsg.SUCCESE
 }
 
-func filterMemberCat(uid uint, catData []*CatalogsTitle) []CatalogsTitle {
+func filterMemberCat(uid uint, catData []*CatalogsTitle) []*CatalogsTitle {
 	var itemMember ItemMember
 	var teamItemMember TeamItemMember
-	var catData2 []CatalogsTitle
+	var catData3 []*CatalogsTitle
 	var itemId []uint
+	var itemId2 []uint
 	var catId uint
 	if catData == nil {
-		return catData2
+		return catData3
 	}
 	for _, datum := range catData {
-		itemId = append(itemId, datum.ItemId)
+		itemId = append(itemId2, datum.ItemId)
 	}
+
 	// 首先看是否被添加为项目成员
-	db.Model(ItemMember{}).Where("uid =?", uid).Where("item_id in (?)", itemId).Find(&itemMember)
+	db.Model(ItemMember{}).Where("uid =?", uid).Where("item_id = ?", itemId).Find(&itemMember)
 	if itemMember.Cat_id > 0 {
 		catId = uint(itemMember.Cat_id)
 	}
+
 	//再看是否添加为团队-项目成员
-	db.Model(TeamItemMember{}).Where("member_uid = ?", uid).Where("item_id in (?)", itemId).Find(&teamItemMember)
+	db.Model(TeamItemMember{}).Where("member_uid = ?", uid).Where("item_id = ?", itemId).Find(&teamItemMember)
 	if teamItemMember.Cat_id > 0 {
 		catId = uint(teamItemMember.Cat_id)
 	}
 	if catId > 0 {
 		for _, datum := range catData {
-			if datum.ID != catId{
+			//fmt.Println(datum)
+			if datum.ID == catId{
+				catData3 = append(catData3 , datum)
 			}
 		}
-		return catData2
+		return catData3
 	}
-	return catData2
+	return catData
 }
 
 func CatListName(itemId uint, keyword string, uid uint) ([]*CatalogsTitle, int) {
 	var catalogs []*CatalogsTitle
-	var catalogsData []CatalogsTitle
+	var catalogsData []*CatalogsTitle
 	if itemId > 0 {
 		catalogs = getList(itemId, true)
 		catalogsData = filterMemberCat(uid, catalogs)
+		fmt.Println(catalogs)
+		fmt.Println(catalogsData)
+
 		if catalogsData == nil {
-			return catalogs, errmsg.SUCCESE
+			return catalogsData, errmsg.SUCCESE
 		}
 	}
-	return catalogs, errmsg.SUCCESE
+	return catalogsData, errmsg.SUCCESE
 }
 
 func getList(itemId uint, isGroup bool) []*CatalogsTitle {

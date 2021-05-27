@@ -33,7 +33,7 @@ func ItemsInfo(c *gin.Context){
 	v , _ := user.(uint)
 	i , _ :=c.Cookie("visit_item")
 	item, code := models.GetOneItem(v,id,i)
-	itemInfo := item.GetItemInfo(keyword,langId)
+	itemInfo := item.GetItemInfo(keyword,langId,v,uint(id))
 
 	if user == nil {
 		itemInfo.IsLogin = false

@@ -51,7 +51,7 @@ type ItemSort struct {
 	CreatedAt    string `gorm:"type:date" json:"created_at"`
 }
 
-func (data *Item) GetItemInfo(keyword string, langId int) ItemInfo {
+func (data *Item) GetItemInfo(keyword string, langId int, uid uint , itemId uint) ItemInfo {
 	var page Page
 	var cat1 Catalogs
 	var cat2 Catalogs
@@ -63,7 +63,7 @@ func (data *Item) GetItemInfo(keyword string, langId int) ItemInfo {
 	itemInfo.ItemCreator = false
 	itemInfo.Link = data.Link
 	itemInfo.Lang = data.Lang
-	itemInfo.Menu = itemInfo.GetMenu(keyword, langId)
+	itemInfo.Menu = itemInfo.GetMenu(keyword, langId, uid, itemId)
 	if itemInfo.DefaultPageId != "" {
 		db.Model(Page{}).Where("id =? ", itemInfo.DefaultPageId).Find(&page)
 		if &page != nil {
@@ -84,15 +84,16 @@ func (data *Item) GetItemInfo(keyword string, langId int) ItemInfo {
 			}
 		}
 	}
-
 	return itemInfo
 }
 
-func (data *ItemInfo) GetMenu(keyword string, langId int) Menu {
+func (data *ItemInfo) GetMenu(keyword string, langId int,uid uint , itemId uint) Menu {
 	var menu Menu
+	var menu2 Menu
 	if keyword == "" {
 		menu = getMenu(uint(data.Id), langId)
-		return menu
+		menu2 = FilterMemberItem(uid ,itemId , menu)
+		return menu2
 	}
 	menu.Page = GetPagesByItemId(uint(data.Id), keyword, langId)
 	menu.Catalogs, _ = GetCatalogsByItemId(uint(data.Id), keyword, langId)
@@ -105,7 +106,6 @@ func GetMyItem(uid uint) ([]Item, int) {
 	var itemMember []ItemMember
 	var member_item_ids []uint
 	var item_sort ItemSort
-	//var result4 []Item
 
 	err = db.Where("user_id =?", uid).Where("deleted_at is NULL").Find(&item).Error
 
@@ -143,6 +143,7 @@ func GetMyItem(uid uint) ([]Item, int) {
 		result = append(result, i3)
 
 	}
+
 	db.Model(ItemSort{}).Where("uid = ?", uid).Find(&item_sort)
 	if item_sort.Id > 0{
 		var result2 map[int]int
@@ -167,7 +168,6 @@ func GetMyItem(uid uint) ([]Item, int) {
 			arrss = append(arrss , kv{k,i2})
 		}
 
-
 		sort.Slice(arrss, func(i, j int) bool {
 			return arrss[i].Value < arrss[j].Value
 		})
@@ -177,6 +177,7 @@ func GetMyItem(uid uint) ([]Item, int) {
 		for _,k := range arrss {
 			for _, i2 := range result {
 				if int(i2.ID)== k.Key {
+
 					result3 = append(result3, i2)
 				}
 			}
@@ -184,6 +185,7 @@ func GetMyItem(uid uint) ([]Item, int) {
 	}else {
 		result3= result
 	}
+
 	return result3, errmsg.SUCCESE
 }
 func GetOneItem(uid uint, id int, sid string) (Item, int) {
@@ -361,6 +363,7 @@ func LinkItem(id int, itemId int, lang int) int {
 func CheckItemPermn(uid uint, itemId int) int {
 	var item Item
 	var itemMember ItemMember
+	var itemTeamMember TeamItemMember
 	if uid <= 0 {
 		return errmsg.ERROR
 	}
@@ -368,12 +371,13 @@ func CheckItemPermn(uid uint, itemId int) int {
 	if item.UserId == uid {
 		return errmsg.SUCCESE
 	}
-	err := db.Model(ItemMember{}).Where("item_id =?", itemId).Where("uid = ?", uid).Where("member_group_id = 1").Find(&itemMember).Error
-	if err != nil {
+	db.Where("item_id =?", itemId).Where("uid = ?", uid).Where("member_group_id = 1").Find(&itemMember)
+	if itemMember.ID > 0 {
 		return errmsg.SUCCESE
 	}
-	db.Model(TeamItemMember{}).Where("item_id =?", itemId).Where("uid =?", uid).Where("member_group_id = 1").Find(&itemMember)
-	if &itemMember != nil {
+	db.Model(TeamItemMember{}).Where("item_id =?", itemId).Where("member_uid =?", uid).Where("member_group_id = 1").Find(&itemTeamMember)
+
+	if itemTeamMember.ID  >0{
 		return errmsg.SUCCESE
 	}
 	return errmsg.ERROR
@@ -506,4 +510,36 @@ func SortByItem(uid int, data string) int {
 		return errmsg.ERROR
 	}
 	return errmsg.SUCCESE
+}
+
+func FilterMemberItem (uid uint ,itemId uint , menuData Menu)Menu {
+	var itemMember ItemMember
+	var teamItemMember TeamItemMember
+	var menuData2 Menu
+	var menuData3 Menu
+
+	var catId uint
+	if &menuData == nil {
+       return menuData2
+	}
+
+db.Model(ItemMember{}).Where("uid =?",itemId).Where("item_id = ?",itemId).Find(&itemMember)
+
+if itemMember.Cat_id > 0 {
+	catId = uint(itemMember.Cat_id)
+}
+db.Model(TeamItemMember{}).Where("member_uid =?",uid).Where("item_id =?",itemId).Find(&teamItemMember)
+if teamItemMember.Cat_id >0{
+	catId = uint(teamItemMember.Cat_id)
+}
+if catId >0 {
+	for _, catalog := range menuData.Catalogs {
+		if catalog.ID == catId {
+			menuData3.Catalogs = append(menuData3.Catalogs,catalog)
+			menuData3.Page = GetPagesByItemId(itemId, "", 0)
+		}
+	}
+	return menuData3
+}
+return  menuData
 }
