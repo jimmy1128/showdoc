@@ -3,7 +3,6 @@ package models
 import (
 	"awesomeProject3/utils/errmsg"
 	"encoding/json"
-	"fmt"
 	"github.com/jinzhu/gorm"
 )
 
@@ -230,7 +229,6 @@ func filterMemberCat(uid uint, catData []*CatalogsTitle) []*CatalogsTitle {
 	}
 	if catId > 0 {
 		for _, datum := range catData {
-			//fmt.Println(datum)
 			if datum.ID == catId{
 				catData3 = append(catData3 , datum)
 			}
@@ -246,8 +244,6 @@ func CatListName(itemId uint, keyword string, uid uint) ([]*CatalogsTitle, int) 
 	if itemId > 0 {
 		catalogs = getList(itemId, true)
 		catalogsData = filterMemberCat(uid, catalogs)
-		fmt.Println(catalogs)
-		fmt.Println(catalogsData)
 
 		if catalogsData == nil {
 			return catalogsData, errmsg.SUCCESE

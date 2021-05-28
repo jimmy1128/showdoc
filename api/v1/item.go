@@ -37,19 +37,19 @@ func ItemsInfo(c *gin.Context){
 
 	if user == nil {
 		itemInfo.IsLogin = false
+
 	} else {
 		itemInfo.IsLogin = true
 	}
-
 	if item.UserId == user{
 		itemInfo.ItemCreator = true
 		itemInfo.ItemPermn = true
 	}
+
 	if item.Isarchived == 1 {
 		itemInfo.ItemCreator = false
 		itemInfo.ItemPermn = false
-	}
-	if models.CheckItemPermn(v,id) == errmsg.SUCCESE{
+	}else if models.CheckItemPermn(v,id) == errmsg.SUCCESE{
 		itemInfo.ItemPermn = true
 	}
 

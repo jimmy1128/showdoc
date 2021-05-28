@@ -169,6 +169,9 @@ func GetMyItem(uid uint) ([]Item, int) {
 		}
 
 		sort.Slice(arrss, func(i, j int) bool {
+			if arrss [i].Value == arrss[i].Value{
+				return arrss[i].Key < arrss[j].Key
+			}
 			return arrss[i].Value < arrss[j].Value
 		})
 		if err != nil {
@@ -344,8 +347,8 @@ func AttornItem(itemId int, username string, password string, uid uint) int {
 	if code != errmsg.SUCCESE {
 		return errmsg.ERROR_PASSWORD_WRONG
 	}
-	err := db.Model(Item{}).Where("username =?", username).Find(&user2)
-	if err != nil {
+	err := db.Model(User{}).Where("username =?", username).Find(&user2)
+	if err == nil {
 		return errmsg.ERROR_USER_NOT_EXIST
 	}
 	db.Model(Item{}).Where("id = ?", itemId).Update("user_id", user2.ID).Scan(&item)
@@ -429,7 +432,7 @@ func getContent(itemId uint, langId int) Menu {
 	var catalogs []Catalogs
 	var catalogs2 []Catalogs
 	var result []Catalogs
-	db.Model(Page{}).Where("item_id =?", itemId).Order("s_number asc , id asc").Find(&page)
+	db.Model(Page{}).Where("item_id =?", itemId).Where("cid =?",langId).Order("s_number asc , id asc").Find(&page)
 	if langId <= 0 {
 		db.Model(Catalogs{}).Where("item_id = ?", itemId).Order("s_number asc , id asc").Preload("Lang").Find(&catalogs)
 	} else {
