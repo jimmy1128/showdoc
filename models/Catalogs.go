@@ -3,6 +3,7 @@ package models
 import (
 	"awesomeProject3/utils/errmsg"
 	"encoding/json"
+	"fmt"
 	"github.com/jinzhu/gorm"
 )
 
@@ -95,6 +96,7 @@ func DeleteCatalogs(itemid int, id int, v int) int {
 func GetCatalogsByItemId(id uint, keyword string, langId int) ([]Catalogs, int) {
 	var catalogs []Catalogs
 	var catalogsData []Catalogs
+	fmt.Println(keyword)
 	if langId <= 0 {
 		err = db.Where("item_id=?", id).Where("level =?", 2).Preload("Lang").Find(&catalogs).Error
 		if err != nil {
@@ -107,12 +109,11 @@ func GetCatalogsByItemId(id uint, keyword string, langId int) ([]Catalogs, int) 
 		}
 		return catalogsData, errmsg.SUCCESE
 	}
-	err = db.Where("item_id=?", id).Where("level =?", 2).Preload("Lang").Where("cid =?", langId).Find(&catalogs).Error
+	err = db.Where("item_id=?", id).Where("level =?", 2).Preload("Lang").Where("cid =?",langId).Find(&catalogs).Error
 	if err != nil {
 		return catalogs, errmsg.ERROR
 	}
 	for _, value := range catalogs {
-		//value .Catalogs,_ =
 		value.Page = GetPagesByCatId(value.ID, keyword, value.ItemId)
 		catalogsData = append(catalogsData, value)
 	}

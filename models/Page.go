@@ -84,7 +84,7 @@ func GetPagesByItemId(id uint, keyword string, langId int) []*Page {
 		}
 		return pages
 	}
-	err := db.Where("item_id =?", id).Preload("Lang").Where("cat_id =?", 0).Where("cid = ?", langId).Where("page_content LIKE ? OR page_title LIKE ?", "%"+keyword+"%", "%"+keyword+"%").Find(&pages).Error
+	err := db.Where("item_id =?", id).Preload("Lang").Where("cid = ?", langId).Where("page_content LIKE ? OR page_title LIKE ?", "%"+keyword+"%", "%"+keyword+"%").Find(&pages).Error
 	if err != nil {
 		return pages
 	}

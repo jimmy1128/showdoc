@@ -98,7 +98,7 @@ func (data *ItemInfo) GetMenu(keyword string, langId int,uid uint , itemId uint)
 		return menu2
 	}
 	menu.Page = GetPagesByItemId(uint(data.Id), keyword, langId)
-	menu.Catalogs, _ = GetCatalogsByItemId(uint(data.Id), keyword, langId)
+	//menu.Catalogs, _ = GetCatalogsByItemId(uint(data.Id), keyword, langId)
 	return menu
 }
 
