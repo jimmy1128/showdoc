@@ -30,11 +30,11 @@ func ItemsInfo(c *gin.Context){
 	langId,_ := strconv.Atoi(c.PostForm("lang_id"))
 	session := sessions.Default(c)
 	user := session.Get("id")
+	defaultpageid :=c.PostForm("defaultpageid")
 	v , _ := user.(uint)
 	i , _ :=c.Cookie("visit_item")
 	item, code := models.GetOneItem(v,id,i)
-	itemInfo := item.GetItemInfo(keyword,langId,v,uint(id))
-
+	itemInfo := item.GetItemInfo(keyword,langId,v,uint(id), defaultpageid)
 	if user == nil {
 		itemInfo.IsLogin = false
 
@@ -52,7 +52,6 @@ func ItemsInfo(c *gin.Context){
 	}else if models.CheckItemPermn(v,id) == errmsg.SUCCESE{
 		itemInfo.ItemPermn = true
 	}
-
 
 	c.JSON(http.StatusOK,gin.H{
 		"status" : code,

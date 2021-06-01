@@ -211,7 +211,7 @@ func SetLock(pageId int, itemId int, lockTo int, uid uint) (int, PageLock) {
 	}
 	t := time.Now()
 	lockTo = int(t.Unix()) // seconds since 1970
-	db.Model(PageLock{}).Where("page_id = ?", pageId).Delete(&pageLock)
+	db.Model(PageLock{}).Unscoped().Where("page_id = ?", pageId).Delete(&pageLock)
 	pageLock.PageId = pageId
 	pageLock.LockUid = int(uid)
 	pageLock.LockUsername = user.Username
@@ -220,7 +220,7 @@ func SetLock(pageId int, itemId int, lockTo int, uid uint) (int, PageLock) {
 	if err != nil {
 		return errmsg.ERROR, pageLock
 	}
-	db.Model(PageLock{}).Where("lock_to < ?", lockTo).Delete(&pageLock)
+	db.Model(PageLock{}).Unscoped().Where("lock_to < ?", lockTo).Delete(&pageLock)
 	return errmsg.SUCCESE, pageLock
 }
 

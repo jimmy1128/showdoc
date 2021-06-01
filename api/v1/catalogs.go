@@ -29,7 +29,8 @@ func CatListGroup(c *gin.Context){
 	user := session.Get("id")
 	v , _ := user.(uint)
 	id, _ := strconv.Atoi(c.PostForm("item_id"))
-	data, code := models.CatListName(uint(id),"",v)
+	langId, _ := strconv.Atoi(c.PostForm("cid"))
+	data, code := models.CatListName(uint(id),"",v,langId)
 	c.JSON(http.StatusOK,gin.H{
 		"status": code,
 		"data" : data,

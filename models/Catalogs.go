@@ -238,11 +238,11 @@ func filterMemberCat(uid uint, catData []*CatalogsTitle) []*CatalogsTitle {
 	return catData
 }
 
-func CatListName(itemId uint, keyword string, uid uint) ([]*CatalogsTitle, int) {
+func CatListName(itemId uint, keyword string, uid uint , langId int) ([]*CatalogsTitle, int) {
 	var catalogs []*CatalogsTitle
 	var catalogsData []*CatalogsTitle
 	if itemId > 0 {
-		catalogs = getList(itemId, true)
+		catalogs = getList(itemId, true , langId)
 		catalogsData = filterMemberCat(uid, catalogs)
 
 		if catalogsData == nil {
@@ -252,12 +252,15 @@ func CatListName(itemId uint, keyword string, uid uint) ([]*CatalogsTitle, int) 
 	return catalogsData, errmsg.SUCCESE
 }
 
-func getList(itemId uint, isGroup bool) []*CatalogsTitle {
+func getList(itemId uint, isGroup bool ,langId int) []*CatalogsTitle {
 	var ret []*CatalogsTitle
 	var ret2 []*CatalogsTitle
 
 	if itemId > 0 {
 		db.Model(Catalogs{}).Where("item_id =?", itemId).Order("s_number,id asc").Scan(&ret)
+	}
+	if langId >0 {
+		db.Model(Catalogs{}).Where("item_id =?", itemId).Order("s_number,id asc").Where("cid =?",langId).Scan(&ret)
 	}
 	if ret != nil {
 		if isGroup == true {

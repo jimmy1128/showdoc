@@ -51,7 +51,8 @@ type ItemSort struct {
 	CreatedAt    string `gorm:"type:date" json:"created_at"`
 }
 
-func (data *Item) GetItemInfo(keyword string, langId int, uid uint , itemId uint) ItemInfo {
+func (data *Item) GetItemInfo(keyword string, langId int, uid uint , itemId uint,defaultpageid string) ItemInfo {
+
 	var page Page
 	var cat1 Catalogs
 	var cat2 Catalogs
@@ -61,6 +62,7 @@ func (data *Item) GetItemInfo(keyword string, langId int, uid uint , itemId uint
 	itemInfo.IsLogin = false
 	itemInfo.ItemPermn = false
 	itemInfo.ItemCreator = false
+	itemInfo.DefaultPageId = defaultpageid
 	itemInfo.Link = data.Link
 	itemInfo.Lang = data.Lang
 	itemInfo.Menu = itemInfo.GetMenu(keyword, langId, uid, itemId)
