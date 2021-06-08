@@ -118,7 +118,6 @@ func IniRouter(){
 
 		// LangConfig
 		auth.POST("lang/add",v1.AddLang)
-		auth.GET("admin/lang",v1.GetLangs)
 		auth.POST("lang/edit",v1.EditLang)
 		auth.POST("lang/delete",v1.DeleteLang)
 
@@ -149,6 +148,7 @@ func IniRouter(){
 		//router.GET("cookie", v1.Cookie)
 		router.GET("lang/info",v1.GetLangInfo)
 		router.GET("lang",v1.GetLang)
+		router.POST("public/lang",v1.GetLangs)
 		// config
 		router.GET("adminSetting/loadLangConfig",v1.LoadLangConfig)
 		//ImportItem

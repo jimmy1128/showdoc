@@ -94,24 +94,13 @@ func DeleteLang(c *gin.Context){
 	})
 }
 func GetLangs(c *gin.Context) {
-	pageSize, _ := strconv.Atoi(c.PostForm("count"))
-	pageNum, _ := strconv.Atoi(c.PostForm("page"))
+	lang, _ := strconv.Atoi(c.PostForm("lang"))
 
-	if pageSize == 0 {
-		pageSize = -1
-	}
-	if pageNum == 0 {
-		pageSize = -1
-	}
-	data,total :=models.GetLangs(pageSize,pageNum)
-	if data != nil{
-		code = 200
-	}
+	data,code:=models.GetLangs(lang)
 
 	c.JSON(http.StatusOK,gin.H{
 		"status":code,
 		"data":data,
-		"total":total,
 		"message":errmsg.GetErrMsg(code),
 	})
 }

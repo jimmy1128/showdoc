@@ -65,17 +65,31 @@ func GetLang(pageSize int ,pageNum int) ([]Lang,int){
 	return data,total
 }
 //查询语言列表
-func GetLangs(pageSize int ,pageNum int) ([]Lang,int){
-	var cate []Lang
+func GetLangs(lang int ) (Lang,int){
+	fmt.Println(lang)
+	var cate Lang
+	var icon string
 	//var data [] Lang
-	var total int
-	err = db.Find(&cate).Count(&total).Limit(pageSize).Offset((pageNum-1) * pageSize).Error
+	if lang == 1 {
+		icon = "#icon-world-flag_-CHN--China"
+	} else if lang == 2 {
+		icon = "#icon-world-flag_-GBR--UnitedKingdom"
+	}
+	err = db.Where("icon = ?",icon).Find(&cate).Error
+	fmt.Println(cate)
+
+	//for _, lang := range cate {
+	//	if lang.Icon != "" {
+	//		lang.Icon = `<use xlink:href="` + lang.Icon + `"></use>`
+	//	}
+	//	data = append(data, lang)
+	//}
+
 
 	if err != nil && err != gorm.ErrRecordNotFound{
-		return nil,0
+		return cate,0
 	}
-	fmt.Println(total)
-	return cate,total
+	return cate,errmsg.SUCCESE
 }
 //编辑分类信息
 func EditLang(id int,data *Lang)int{
