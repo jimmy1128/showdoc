@@ -3,32 +3,34 @@ export const EN_US = {
   demo: 'Demo',
   index_login_or_register: 'Login / Register',
   my_item: 'My items',
-  section_title1: 'ShowDoc',
+  section_title1: 'Doc',
   section_description1: ' A tool greatly applicable for an IT team',
   section_title2: 'API Document',
   section_description2:
-    'ShowDoc can compile exquisite API documents <br>in a very fast and convenient way',
+    'Doc can compile exquisite API documents <br>in a very fast and convenient way',
   section_title3: 'Data Dictionary',
   section_description3:
-    'A good Data Dictionary can easily exhibit database structure to other people<br>ShowDoc can compile exquisite Data Dictionary',
+    'A good Data Dictionary can easily exhibit database structure to other people<br>Doc can compile exquisite Data Dictionary',
   section_title4: 'Explanation Document',
   section_description4:
-    'You can absolutely use ShowDoc to compile the explanation documents for some tools',
+    'You can absolutely use Doc to compile the explanation documents for some tools',
   section_title5: 'Team Work',
-  section_description5: 'Your team will work with ShowDoc together very well ',
+  section_description5: 'Your team will work with Doc together very well ',
   section_title6: 'Open Source',
   section_description6:
-    'ShowDoc is a free, open source tool that <br>you can deploy it to your own server',
+    'Doc is a free, open source tool that <br>you can deploy it to your own server',
   section_title7: 'Hosted online',
   section_description7:
-    'Www.showdoc.cc provide security and stability of the document hosting service',
+    'Www.doc.cc provide security and stability of the document hosting service',
   section_title8: 'Try it now',
-  section_description8: 'Over 6000+ IT team is using ShowDoc',
+  section_description8: 'Over 6000+ IT team is using Doc',
   login: 'Login',
   background: 'backend management',
   username: 'Username',
   password: 'Passwod',
   add_user: 'Add User',
+  add_language: 'New Language',
+  cat_lang: 'Catalogs Language',
   item_manage: 'Project',
   user_manage: 'User',
   web_setting: 'Web Setting',
@@ -40,6 +42,10 @@ export const EN_US = {
   register: 'register',
   update_personal_info: 'update personal info',
   submit: 'submit',
+  lang_choose: 'Language',
+  default: 'Show Default',
+  default1: 'default',
+  icon: 'icon',
   goback: 'goback',
   my_email: 'my email',
   input_email: 'Input email',
@@ -57,6 +63,7 @@ export const EN_US = {
   update_email_success: '更新邮箱成功！请登录邮箱查收验证邮件',
   link_item: 'link',
   import_excel: 'You can choose to import excel file',
+  select: 'select',
   table: 'table',
   link: 'link',
   search: 'search',
@@ -67,6 +74,7 @@ export const EN_US = {
   home_page: 'Home Page Setting',
   register_open: 'Register Open',
   personal_setting: 'personal setting',
+  lang_setting: 'language setting',
   web_home: 'web home',
   logout: 'logout',
   add_an_item: 'add an item',
@@ -163,7 +171,7 @@ export const EN_US = {
   manage_members: 'manage members',
   more_item: 'more item',
   login_or_register: 'login/register',
-  about_showdoc: 'about ShowDoc',
+  about_showdoc: 'about Doc',
   new_page: 'new page',
   edit_page: 'edit page',
   new_catalog: 'new/manage catalog ',
@@ -186,6 +194,7 @@ export const EN_US = {
 
   title: 'title',
   language: '中文',
+  language1: 'Language',
   level_2_directory: 'level 2 catalog',
   level_3_directory: 'level 3 catalog',
   s_number: 'order',
@@ -223,7 +232,7 @@ export const EN_US = {
   save_templ_title: 'input template title',
   save_templ_text:
     'The template has been saved. When you create or edit an edit page later, click the "More Templates" button to use your saved template.',
-  welcome_use_showdoc: 'Welcome to ShowDoc！',
+  welcome_use_showdoc: 'Welcome to Doc！',
   templ_list: 'template list',
   templ_title: 'template title',
   no_templ_text:
@@ -237,10 +246,13 @@ export const EN_US = {
   input_cat_name: 'input catalog name',
   parent_cat_name: 'parent catalog',
   none: 'none',
-
+  save_success: 'save success',
   back_to_top: 'back to top',
   draft_tips:
     'A draft that is automatically saved when you have the last editor was detected. Do you automatically fill in the last draft?',
+  paste_insert_table: 'Insert table from paste',
+  paste_insert_table_tips:
+    'Paste (Ctrl + V) below an existing table data copied (Ctrl + C) from a spreadsheet (e.g. Microsoft Excel), a text document, a Markdown code, or even a website.',
   regular_item: 'Regular Item',
   single_item: 'Single Item',
   copy_item: 'Copy Item',
@@ -281,11 +293,11 @@ export const EN_US = {
   auth_success: 'saved successfully',
   all_cat2: 'Catalogs permissions: all',
   open_api_tips1:
-    'Showdoc opens the API for document editing, making it easier for users to manipulate document data. <br>With the open API, you can do a lot of things automatically',
+    'doc opens the API for document editing, making it easier for users to manipulate document data. <br>With the open API, you can do a lot of things automatically',
   open_api_tips2:
-    'If you want to automate the generation of API documentation, you can refer to<a target="_bank" href="https://www.showdoc.cc/page/741656402509783">API documentation</a>',
+    'If you want to automate the generation of API documentation, you can refer to<a target="_bank" href="https://www.doc.cc/page/741656402509783">API documentation</a>',
   open_api_tips3:
-    'If you want to automate the generation of a data dictionary, you can refer to<a target="_bank" href="https://www.showdoc.cc/page/312209902620725">Data dictionary</a>',
+    'If you want to automate the generation of a data dictionary, you can refer to<a target="_bank" href="https://www.doc.cc/page/312209902620725">Data dictionary</a>',
   open_api_tips4:
-    'If you are more free to generate the format you need, you can refer to<a target="_bank" href="https://www.showdoc.cc/page/102098">Open API</a>'
+    'If you are more free to generate the format you need, you can refer to<a target="_bank" href="https://www.doc.cc/page/102098">Open API</a>'
 }

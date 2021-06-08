@@ -2,6 +2,7 @@ package models
 
 import (
 	"awesomeProject3/utils/errmsg"
+	"fmt"
 	"github.com/jinzhu/gorm"
 )
 
@@ -45,7 +46,7 @@ func GetLangInfo(id int) (Lang,int){
 	return cate,errmsg.SUCCESE
 }
 
-//查询分类列表
+//查询分类列表 + html
 func GetLang(pageSize int ,pageNum int) ([]Lang,int){
 	var cate []Lang
 	var data [] Lang
@@ -62,6 +63,19 @@ func GetLang(pageSize int ,pageNum int) ([]Lang,int){
 		return nil,0
 	}
 	return data,total
+}
+//查询语言列表
+func GetLangs(pageSize int ,pageNum int) ([]Lang,int){
+	var cate []Lang
+	//var data [] Lang
+	var total int
+	err = db.Find(&cate).Count(&total).Limit(pageSize).Offset((pageNum-1) * pageSize).Error
+
+	if err != nil && err != gorm.ErrRecordNotFound{
+		return nil,0
+	}
+	fmt.Println(total)
+	return cate,total
 }
 //编辑分类信息
 func EditLang(id int,data *Lang)int{

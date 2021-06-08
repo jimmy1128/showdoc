@@ -3,28 +3,30 @@ export const ZH_CN = {
   demo: '示例',
   index_login_or_register: '登录 / 注册',
   my_item: '我的项目',
-  section_title1: 'ShowDoc',
-  section_description1: '一个非常适合IT团队的在线API文档、技术文档工具',
+  section_title1: 'Doc',
+  section_description1: '在线API文档、技术文档工具',
   section_title2: 'API文档',
   section_description2:
-    ' APP、web前端与服务器常用API来进行交互<br>用ShowDoc可以非常方便快速地编写出美观的API文档',
+    ' APP、web前端与服务器常用API来进行交互<br>用Doc可以非常方便快速地编写出美观的API文档',
   section_title3: '数据字典',
   section_description3:
-    '好的数据字典可以很方便地向别人描述你的数据库结构<br>用ShowDoc可以编辑出美观的数字字典',
+    '好的数据字典可以很方便地向别人描述你的数据库结构<br>用Doc可以编辑出美观的数字字典',
   section_title4: '说明文档',
   section_description4:
-    '你完全可以使用 ShowDoc来编写一些工具的说明书<br>也可以编写一些技术规范说明文档以供团队查阅',
+    '你完全可以使用 Doc来编写一些工具的说明书<br>也可以编写一些技术规范说明文档以供团队查阅',
   section_title5: '团队协作',
   section_description5: '团队权限管理机制让团队良好地协同编写文档',
   section_title6: '免费开源',
   section_description6:
-    'ShowDoc提供免费开源的版本<br>你可以选择将ShowDoc部署到你的服务器',
+    'Doc提供免费开源的版本<br>你可以选择将Doc部署到你的服务器',
   section_title7: '在线托管',
   section_description7:
-    'www.showdoc.cc 提供安全稳定的在线文档托管服务<br>你可以放心地选择托管你的文档数据在云端',
+    'www.doc.cc 提供安全稳定的在线文档托管服务<br>你可以放心地选择托管你的文档数据在云端',
   section_title8: '立即体验',
-  section_description8: '超过6000+互联网团队正在使用ShowDoc',
-
+  section_description8: '超过6000+互联网团队正在使用Doc',
+  paste_insert_table: '粘贴插入表格',
+  paste_insert_table_tips:
+    '你可以从网页或者excel中复制表格，然后粘贴在此处。粘贴并确定后，程序将自动把源表格转为markdown格式的表格。注：复制excel后，请鼠标右击，粘贴为纯文本。否则会当做图片上传。',
   login: '登录',
   username: '用户名',
   password: '密码',
@@ -115,13 +117,13 @@ export const ZH_CN = {
   success_jump: '操作成功！正在跳转...',
   reset_token: '重新生成api_token',
   open_api_tips1:
-    'showdoc开放文档编辑的API，供使用者更加方便地操作文档数据。<br>利用开放API，你可以自动化地完成很多事',
+    'doc开放文档编辑的API，供使用者更加方便地操作文档数据。<br>利用开放API，你可以自动化地完成很多事',
   open_api_tips2:
-    '关于API详细用法，请参考我们的<a target="_bank" href="https://www.showdoc.cc/page/102098">API文档</a>',
+    '关于API详细用法，请参考我们的<a target="_bank" href="https://www.doc.cc/page/102098">API文档</a>',
   open_api_tips3:
-    '如果你想自动化生成数据字典，则可参考<a target="_bank" href="https://www.showdoc.cc/page/312209902620725">数据字典</a>',
+    '如果你想自动化生成数据字典，则可参考<a target="_bank" href="https://www.doc.cc/page/312209902620725">数据字典</a>',
   open_api_tips4:
-    '如果你更自由地生成自己所需要的格式，则可参考<a target="_bank" href="https://www.showdoc.cc/page/102098">开放API</a>',
+    '如果你更自由地生成自己所需要的格式，则可参考<a target="_bank" href="https://www.doc.cc/page/102098">开放API</a>',
 
   item: '项目',
   share: '分享',
@@ -130,7 +132,7 @@ export const ZH_CN = {
   manage_members: '成员管理',
   more_item: '更多项目',
   login_or_register: '登录/注册',
-  about_showdoc: '关于ShowDoc',
+  about_showdoc: '关于Doc',
   new_page: '新建页面',
   edit_page: '编辑页面',
   new_catalog: '新建/管理目录',
@@ -185,15 +187,22 @@ export const ZH_CN = {
   save_templ_title: '请为要保存的模板设置标题',
   save_templ_text:
     '已经保存好模板。你以后新建或者编辑编辑页面时，点击“更多模板”按钮，便可以使用你保存的模板',
-  welcome_use_showdoc: '欢迎使用ShowDoc！',
+  welcome_use_showdoc: '欢迎使用Doc！',
   templ_list: '模板列表',
   templ_title: '模板标题',
+  lang_setting: '语言设置',
+  language1: '语言',
+  lang_choose: '语言选项',
+  cat_lang: '语言目录',
+  icon: '图标',
+  save_success: '保存成功',
   no_templ_text:
     '你尚未保存过任何模板。你可以在编辑页面时，在“保存”按钮右边点击，在下拉菜单中选择“另存为模板”。把页面内容保存为模板后，你下次新建或者编辑页面时便可以使用你之前保存的模板',
   save_time: '保存时间',
   insert_templ: '插入此模板',
   delete_templ: '删除模板',
-
+  default: '显示默认',
+  default1: '默认',
   add_cat: '添加目录',
   cat_name: '目录名',
   input_cat_name: '请输入目录名',
@@ -207,6 +216,7 @@ export const ZH_CN = {
   user_management: '用户管理',
   item_management: '项目管理',
   add_user: '新增用户',
+  add_language: '新增语言',
   search: '查询',
 
   team_mamage: '团队管理',
@@ -268,7 +278,7 @@ export const ZH_CN = {
   public: '公开访问',
   register_open: '开放用户注册',
   long_page_tips:
-    '检测到本页面内容比较多，showdoc暂时关闭了html实时预览功能，以防止过多内容造成页面卡顿。你可以在编辑栏中找到预览按钮进行手动打开。',
+    '检测到本页面内容比较多，doc暂时关闭了html实时预览功能，以防止过多内容造成页面卡顿。你可以在编辑栏中找到预览按钮进行手动打开。',
 
   item_exit: '退出项目',
   confirm_exit_item: '你确定要退出该项目吗?',
@@ -299,7 +309,7 @@ export const ZH_CN = {
   recover_tips: '确认恢复吗？恢复的页面将出现在项目根目录',
 
   cat_tips: '可拖动以排序',
-  cat_limite_tips: 'showdoc只支持最多三层目录，请优化目录结构',
+  cat_limite_tips: 'doc只支持最多三层目录，请优化目录结构',
 
   sort_pages: '页面排序',
   sort_pages_tips: '选择特定的目录后，你可以对该目录下的页面进行拖动排序',
@@ -318,7 +328,7 @@ export const ZH_CN = {
   export_format_word: 'word格式',
   export_format_markdown: 'markdown压缩包',
   export_markdown_tips:
-    '导出的压缩包可以重新导入showdoc，在新建项目的时候选择“文件导入”即可',
+    '导出的压缩包可以重新导入doc，在新建项目的时候选择“文件导入”即可',
 
   private_tips: '这是一个私密项目',
 

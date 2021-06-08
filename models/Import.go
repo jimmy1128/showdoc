@@ -45,11 +45,11 @@ type ImportCatalogInfo struct{
 
 func ImportItem (jsonData []byte,uid uint , itemName string , itemDescription string , itemPassowrd string , itemDomain string)int{
 	var item Item
-	var page Page
+	//var page Page
 	var user User
 	var result map[string]interface{}
 	//result := make(map[string]interface{})
-	var importInfo ImportItemInfo
+	//var importInfo ImportItemInfo
 	db.Model(User{}).Where("id = ?",uid).Find(&user)
 	err = json.Unmarshal(jsonData,&result )
 
@@ -66,19 +66,17 @@ func ImportItem (jsonData []byte,uid uint , itemName string , itemDescription st
 		return errmsg.ERROR
 	}
 	//db.Model(Item{}).Create(result)
-fmt.Println(result["pages"])
-	if &importInfo != nil {
-		//importInfo.Title = result["item_name"]
-		//	importInfo.ItemDomain = itemDomain
-		//importInfo.ItemType =result["item_name"]
-		//importInfo.Description = result["item_description"]
-		//importInfo.Password = result["password"]
-		////importInfo.UserId = int(uid)
-		//importInfo.Username = user.Username
-        //var importtest Import
+	for s, i := range result {
+		fmt.Println(s , i)
+	}
+	if result["pages"] != nil {
+		//page.PageContent = result
+		//page.PageContent = result["page_content"].(string)
+		//page.PageTitle = result["page_title"].(string)
+		//i, _ := strconv.ParseUint(result["s_number"].(string), 10, 64)
+		//page.SNumber = uint(i)
+		//db.Model(Page{}).Create(&page)
 
-
-		//db.Model(&Import{}).Create(map[string]interface{}{"name":"1"})
 	}
 		//page.AuthorUid = uid
 		//page.PageTitle = result["page_title"]
@@ -89,7 +87,7 @@ fmt.Println(result["pages"])
 		//page.ItemId = item.ID
 		//page.CatId = 0
 
-	db.Model(Page{}).Create(&page)
+
 
 	//for _, info := range importInfo {
 	//	//if &info.Catalog != nil {

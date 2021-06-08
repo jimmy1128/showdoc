@@ -118,7 +118,7 @@ func IniRouter(){
 
 		// LangConfig
 		auth.POST("lang/add",v1.AddLang)
-		auth.GET("admin/lang",v1.GetLang)
+		auth.GET("admin/lang",v1.GetLangs)
 		auth.POST("lang/edit",v1.EditLang)
 		auth.POST("lang/delete",v1.DeleteLang)
 
