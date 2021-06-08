@@ -4,6 +4,7 @@ import (
 	v1 "awesomeProject3/api/v1"
 	"awesomeProject3/middleware"
 	"awesomeProject3/utils"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	//"github.com/gin-gonic/contrib/sessions"
 )
@@ -121,6 +122,8 @@ func IniRouter(){
 		auth.POST("lang/edit",v1.EditLang)
 		auth.POST("lang/delete",v1.DeleteLang)
 
+
+
 	}
 	router := r.Group("api/v1")
 
@@ -148,9 +151,12 @@ func IniRouter(){
 		router.GET("lang",v1.GetLang)
 		// config
 		router.GET("adminSetting/loadLangConfig",v1.LoadLangConfig)
-
+		//ImportItem
+		router.POST("import/auto",v1.ImportItem)
 
 	}
+	fmt.Println("Visit : http://localhost"+utils.HttpPort+"/doc")
 	_ = r.Run(utils.HttpPort)
+
 }
 

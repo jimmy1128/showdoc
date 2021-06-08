@@ -23,6 +23,7 @@ type Item struct {
 	IsPrivate   int    `gorm:"type:int;default:0" json:"is_private"`
 	MemberNum   int    `gorm:"type:int;default:0" json:"MemberNum"`
 	Username    string `gorm:"type:varchar(255)" json:"username"`
+	ItemDomain string `gorm:"type:varchar(255)" json:"itemdomain"`
 }
 type ItemInfo struct {
 	Id            int    `gorm:"primaryKey" json:"id"`

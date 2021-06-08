@@ -3,7 +3,6 @@ package v1
 import (
 	"awesomeProject3/models"
 	"awesomeProject3/utils/errmsg"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -87,7 +86,6 @@ func EditLang(c *gin.Context){
 //删除分类
 func DeleteLang(c *gin.Context){
 	id ,_:= strconv.Atoi(c.PostForm("id"))
-	fmt.Println(id)
 	code = models.DeleteLang(id)
 
 	c.JSON(http.StatusOK,gin.H{

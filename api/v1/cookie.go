@@ -11,7 +11,7 @@ func Cookie (c *gin.Context){
 	if err !=nil{
 		cookie ="lang"
 		//c.SetCookie("lang","CN",3600,"/","localhost",false,true)
-		c.SetCookie("itemid","1",3600,"/","103.118.81.227",false,true)
+		c.SetCookie("itemid","1",600,"/","localhost",false,true)
 	}
 	fmt.Printf("Cookie value: %s \n", cookie)
 }
