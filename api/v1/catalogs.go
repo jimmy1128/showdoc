@@ -13,7 +13,6 @@ func DeleteCatalogs(c *gin.Context){
 	session := sessions.Default(c)
 	user := session.Get("id")
 	v , _ := user.(uint)
-
 		itemid ,_ := strconv.Atoi(c.PostForm("item_id"))
 		id ,_ := strconv.Atoi(c.Param("id"))
 	code =models.DeleteCatalogs(itemid,id, int(v))

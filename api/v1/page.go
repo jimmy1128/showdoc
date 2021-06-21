@@ -94,6 +94,17 @@ func GetInfo(c *gin.Context){
 		"message" : errmsg.GetErrMsg(code),
 	})
 }
+func GetPagesByLangId(c *gin.Context){
+	itemId ,_ := strconv.Atoi(c.PostForm("item_id"))
+	langId ,_ := strconv.Atoi(c.PostForm("lang_id"))
+	data , code := models.GetPagesByLangId(itemId, langId)
+	c.JSON(http.StatusOK,gin.H{
+		"status" : code ,
+		"data" : data,
+		"message" : errmsg.GetErrMsg(code),
+	})
+
+}
 
 func DeletePage(c *gin.Context){
 	session := sessions.Default(c)
@@ -161,7 +172,16 @@ func Sort(c *gin.Context){
 		"status":code ,
 		"message":errmsg.GetErrMsg(code),
 	})
-
-
-
+}
+func SortByPage(c *gin.Context){
+	//session := sessions.Default(c)
+	//user := session.Get("id")
+	//v , _ := user.(uint)
+	itemId ,_ := strconv.Atoi(c.PostForm("item_id"))
+	pages := c.PostForm("pages")
+	code = models.SortbyPage(pages,itemId)
+	c.JSON(http.StatusOK,gin.H{
+		"status":code ,
+		"message":errmsg.GetErrMsg(code),
+	})
 }

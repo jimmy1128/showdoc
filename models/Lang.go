@@ -2,8 +2,8 @@ package models
 
 import (
 	"awesomeProject3/utils/errmsg"
-	"fmt"
 	"github.com/jinzhu/gorm"
+	"strings"
 )
 
 type Lang struct {
@@ -11,6 +11,11 @@ type Lang struct {
 	ID uint `gorm:"primaryKey;auto_increment" json:"id"`
 	Name string `gorm:"type:varchar(20);not null" json:"name"`
 	Icon string `gorm:"type:varchar(255);not null" json:"icon"`
+}
+type ItemLang struct {
+	ItemLangID uint `gorm:"primaryKey;auto_increment" json:"item_lang_id"`
+	ItemId int `gorm:"type:int" json:"item_id"`
+	LangId string `gorm:"type:string" json:"lang_id"`
 }
 
 func CheckLang(name string)(code int){
@@ -40,9 +45,14 @@ func CreateLang(data *Lang)int{
 	return errmsg.SUCCESE
 }
 //todo 查询分类下的所有分类
-func GetLangInfo(id int) (Lang,int){
+func GetLangInfo(id string) (Lang,int){
 	var cate Lang
-	db.Where("id = ?",id).First(&cate)
+	if  strings.Contains(id,"</use>") {
+		list := strings.Split(id,`"`)
+		db.Where("icon = ?",list[1]).First(&cate)
+		return cate,errmsg.SUCCESE
+	}
+
 	return cate,errmsg.SUCCESE
 }
 
@@ -66,7 +76,6 @@ func GetLang(pageSize int ,pageNum int) ([]Lang,int){
 }
 //查询语言列表
 func GetLangs(lang int ) (Lang,int){
-	fmt.Println(lang)
 	var cate Lang
 	var icon string
 	//var data [] Lang
@@ -76,15 +85,6 @@ func GetLangs(lang int ) (Lang,int){
 		icon = "#icon-world-flag_-GBR--UnitedKingdom"
 	}
 	err = db.Where("icon = ?",icon).Find(&cate).Error
-	fmt.Println(cate)
-
-	//for _, lang := range cate {
-	//	if lang.Icon != "" {
-	//		lang.Icon = `<use xlink:href="` + lang.Icon + `"></use>`
-	//	}
-	//	data = append(data, lang)
-	//}
-
 
 	if err != nil && err != gorm.ErrRecordNotFound{
 		return cate,0

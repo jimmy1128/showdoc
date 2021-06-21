@@ -91,9 +91,10 @@ func UpdateItem(c *gin.Context) {
 	title := c.PostForm("title")
 	description  := c.PostForm("description")
 	password := c.PostForm("password")
+	langlist := c.PostForm("langlist")
 
 
-	code = models.EditItem(id,title,description,password)
+	code = models.EditItem(id,title,description,password,langlist)
 
 	c.JSON(http.StatusOK,gin.H{
 		"status" : code ,
@@ -111,10 +112,12 @@ func AddItem (c *gin.Context){
 	item_name  := c.PostForm("titlename")
 	item_description := c.PostForm("description")
 	password := c.PostForm("password")
+	langlist := c.PostForm("langlist")
 
 	data.Title = item_name
 	data.Types = item_type
 	data.Description = item_description
+	data.LangList = langlist
 	data.UserId = v
 
 	code =models.CreateItem(&data,password )

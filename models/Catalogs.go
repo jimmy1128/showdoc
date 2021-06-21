@@ -10,10 +10,10 @@ import (
 type Catalogs struct {
 	gorm.Model
 	Lang        Lang       `gorm:"foreignKey:cid"`
-	Name        string     `gorm:"type:varchar(255);not null" json:"catname"`
+	Name        string     `gorm:"type:varchar(255);not null" json:"cat_name"`
 	ItemId      uint       `gorm:"type:int;not null" json:"itemid"`
 	SNumber     uint       `gorm:"type:int;not null" json:"snumber"`
-	ParentCatId uint       `gorm:"type:int;not null" json:"parentcatid"`
+	ParentCatId uint       `gorm:"type:int;not null" json:"parent_cat_id"`
 	Level       uint       `gorm:"type:int;not null" json:"level"`
 	Cid         int        `gorm:"type:int;not null" json:"cid"`
 	Page        []*Page    `json:"pages"`
@@ -83,10 +83,12 @@ func EditCatalogs(id int, v int) int {
 
 func DeleteCatalogs(itemid int, id int, v int) int {
 	var catalogs Catalogs
+	var page Page
 	err := db.Where("item_id=?", itemid).Where("id =?", id).Delete(&catalogs).Error
-	if v <= 1 {
+	if v < 1 {
 		return errmsg.ERROR_USER_NO_RIGHT
 	}
+	db.Model(Page{}).Where("item_id = ?",itemid).Where("cat_id = ?",id).Delete(&page)
 	if err != nil {
 		return errmsg.ERROR
 	}
@@ -256,7 +258,7 @@ func CatListName(itemId uint, keyword string, uid uint , langId int) ([]*Catalog
 func getList(itemId uint, isGroup bool ,langId int) []*CatalogsTitle {
 	var ret []*CatalogsTitle
 	var ret2 []*CatalogsTitle
-
+	var ret3 []*CatalogsTitle
 	if itemId > 0 {
 		db.Model(Catalogs{}).Where("item_id =?", itemId).Order("s_number,id asc").Scan(&ret)
 	}
@@ -266,14 +268,12 @@ func getList(itemId uint, isGroup bool ,langId int) []*CatalogsTitle {
 	if ret != nil {
 		if isGroup == true {
 			for _, catalogs := range ret {
-				ret2 = _getChlid(catalogs.ID, ret)
-				catalogs.Sub  =  ret2
+				ret3 = _getChlid(catalogs.ID, ret)
+				catalogs.Sub  =  ret3
 			}
 			for _, catalogs := range ret {
 				if catalogs.ParentCatId == 0 {
-
 					ret2 = append( ret2 , catalogs)
-
 				}
 			}
 		}
@@ -302,13 +302,16 @@ func _getChlid(catId uint, data []*CatalogsTitle) []*CatalogsTitle {
 }
 // catalogs 移动更新
 func BatUpdate(cats string , itemId int )([]CatalogsMap,int) {
-	var batchUpdate []CatalogsMap
-	err = json.Unmarshal([]byte(cats), &batchUpdate)
-	for _, s2 := range batchUpdate {
-		err = db.Model(Catalogs{}).Where("item_id =?",itemId).Where("id =?",s2.ID).Updates(s2).Error
+
+	var result []map[string]interface{}
+
+	err = json.Unmarshal([]byte(cats), &result)
+	for _, s2 := range result {
+		err = db.Model(&Catalogs{}).Where("item_id =?",itemId).Updates(s2).Error
 		if err != nil{
 			return nil,errmsg.ERROR
 		}
 	}
+
 return nil , errmsg.SUCCESE
 }

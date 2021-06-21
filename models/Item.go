@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"github.com/jinzhu/gorm"
 	"sort"
+	"strconv"
 	"time"
 )
 
@@ -24,6 +25,7 @@ type Item struct {
 	MemberNum   int    `gorm:"type:int;default:0" json:"MemberNum"`
 	Username    string `gorm:"type:varchar(255)" json:"username"`
 	ItemDomain string `gorm:"type:varchar(255)" json:"itemdomain"`
+	LangList string  `gorm:"type:text;not null" json:"lang_list"`
 }
 type ItemInfo struct {
 	Id            int    `gorm:"primaryKey" json:"id"`
@@ -33,6 +35,7 @@ type ItemInfo struct {
 	DefaultCatId2 string `gorm:"type:varchar(10)" json:"defaultcatid2"`
 	DefaultCatId3 string `gorm:"type:varchar(10)" json:"defaultcatid3"`
 	DefaultCatId4 string `gorm:"type:varchar(10)" json:"defaultcatid4"`
+	LangList string  `gorm:"type:text;not null" json:"lang_list"`
 	ItemType      uint   `gorm:"type:int;not null" json:"itemtype"`
 	IsLogin       bool   `gorm:"type:bool" json:"is_login"`
 	ItemPermn     bool   `gorm:"type:bool" json:"itempermn"`
@@ -53,6 +56,11 @@ type ItemSort struct {
 }
 
 func (data *Item) GetItemInfo(keyword string, langId int, uid uint , itemId uint,defaultpageid string) ItemInfo {
+	var defaultid Page
+	var defaultpage Page
+
+	db.Model(Page{}).Where("id = ?",defaultpageid).Find(&defaultid)
+	db.Model(Page{}).Where("cid =?",langId).Where("group_id =?",defaultid.GroupId).Where("item_id = ?",itemId).Find(&defaultpage)
 
 	var page Page
 	var cat1 Catalogs
@@ -63,7 +71,11 @@ func (data *Item) GetItemInfo(keyword string, langId int, uid uint , itemId uint
 	itemInfo.IsLogin = false
 	itemInfo.ItemPermn = false
 	itemInfo.ItemCreator = false
-	itemInfo.DefaultPageId = defaultpageid
+	if defaultpageid != "0" {
+		b := strconv.Itoa(int(defaultpage.ID))
+		itemInfo.DefaultPageId = b
+	}
+	itemInfo.LangList = data.LangList
 	itemInfo.Link = data.Link
 	itemInfo.Lang = data.Lang
 	itemInfo.Menu = itemInfo.GetMenu(keyword, langId, uid, itemId)
@@ -263,11 +275,13 @@ func CreateItem(data *Item, password string) int {
 	}
 	return errmsg.SUCCESE
 }
-func EditItem(id int, title string, description string, password string) int {
+func EditItem(id int, title string, description string, password string,langlist string) int {
 
 	var maps = make(map[string]interface{})
 	maps["title"] = title
 	maps["description"] = description
+	maps["lang_list"] = langlist
+
 	if password != "" {
 		maps["password"] = ScryptPw(password)
 		maps["is_private"] = 1
@@ -427,7 +441,7 @@ func Pwd(itemId int, password string) int {
 
 func getMenu(itemId uint, langId int) Menu {
 	var menu Menu
-	menu = getContent(itemId, langId)
+	menu = getContent(itemId, langId,)
 	return menu
 }
 func getContent(itemId uint, langId int) Menu {
@@ -435,11 +449,12 @@ func getContent(itemId uint, langId int) Menu {
 	var catalogs []Catalogs
 	var catalogs2 []Catalogs
 	var result []Catalogs
-	db.Model(Page{}).Where("item_id =?", itemId).Where("cid =?",langId).Order("s_number asc , id asc").Find(&page)
 	if langId <= 0 {
 		db.Model(Catalogs{}).Where("item_id = ?", itemId).Order("s_number asc , id asc").Preload("Lang").Find(&catalogs)
+		db.Model(Page{}).Where("item_id =?", itemId).Order("s_number asc , id asc").Find(&page)
 	} else {
 		db.Model(Catalogs{}).Where("item_id = ?", itemId).Order("s_number asc , id asc").Where("cid =?", langId).Preload("Lang").Find(&catalogs)
+		db.Model(Page{}).Where("item_id =?", itemId).Where("cid =?",langId).Order("s_number asc , id asc").Find(&page)
 	}
 	if &catalogs != nil {
 		for _, catalog := range catalogs {
@@ -548,4 +563,26 @@ if catId >0 {
 	return menuData3
 }
 return  menuData
+}
+
+func CheckItemEdit (uid uint , itemId uint)bool {
+	var itemMember ItemMember
+	var teamItemMember TeamItemMember
+	var item Item
+	if uid == 0 {
+		return false
+	}
+	db.Model(Item{}).Where("user_id =?",uid).Where("id = ?",itemId).Find(&item)
+	if &item != nil {
+		return true
+	}
+	db.Model(ItemMember{}).Where("item_id =?",itemId).Where("uid =?",uid).Where("member_group_id = 1").Find(&itemMember)
+	if &itemMember != nil{
+		return true
+	}
+	db.Model(TeamItemMember{}).Where("item_id =?",itemId).Where("member_uid =?",uid).Where("member_group_id =1").Find(&teamItemMember)
+	if &teamItemMember != nil {
+		return true
+	}
+	return false
 }

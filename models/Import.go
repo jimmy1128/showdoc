@@ -4,7 +4,7 @@ import (
 	"archive/zip"
 	"awesomeProject3/utils/errmsg"
 	"encoding/json"
-	"fmt"
+	"github.com/jinzhu/gorm"
 	"io"
 	"io/ioutil"
 	"os"
@@ -14,123 +14,131 @@ import (
 )
 
 type ImportItemInfo struct {
-	ItemType      string   `json:"item_type"`
+	Types      string   `json:"item_type"`
 	Title         string `json:"item_name"`
 	Description string `json:"item_description"`
-	Password    string `json:"paswsword"`
+	Password    string `json:"password"`
 	UserId      int `json:"user_id"`
 	Username string `json:"username"`
 	ItemDomain string `json:"item_domain"`
-	Pages ImportPageInfo `json:"pages"`
-	Catalog []ImportCatalogInfo `json:"catalogs"`
+	Pages ImportMenu `json:"pages"`
 }
+
 type ImportPageInfo struct {
-	PageTitle    string                `gorm:"type:varchar(255)" json:"pagetitle"`
-	CatId        uint                  `gorm:"type:int" json:"cat_id"`
-	PageContent  string                `gorm:"type:longtext" json:"page_content"`
-	SNumber      int                  `gorm:"type:int" json:"s_number"`
-	PageComments string                `gorm:"type:text" json:"page_comments"`
+	PageTitle string `json:"page_title"`
+	Cat_id        string                  `json:"cat_id"`
+	Page_content  string                `json:"page_content"`
+	S_number      string                  `json:"s_number"`
+	Page_comments string                `json:"page_comments"`
 }
+
 type ImportCatalogInfo struct{
-	CatId      uint       `gorm:"type:int" json:"cat_id"`
-	Name        string     `gorm:"type:varchar(255);not null" json:"cat_name"`
-	ItemId      uint       `gorm:"type:int" json:"item_id"`
-	ParentCatId uint       `gorm:"type:int" json:"parent_cat_id"`
-	Level       uint       `gorm:"type:int" json:"level"`
-	SNumber     uint       `gorm:"type:int" json:"s_number"`
+	Id      string       `json:"cat_id"`
+	Name        string     `json:"cat_name"`
+	ItemId      string       `json:"item_id"`
+	ParentCatId string       `json:"parent_cat_id"`
+	Level       string       `json:"level"`
+	SNumber     string       `json:"s_number"`
 	Pages []*ImportPageInfo `json:"pages"`
 	Catalogs []ImportCatalogInfo `json:"catalogs"`
 
 }
+type ImportMenu struct {
+	Pages []*ImportPageInfo `json:"pages"`
+	Catalogs []ImportCatalogInfo `json:"catalogs"`
+}
+type ImportCatalogs struct {
+	gorm.Model
+	Lang        Lang       `gorm:"foreignKey:cid"`
+	Name        string     `gorm:"type:varchar(255);not null" json:"catname"`
+	ItemId      uint       `gorm:"type:int;not null" json:"itemid"`
+	SNumber     uint       `gorm:"type:int;not null" json:"snumber"`
+	ParentCatId uint       `gorm:"type:int;not null" json:"parentcatid"`
+	Level       uint       `gorm:"type:int;not null" json:"level"`
+	Cid         int        `gorm:"type:int;not null" json:"cid"`
+	Pages        []Page    `json:"pages"`
+	Catalogs    Catalogs `json:"catalogs"`
+}
 
 func ImportItem (jsonData []byte,uid uint , itemName string , itemDescription string , itemPassowrd string , itemDomain string)int{
 	var item Item
-	//var page Page
-	var user User
-	var result map[string]interface{}
-	//result := make(map[string]interface{})
-	//var importInfo ImportItemInfo
-	db.Model(User{}).Where("id = ?",uid).Find(&user)
-	err = json.Unmarshal(jsonData,&result )
 
-	item.Title = result["item_name"].(string)
-	item.Description = result["item_description"].(string)
-	item.Types,_ = strconv.Atoi(result["item_type"].(string))
-	item.Password=result["password"].(string)
-	item.UserId = 1
+	var user User
+	var importInfo ImportItemInfo
+	db.Model(User{}).Where("id = ?",uid).Find(&user)
+	err = json.Unmarshal(jsonData,&importInfo )
+
+	item.Title = importInfo.Title
+	item.Description = importInfo.Description
+	item.Types,_ = strconv.Atoi(importInfo.Types)
+	item.Password=importInfo.Password
+	item.UserId = user.ID
 	item.ItemDomain = itemDomain
-	db.Model(Item{}).Create(&item)
+	err = db.Model(Item{}).Create(&item).Error
 
 	if err != nil {
-		fmt.Println(err)
 		return errmsg.ERROR
 	}
-	//db.Model(Item{}).Create(result)
-	for s, i := range result {
-		fmt.Println(s , i)
+	if &importInfo.Pages != nil {
+		for _, info := range importInfo.Pages.Pages {
+			var page Page
+			page.PageContent = info.Page_content
+			page.PageComments = info.Page_comments
+			page.PageTitle = info.PageTitle
+			i, _ := strconv.ParseUint(info.S_number, 10, 64)
+			page.SNumber = uint(i)
+			page.AuthorUid = user.ID
+			page.ItemId = item.ID
+			page.CatId = 0
+			err = db.Model(Page{}).Create(&page).Error
+			if err != nil {
+				return errmsg.ERROR
+			}
+		}
 	}
-	if result["pages"] != nil {
-		//page.PageContent = result
-		//page.PageContent = result["page_content"].(string)
-		//page.PageTitle = result["page_title"].(string)
-		//i, _ := strconv.ParseUint(result["s_number"].(string), 10, 64)
-		//page.SNumber = uint(i)
-		//db.Model(Page{}).Create(&page)
-
+	if importInfo.Pages.Catalogs != nil {
+		_insertCat(item.ID, importInfo.Pages.Catalogs ,user, 0 , 2)
 	}
-		//page.AuthorUid = uid
-		//page.PageTitle = result["page_title"]
-		//page.PageContent = result["page_content"]
-		//page.PageComments = result["page_comments"]
-	    //i, _ := strconv.ParseUint(result["s_number"], 10, 64)
-		//page.SNumber = uint(i)
-		//page.ItemId = item.ID
-		//page.CatId = 0
-
-
-
-	//for _, info := range importInfo {
-	//	//if &info.Catalog != nil {
-	//	//	_insertCat(item.ID, info.Catalog ,user , 0 , 2)
-	//	//}
-	//
-	//}
 return errmsg.SUCCESE
 
 }
 
 func _insertCat (itemId uint , catalogs []ImportCatalogInfo , user User , parentCatId uint , level uint)uint{
-	var catalogsData ImportCatalogInfo
-	var pages Page
+
 	if &catalogs == nil {
-		return 0
+		return errmsg.ERROR
 	}
 	for _, catalog := range catalogs {
+		var catalogsData ImportCatalogs
 		catalogsData.Name= catalog.Name
 		catalogsData.Level = level
-		catalogsData.SNumber = catalog.SNumber
+		i, _ := strconv.ParseUint(catalog.SNumber, 10, 64)
+		catalogsData.SNumber = uint(i)
 		catalogsData.ItemId = itemId
 		catalogsData.ParentCatId = parentCatId
-		db.Model(Catalogs{}).Create(&catalogsData)
-		for _, info := range catalogsData.Pages {
+
+		db.Table("catalogs").Create(&catalogsData)
+		for _, info := range catalog.Pages {
+			var pages Page
 			pages.AuthorUid = user.ID
 			pages.PageTitle = info.PageTitle
-			pages.PageComments = info.PageTitle
-			pages.SNumber = 1
+			pages.PageComments = info.Page_comments
+			pages.PageContent = info.Page_content
+			i, _ := strconv.ParseUint(info.S_number, 10, 64)
+			pages.SNumber = uint(i)
 			pages.ItemId = itemId
-			pages.CatId = catalogsData.CatId
+			pages.CatId = catalogsData.ID
+			db.Model(Page{}).Create(&pages)
 		}
-		db.Model(Page{}).Create(&pages)
+		if catalog.Catalogs != nil{
+			_insertCat(itemId , catalog.Catalogs , user,catalogsData.ID,level+1)
+		}
 	}
-	if &catalogsData.Catalogs != nil{
-		_insertCat(itemId , catalogsData.Catalogs , user,catalogsData.CatId,level)
-	}
-	return catalogsData.CatId
+	return errmsg.SUCCESE
 }
 
 func Auto(filename string,uid uint)int{
 	var result map[string]interface{}
-	//var result2 map[string]string
 	var filenameWithSuffix string
 	var fileSuffix string
 	filenameWithSuffix = path.Base(filename)
@@ -138,22 +146,43 @@ func Auto(filename string,uid uint)int{
 	if fileSuffix == ".zip" {
 		err := DeCompress(filename,"./upload/")
 		if err != nil {
-			return errmsg.ERROR
+			return errmsg.ERROR_LANG_USED
 		}
 		data, err := ioutil.ReadFile("./upload/prefix_info.json")
 		if err != nil {
-			return errmsg.ERROR
+			return errmsg.ERROR_USERNAME_USED
 		}
 		if data != nil {
 			err =json.Unmarshal(data , &result)
 			if err !=nil {
-				return errmsg.ERROR
+				return errmsg.ERROR_PASSWORD_WRONG
 			}
 			if result != nil {
 					markdown(data,uid)
 			}
 
 		}
+	}
+	if fileSuffix == ".json"{
+		data, err := ioutil.ReadFile(filename)
+		if err != nil {
+			return errmsg.ERROR
+		}
+		if data != nil {
+			err =json.Unmarshal(data , &result)
+		}
+		for s, _ := range result {
+			if s == "swagger" || s == "openapi" {
+				return errmsg.FUNCTION_UNDER_DEVELOP
+			}
+			if s == "id"{
+				return errmsg.FUNCTION_UNDER_DEVELOP
+			}
+			if s =="info"{
+				return errmsg.FUNCTION_UNDER_DEVELOP
+			}
+		}
+		return errmsg.ERROR
 	}
 return errmsg.SUCCESE
 }
@@ -208,9 +237,6 @@ func subString(str string, start, end int) string {
 }
 
 func markdown (info []byte, uid uint)int {
-	if &info == nil {
-
-	}
 	if &info != nil {
 		ImportItem(info,uid,"","","","")
 		return errmsg.SUCCESE

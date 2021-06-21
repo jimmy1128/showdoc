@@ -36,7 +36,7 @@ func AddLang(c *gin.Context){
 //查询单个用户
 //TODO 查询分类下的所有文章
 func GetLangInfo(c *gin.Context){
-	id ,_ := strconv.Atoi(c.PostForm("id"))
+	id := c.PostForm("icon")
 	data,code := models.GetLangInfo(id)
 
 	c.JSON(http.StatusOK ,gin.H{

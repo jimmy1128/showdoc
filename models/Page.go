@@ -24,6 +24,7 @@ type Page struct {
 	DelName      string                `gorm:"type:varchar(255)" json:"del_name"`
 	PageComments string                `gorm:"type:text" json:"pagecomments"`
 	Cid          int                   `gorm:"type:int;not null" json:"cid"`
+	GroupId      uint                  `gorm:"type:int;not null" json:"groupId"`
 }
 type PageLock struct {
 	gorm.Model
@@ -55,6 +56,8 @@ type Pages struct {
 	SNumber int
 }
 
+
+
 func GetPagesByCatId(id uint, keyword string, itemId uint) []*Page {
 	var pages []*Page
 	if keyword == "" {
@@ -69,6 +72,15 @@ func GetPagesByCatId(id uint, keyword string, itemId uint) []*Page {
 		return pages
 	}
 	return pages
+}
+
+func GetPagesByLangId (itemId int , langId int)([]*Page,int){
+	var pages []*Page
+	err = db.Model(Page{}).Where("item_id =?",itemId).Where("cid =?",langId).Order("group_id").Find(&pages).Error
+	if err != nil {
+		return nil,errmsg.ERROR
+	}
+return pages,errmsg.SUCCESE
 }
 
 func GetPagesByItemId(id uint, keyword string, langId int) []*Page {
@@ -142,19 +154,19 @@ func (data *Page) SavePage() (*Page, int) {
 	if data.Cid == 0 && option == nil  {
 		return data, errmsg.ERROR_LANG_EMPTY
 	}
+
 	if data.ID == 0 {
 		err := db.Create(&data).Error
 		if err != nil {
 			return data, errmsg.ERROR
 		}
-		return data, errmsg.SUCCESE
 	} else {
 		err = db.Model(Page{}).Where("id =?", data.ID).Update(&data).Error
 		if err != nil {
 			return data, errmsg.ERROR
 		}
-		return data, errmsg.SUCCESE
 	}
+	return data , errmsg.SUCCESE
 }
 func (data *PageHistory) SaveHistoryPage() ([]PageHistory, int) {
 	var count int
@@ -292,6 +304,21 @@ func Sort(pages string, itemId int, uid uint) int {
 
 	for s, p := range result {
 		db.Model(Page{}).Where("id = ?", s).Where("item_id = ?", itemId).Update("s_number", p)
+	}
+	return errmsg.SUCCESE
+}
+
+func SortbyPage (pages string , itemId int)int {
+	var htmlpages []byte
+	var result map[string]int
+	htmlpages = []byte(pages)
+	err = json.Unmarshal(htmlpages, &result)
+	if err != nil {
+		return errmsg.ERROR
+	}
+
+	for s, p := range result {
+		db.Model(Page{}).Where("id = ?", s).Where("item_id = ?", itemId).Update("groupId", p)
 	}
 	return errmsg.SUCCESE
 }

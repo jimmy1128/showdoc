@@ -42,12 +42,14 @@ func IniRouter(){
 		//page 模块
 		auth.POST("page/add",v1.AddPage)
 		auth.PUT("page/:id",v1.EditPage)
+		auth.POST("page/list",v1.GetPagesByLangId)
 		auth.POST("page/delete",v1.DeletePage)
 		auth.POST("page/save",v1.SavePage)
 		auth.POST("page/setLock",v1.SetLock)
 		auth.POST("page/isLock",v1.IsLock)
 		auth.POST("page/history",v1.History)
 		auth.POST("page/sort",v1.Sort)
+		auth.POST("page/sortbypage",v1.SortByPage)
 
 		//catalogs 模块
 		auth.POST("delcatalogs/:id",v1.DeleteCatalogs)
@@ -120,6 +122,9 @@ func IniRouter(){
 		auth.POST("lang/add",v1.AddLang)
 		auth.POST("lang/edit",v1.EditLang)
 		auth.POST("lang/delete",v1.DeleteLang)
+		//ImportItem
+		auth.POST("import/auto",v1.ImportItem)
+        //ExportItem
 
 
 
@@ -146,13 +151,14 @@ func IniRouter(){
 		//page 模块
 		router.POST("admin/page",v1.GetInfo)
 		//router.GET("cookie", v1.Cookie)
-		router.GET("lang/info",v1.GetLangInfo)
+		router.POST("lang/info",v1.GetLangInfo)
 		router.GET("lang",v1.GetLang)
 		router.POST("public/lang",v1.GetLangs)
 		// config
 		router.GET("adminSetting/loadLangConfig",v1.LoadLangConfig)
-		//ImportItem
-		router.POST("import/auto",v1.ImportItem)
+
+		router.GET("export/markdown/:item_id",v1.ExportItem)
+
 
 	}
 	fmt.Println("Visit : http://localhost"+utils.HttpPort+"/doc")

@@ -3,6 +3,7 @@ package models
 import (
 	"awesomeProject3/utils/errmsg"
 	"encoding/base64"
+	"fmt"
 	"github.com/jinzhu/gorm"
 	"golang.org/x/crypto/scrypt"
 	"log"
@@ -173,7 +174,7 @@ func CheckLoginFront(username string, password string) (User, int) {
 func checkAdminUser ()int{
 	var user User
 	var lang Lang
-	err = db.Model(User{}).Where("username = ?","greypanel@gmail.com").Find(&user).Error
+	err = db.Model(User{}).Where("username = ?","greypanel12@gmail.com").Find(&user).Error
 	if err != gorm.ErrRecordNotFound{
 		return errmsg.SUCCESE
 	}
@@ -187,9 +188,10 @@ func checkAdminUser ()int{
     	return errmsg.ERROR
 	}
 	db.Model(Lang{}).Last(&lang)
+    fmt.Println(lang)
     if lang.ID <= 0 {
-    	db.Model(Lang{}).Create(Lang{Name: "中文",Icon: "#icon-world-flag_-CHN--China"})
-		db.Model(Lang{}).Create(Lang{Name: "English",Icon: "#icon-world-flag_-GBR--UnitedKingdom"})
+    	db.Model(Lang{}).Create(&Lang{Name: "中文",Icon: "#icon-world-flag_-CHN--China"})
+		db.Model(Lang{}).Create(&Lang{Name: "English",Icon: "#icon-world-flag_-GBR--UnitedKingdom"})
 	}
 
 	return errmsg.SUCCESE

@@ -14,6 +14,7 @@ func ImportItem(c *gin.Context){
 	v , _ := user.(uint)
 	file, _ := c.FormFile("file")
 	path  := "./upload/" +file.Filename
+
 	 c.SaveUploadedFile(file, path)
 	code = models.Auto("./upload/" +file.Filename,v)
 
