@@ -38,6 +38,7 @@ const (
 
 	// code = 10000 条件和需求
 	REQUIRE_PASSWORD_PERMISSION = 10307
+	FUNCTION_UNDER_DEVELOP = 10308
 
 
 )
@@ -63,6 +64,7 @@ var codeMsg = map[int]string{
 	ERROR_LANG_USED: "该语言已存在",
 	ERROR_LANG_NOT_EXIST: "该语言查询不存在",
 	ERROR_LANG_EMPTY:"请选择其中一种语言",
+	FUNCTION_UNDER_DEVELOP:"功能还在开发中",
 }
 
 func GetErrMsg(code int)string {

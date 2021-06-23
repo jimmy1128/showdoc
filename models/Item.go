@@ -58,9 +58,12 @@ type ItemSort struct {
 func (data *Item) GetItemInfo(keyword string, langId int, uid uint , itemId uint,defaultpageid string) ItemInfo {
 	var defaultid Page
 	var defaultpage Page
-
 	db.Model(Page{}).Where("id = ?",defaultpageid).Find(&defaultid)
-	db.Model(Page{}).Where("cid =?",langId).Where("group_id =?",defaultid.GroupId).Where("item_id = ?",itemId).Find(&defaultpage)
+		if langId != 0 {
+			if langId != defaultid.Cid {
+				db.Model(Page{}).Where("cid =?", langId).Where("group_id =?", defaultid.GroupId).Where("item_id = ?", itemId).Find(&defaultpage)
+			}
+		}
 
 	var page Page
 	var cat1 Catalogs
@@ -72,9 +75,16 @@ func (data *Item) GetItemInfo(keyword string, langId int, uid uint , itemId uint
 	itemInfo.ItemPermn = false
 	itemInfo.ItemCreator = false
 	if defaultpageid != "0" {
-		b := strconv.Itoa(int(defaultpage.ID))
-		itemInfo.DefaultPageId = b
+			b := strconv.Itoa(int(defaultpage.ID))
+			if b == "0" && uid ==0{
+				b = defaultpageid
+			}
+			if uid > 0 && b=="0"{
+				b = "0"
+			}
+			itemInfo.DefaultPageId = b
 	}
+
 	itemInfo.LangList = data.LangList
 	itemInfo.Link = data.Link
 	itemInfo.Lang = data.Lang

@@ -77,15 +77,11 @@ func GetLang(pageSize int ,pageNum int) ([]Lang,int){
 //查询语言列表
 func GetLangs(lang int ) (Lang,int){
 	var cate Lang
-	var icon string
+	//var icon string
+	var pages Page
 	//var data [] Lang
-	if lang == 1 {
-		icon = "#icon-world-flag_-CHN--China"
-	} else if lang == 2 {
-		icon = "#icon-world-flag_-GBR--UnitedKingdom"
-	}
-	err = db.Where("icon = ?",icon).Find(&cate).Error
-
+	db.Model(Pages{}).Where("id =?",lang).Find(&pages)
+	err = db.Where("id = ?",pages.Cid).Find(&cate).Error
 	if err != nil && err != gorm.ErrRecordNotFound{
 		return cate,0
 	}
