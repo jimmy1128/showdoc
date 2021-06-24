@@ -3,6 +3,7 @@ package v1
 import (
 	"awesomeProject3/models"
 	"awesomeProject3/utils/errmsg"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -94,12 +95,19 @@ func DeleteLang(c *gin.Context){
 	})
 }
 func GetLangs(c *gin.Context) {
+	var access int
+	session := sessions.Default(c)
+	user := session.Get("id")
+	v , _ := user.(uint)
+	if v == 0 {
+		access = 1
+	}
 	lang, _ := strconv.Atoi(c.PostForm("lang"))
-
 	data,code:=models.GetLangs(lang)
 
 	c.JSON(http.StatusOK,gin.H{
 		"status":code,
+		"access":access,
 		"data":data,
 		"message":errmsg.GetErrMsg(code),
 	})

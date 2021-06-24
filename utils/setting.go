@@ -16,6 +16,9 @@ var (
 	DbUser string
 	DbPassWord string
 	DbName string
+
+	Domain string
+	MaxAge int
 )
 
 func init (){
@@ -40,4 +43,8 @@ func LoadData (file *ini.File){
 	DbUser  = file.Section("database").Key("DbUser").MustString("root")
 	DbPassWord  = file.Section("database").Key("DbPassWord").MustString("Dreamfuture88")
 	DbName  = file.Section("database").Key("DbName").MustString("doc")
+}
+func LoadCookie (file *ini.File){
+	Domain = file.Section("cookie").Key("Domain").MustString("*")
+	MaxAge = file.Section("cookie").Key("MaxAge").MustInt(3600)
 }

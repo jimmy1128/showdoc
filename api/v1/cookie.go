@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"awesomeProject3/utils"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -11,7 +12,7 @@ func Cookie (c *gin.Context){
 	if err !=nil{
 		cookie ="lang"
 		//c.SetCookie("lang","CN",3600,"/","localhost",false,true)
-		c.SetCookie("itemid","1",600,"/","localhost",false,true)
+		c.SetCookie("itemid","1",utils.MaxAge,"/",utils.Domain,false,true)
 	}
 	fmt.Printf("Cookie value: %s \n", cookie)
 }

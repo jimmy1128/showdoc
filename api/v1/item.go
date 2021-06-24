@@ -25,6 +25,7 @@ func DeleteItem(c *gin.Context){
 }
 
 func ItemsInfo(c *gin.Context){
+	var access int
 	id ,_ := strconv.Atoi(c.PostForm("id"))
 	keyword := c.PostForm("keyword")
 	langId,_ := strconv.Atoi(c.PostForm("lang_id"))
@@ -40,6 +41,9 @@ func ItemsInfo(c *gin.Context){
 
 	} else {
 		itemInfo.IsLogin = true
+		if itemInfo.IsLogin == true {
+			access = 1
+		}
 	}
 	if item.UserId == user{
 		itemInfo.ItemCreator = true
@@ -55,6 +59,7 @@ func ItemsInfo(c *gin.Context){
 
 	c.JSON(http.StatusOK,gin.H{
 		"status" : code,
+		"access" : access,
 		"data" : itemInfo,
 		"message" : errmsg.GetErrMsg(code),
 	})
