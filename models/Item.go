@@ -451,7 +451,7 @@ func Pwd(itemId int, password string) int {
 
 func getMenu(itemId uint, langId int) Menu {
 	var menu Menu
-	menu = getContent(itemId, langId,)
+	menu = getContent(itemId, langId)
 	return menu
 }
 func getContent(itemId uint, langId int) Menu {
@@ -490,18 +490,25 @@ func getCat(catalogData Catalogs, page []*Page, catalogs []Catalogs) []Catalogs 
 	var sub_catalogs []Catalogs
 	var catalogsSubData []Catalogs
 	var mainCatalogs []Catalogs
+	var tmpCatalogs []Catalogs
+	var tmpCatalogs1 []Catalogs
+
 	catalogData.Page = _getPageByCatId(catalogData.ID, page)
 	sub_catalogs = _getCatByCatId(catalogData.ID, catalogs)
-
 	if sub_catalogs != nil {
 		for _, catalog := range sub_catalogs {
-			catalogData.Catalogs = getCat(catalog, page, catalogs)
-			catalogsSubData = append(mainCatalogs, catalogData)
+			tmpCatalogs = getCat(catalog, page, catalogs)
+			for _, tmpCatalog := range tmpCatalogs {
+				tmpCatalogs1 = append(tmpCatalogs1 , tmpCatalog)
+			}
+			catalogData.Catalogs =tmpCatalogs1
+				catalogsSubData = append(mainCatalogs, catalogData)
 		}
 	}
 	if catalogData.Catalogs == nil {
 		catalogsSubData = append(catalogsSubData, catalogData)
 	}
+
 	return catalogsSubData
 }
 
