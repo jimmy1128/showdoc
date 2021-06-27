@@ -159,6 +159,7 @@ export const ZH_CN = {
   catalog: '目录',
   level_2_directory: '二级目录',
   level_3_directory: '三级目录',
+  under_develop: '小哥还在开发中',
   s_number: '序号',
   s_number_explain: '(可选)默认是99，数字越小越靠前',
   optional: '可选',

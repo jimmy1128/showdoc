@@ -255,6 +255,7 @@ export const EN_US = {
   input_cat_name: 'input catalog name',
   parent_cat_name: 'parent catalog',
   none: 'none',
+  under_develop: 'under develop',
   save_success: 'save success',
   back_to_top: 'back to top',
   draft_tips:
