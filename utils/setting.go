@@ -29,6 +29,7 @@ func init (){
 	}
 	LoadServer(file)
 	LoadData(file)
+	LoadCookie(file)
 }
 
 func LoadServer(file *ini.File){

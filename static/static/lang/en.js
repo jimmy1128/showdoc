@@ -56,6 +56,10 @@ export const EN_US = {
   status_3: 'Unbound',
   binding: 'Binding',
   modify: 'Modify',
+  update: 'Update',
+  memu_manage: 'Menu Manage',
+  page_manage: 'Page Manage',
+  lang_manage: 'Language Manage',
   modify_password: 'modify password',
   old_password: 'old password',
   new_password: 'new password',
@@ -179,6 +183,7 @@ export const EN_US = {
   copy_interface_to_new: 'Copy this page to a new page',
   copy: 'copy',
   edit: 'edit',
+  sort_pages: 'sort pages',
   detail: 'detail',
   delete_interface: 'delete page',
   comfirm_delete: 'comfirm to delete',
@@ -189,10 +194,14 @@ export const EN_US = {
   input_keyword: 'press Enter to search',
   item_page_address: 'item page address',
   single_page_address: 'single page address',
+  back_to_team: 'back to team',
+  group_page: 'group by page',
+  Join_time: 'Join time',
   page_diff_tips:
     'What is the difference between the project page address and the single page address?',
 
   title: 'title',
+  item_language: 'Item Language',
   language: '中文',
   language1: 'Language',
   level_2_directory: 'level 2 catalog',
@@ -232,7 +241,7 @@ export const EN_US = {
   save_templ_title: 'input template title',
   save_templ_text:
     'The template has been saved. When you create or edit an edit page later, click the "More Templates" button to use your saved template.',
-  welcome_use_showdoc: 'Welcome to Doc！',
+  welcome_use_doc: 'Welcome to Doc！',
   templ_list: 'template list',
   templ_title: 'template title',
   no_templ_text:
@@ -240,7 +249,7 @@ export const EN_US = {
   save_time: 'save time',
   insert_templ: 'insert',
   delete_templ: 'delete',
-
+  catalog: 'catalog',
   add_cat: 'add catalog',
   cat_name: 'catalog name',
   input_cat_name: 'input catalog name',

@@ -63,7 +63,7 @@ func DeleteTemplate (c *gin.Context){
 func SaveTemp(c *gin.Context) {
 	session := sessions.Default(c)
 	user := session.Get("id")
-	v := user.(int)
+	v , _ := user.(uint)
 	if user == nil {
 		return
 	}else {
@@ -73,7 +73,7 @@ func SaveTemp(c *gin.Context) {
 		var template models.Template
 		template.Title = title
 		template.Content = content
-		template.UserId = uint(v)
+		template.UserId = v
 
 		data , code := template.Save()
 		c.JSON(http.StatusOK,gin.H{

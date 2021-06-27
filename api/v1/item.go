@@ -219,7 +219,7 @@ func Pwd (c *gin.Context){
 	password:= c.PostForm("password")
 	code := models.Pwd(itemId,password)
 	if code == errmsg.SUCCESE{
-		c.SetCookie("visit_item", utils.Md5(string(itemId)),3600,"/","localhost",false,true)
+		c.SetCookie("visit_item", utils.Md5(string(itemId)),utils.MaxAge,"/",utils.Domain,false,true)
 	}
 	c.JSON(http.StatusOK,gin.H{
 		"status":code,

@@ -16,7 +16,6 @@ type Page struct {
 	ItemId       uint                  `gorm:"type:int;not null" json:"itemid"`
 	AuthorUid    uint                  `gorm:"type:int;not null" json:"authoruid"`
 	CatId        uint                  `gorm:"type:int;not null" json:"catid"`
-	Name         string                `gorm:"type:varchar(255);not null" json:"catname"`
 	PageTitle    string                `gorm:"type:varchar(255);not null" json:"pagetitle"`
 	PageContent  string                `gorm:"type:longtext" json:"pagecontent"`
 	SNumber      uint                  `gorm:"type:int;not null" json:"snumber"`

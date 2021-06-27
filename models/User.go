@@ -12,7 +12,7 @@ import (
 
 type User struct {
 	gorm.Model
-	Username  string    `gorm:"type:varchar(255);not null" json:"username" validate:"required,min=10,max=50" label:"用户名"`
+	Username  string    `gorm:"type:varchar(255);not null" json:"username" validate:"required,min=5,max=50" label:"用户名"`
 	Password  string    `gorm:"type:varchar(30);not null" json:"password" validate:"required,min=6,max=20" label:"密码"`
 	Role      int       `gorm:"type:int;DEFAULT:2" json:"role"`
 	Email     string    `gorm:"type:varchar(255)" json:"email"`

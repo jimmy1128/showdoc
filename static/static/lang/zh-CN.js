@@ -53,7 +53,10 @@ export const ZH_CN = {
   new_password: '新密码',
   modify_success: '修改成功',
   update_email_success: '更新邮箱成功！请登录邮箱查收验证邮件',
-
+  update: '更新',
+  memu_manage: '目录管理',
+  page_manage: '页面管理',
+  lang_manage: '语言管理',
   personal_setting: '个人设置',
   web_home: '网站首页',
   logout: '退出登录',
@@ -151,7 +154,7 @@ export const ZH_CN = {
   item_page_address: '项目页面地址',
   single_page_address: '单页面地址',
   page_diff_tips: '项目页面地址和单页面地址有什么区别？',
-
+  group_page: '页面组合',
   title: '标题',
   catalog: '目录',
   level_2_directory: '二级目录',
@@ -187,7 +190,7 @@ export const ZH_CN = {
   save_templ_title: '请为要保存的模板设置标题',
   save_templ_text:
     '已经保存好模板。你以后新建或者编辑编辑页面时，点击“更多模板”按钮，便可以使用你保存的模板',
-  welcome_use_showdoc: '欢迎使用Doc！',
+  welcome_use_doc: '欢迎使用Doc！',
   templ_list: '模板列表',
   templ_title: '模板标题',
   lang_setting: '语言设置',
@@ -313,7 +316,7 @@ export const ZH_CN = {
 
   sort_pages: '页面排序',
   sort_pages_tips: '选择特定的目录后，你可以对该目录下的页面进行拖动排序',
-
+  item_language: '项目语言',
   regular_item: '常规项目',
   single_item: '单页项目',
   copy_item: '复制项目',
