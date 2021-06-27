@@ -78,7 +78,7 @@ export const EN_US = {
   home_page: 'Home Page Setting',
   register_open: 'Register Open',
   personal_setting: 'personal setting',
-  lang_setting: 'language setting',
+  lang_setting: 'Language',
   web_home: 'web home',
   logout: 'logout',
   add_an_item: 'add an item',
