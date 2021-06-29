@@ -22,14 +22,14 @@
 	{
         if (define.amd) // for Require.js
         {
-            var cmModePath  = "codemirror/mode/";
-            var cmAddonPath = "codemirror/addon/";
+            var cmModePath  = "./lib/codemirror/mode/";
+            var cmAddonPath = "./lib/codemirror/addon/";
 
             var codeMirrorModules = [
                 "jquery", "marked", "prettify",
                 "katex", "raphael", "underscore", "flowchart",  "jqueryflowchart",  "sequenceDiagram",
 
-                "codemirror/lib/codemirror",
+                "./lib/codemirror/lib/codemirror",
                 cmModePath + "css/css",
                 cmModePath + "sass/sass",
                 cmModePath + "shell/shell",
@@ -4248,8 +4248,8 @@
     // 使用国外的CDN，加载速度有时会很慢，或者自定义URL
     // You can custom KaTeX load url.
     editormd.katexURL  = {
-        css : "//cdn.staticfile.org/KaTeX/0.3.0/katex.min",
-        js  : "//cdn.staticfile.org/KaTeX/0.3.0/katex.min"
+        css : "//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min",
+        js  : "//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min"
     };
     
     editormd.kaTeXLoaded = false;

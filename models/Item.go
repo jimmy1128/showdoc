@@ -432,6 +432,11 @@ func checkItemVisit(uid uint, itemId int, sid string) int {
 	var itemMember ItemMember
 	var teamitemMember TeamItemMember
 	var item Item
+	var user User
+	db.Model(User{}).Where("id =?",uid).Find(&user)
+	if user.Role == 1 {
+		return errmsg.SUCCESE
+	}
 	if checkItemCreator(uid, itemId) == errmsg.SUCCESE {
 		return errmsg.SUCCESE
 	}
