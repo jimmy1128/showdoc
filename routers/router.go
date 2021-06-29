@@ -50,6 +50,7 @@ func IniRouter(){
 		auth.POST("page/history",v1.History)
 		auth.POST("page/sort",v1.Sort)
 		auth.POST("page/sortbypage",v1.SortByPage)
+		auth.POST("page/diff",v1.Diff)
 
 		//catalogs 模块
 		auth.POST("delcatalogs/:id",v1.DeleteCatalogs)
@@ -124,7 +125,10 @@ func IniRouter(){
 		auth.POST("lang/delete",v1.DeleteLang)
 		//ImportItem
 		auth.POST("import/auto",v1.ImportItem)
-        //ExportItem
+		//ExportItem
+		auth.GET("export/markdown/:item_id",v1.ExportItem)
+
+
 
 
 
@@ -155,9 +159,8 @@ func IniRouter(){
 		router.GET("lang",v1.GetLang)
 		router.POST("public/lang",v1.GetLangs)
 		// config
-		router.GET("adminSetting/loadLangConfig",v1.LoadLangConfig)
+		router.POST("adminSetting/loadLangConfig",v1.LoadLangConfig)
 
-		router.GET("export/markdown/:item_id",v1.ExportItem)
 
 
 	}

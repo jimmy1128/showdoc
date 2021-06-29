@@ -3,6 +3,7 @@ package models
 import (
 	"awesomeProject3/utils/errmsg"
 	"github.com/jinzhu/gorm"
+	"strings"
 )
 
 type Options struct {
@@ -63,12 +64,20 @@ func SaveLangConfig(uid uint , id int) int{
 	}
 	return errmsg.SUCCESE
 }
-func LoadLangConfig() (Lang,int){
+func LoadLangConfig(itemId int) (Lang,int){
 	var option Options
 	var lang Lang
-	//var result []Options
+	var item Item
 	err = db.Model(Options{}).Where("option_name = ?","lang").Find(&option).Error
-	db.Model(Lang{}).Where("id =?",option.OptionValue).Find(&lang)
+	db.Model(Item{}).Where("id = ?",itemId).Find(&item)
+	s := strings.Split(item.LangList, ",")
+	for _, i2 := range s  {
+		if i2 == option.OptionValue{
+			db.Model(Lang{}).Where("id =?",option.OptionValue).Find(&lang)
+			return lang,errmsg.SUCCESE
+		}
+	}
+	db.Model(Lang{}).Where("id =?",s[0]).Find(&lang)
 	if err != nil {
 		return lang,errmsg.SUCCESE
 	}

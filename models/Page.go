@@ -3,6 +3,7 @@ package models
 import (
 	"awesomeProject3/utils"
 	"awesomeProject3/utils/errmsg"
+	"encoding/base64"
 	"encoding/json"
 	"github.com/jinzhu/gorm"
 	"gorm.io/plugin/soft_delete"
@@ -53,6 +54,10 @@ type PageHistory struct {
 type Pages struct {
 	PageId  int
 	SNumber int
+}
+type DiffPage struct {
+	 Page Page
+     PageHistory PageHistory
 }
 
 
@@ -268,25 +273,29 @@ func UpdateHistoryComments(uid uint, pageId int, pageComments string, pageHistor
 	}
 	return errmsg.SUCCESE
 }
-func Diff(pageId int, pagehistoryId int, uid uint) (bool, PageHistory) {
+func Diff(pageId int, pagehistoryId int, uid uint) (bool, DiffPage) {
+	var pageData DiffPage
 	var page Page
 	var pagehistory PageHistory
-	if pageId != 0 {
-		return false, pagehistory
+	if pageId == 0 {
+		return false, pageData
 	}
-	db.Model(Page{}).Where("page_id = ?", pageId).Find(&page)
-	if &page != nil {
+	db.Model(Page{}).Where("id = ?", pageId).Find(&page)
+	if &page == nil {
 		time.Sleep(1)
-		return false, pagehistory
+		return false, pageData
 	}
 	if checkItemVisit(uid, int(page.ItemId), "") != errmsg.SUCCESE {
-		return true, pagehistory
+		return true, pageData
 	}
 	db.Model(PageHistory{}).Where("id = ?", pagehistoryId).Find(&pagehistory)
-	pageContent, _ := utils.GUnzipData([]byte(pagehistory.PageContent))
+	pageDecode,_ := base64.StdEncoding.DecodeString(pagehistory.PageContent)
+	pageContent, _ := utils.GUnzipData(pageDecode)
 	pagehistory.PageContent = string(pageContent)
+	pageData.Page= page
+	pageData.PageHistory = pagehistory
 
-	return true, pagehistory
+	return true, pageData
 }
 
 func Sort(pages string, itemId int, uid uint) int {

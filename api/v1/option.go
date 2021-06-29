@@ -53,10 +53,11 @@ func LoadLangConfig(c *gin.Context) {
 	session := sessions.Default(c)
 	user := session.Get("id")
 	v , _ := user.(uint)
+	itemId,_ := strconv.Atoi(c.PostForm("id"))
 	if v > 0 {
 		access = 1
 	}
-	data,code := models.LoadLangConfig()
+	data,code := models.LoadLangConfig(itemId)
 	c.JSON(http.StatusOK,gin.H{
 		"status":code,
 		"access":access,

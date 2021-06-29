@@ -5,6 +5,7 @@ import (
 	"awesomeProject3/utils"
 	"awesomeProject3/utils/errmsg"
 	"encoding/base64"
+	"fmt"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -182,6 +183,26 @@ func SortByPage(c *gin.Context){
 	code = models.SortbyPage(pages,itemId)
 	c.JSON(http.StatusOK,gin.H{
 		"status":code ,
+		"message":errmsg.GetErrMsg(code),
+	})
+}
+
+func Diff(c *gin.Context){
+	session := sessions.Default(c)
+	user := session.Get("id")
+	v , _ := user.(uint)
+	pageId ,_ := strconv.Atoi(c.PostForm("page_id"))
+	pageHistoryId ,_ := strconv.Atoi(c.PostForm("page_history_id"))
+	boolen,data := models.Diff(pageId,pageHistoryId,v)
+	fmt.Println(boolen)
+	if boolen == false {
+		code = errmsg.ERROR
+	}else {
+		code = errmsg.SUCCESE
+	}
+	c.JSON(http.StatusOK,gin.H{
+		"status":code,
+		"data":data,
 		"message":errmsg.GetErrMsg(code),
 	})
 }

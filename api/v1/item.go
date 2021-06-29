@@ -45,6 +45,7 @@ func ItemsInfo(c *gin.Context){
 			access = 1
 		}
 	}
+
 	if item.UserId == user{
 		itemInfo.ItemCreator = true
 		itemInfo.ItemPermn = true

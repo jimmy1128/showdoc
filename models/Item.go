@@ -131,9 +131,16 @@ func GetMyItem(uid uint) ([]Item, int) {
 	var itemMember []ItemMember
 	var member_item_ids []uint
 	var item_sort ItemSort
+	var user User
+	db.Model(User{}).Where("id = ?",uid).Find(&user)
+	// 如果是管理员就显示全部项目
+	if user.Role == 1 {
+		db.Where("deleted_at is NULL").Find(&item)
 
-	err = db.Where("user_id =?", uid).Where("deleted_at is NULL").Find(&item).Error
+	}else {
 
+		err = db.Where("user_id =?", uid).Where("deleted_at is NULL").Find(&item).Error
+	}
 	for _, i2 := range item {
 		member_item_ids = append(member_item_ids, i2.ID)
 	}
@@ -154,16 +161,18 @@ func GetMyItem(uid uint) ([]Item, int) {
 	var result []Item
 	var result3 []Item
 	for _, i3 := range item {
-		if i3.UserId == uid {
+		if user.Role == 1 {
 			i3.Creator = 1
-		} else {
-			i3.Creator = 0
-		}
-		if i3.Password != "" {
-			i3.IsPrivate = 1
-		} else {
-			i3.IsPrivate = 0
-		}
+		} else if i3.UserId == uid {
+				i3.Creator = 1
+			} else {
+				i3.Creator = 0
+			}
+			if i3.Password != "" {
+				i3.IsPrivate = 1
+			} else {
+				i3.IsPrivate = 0
+			}
 
 		result = append(result, i3)
 
@@ -394,6 +403,11 @@ func CheckItemPermn(uid uint, itemId int) int {
 	var item Item
 	var itemMember ItemMember
 	var itemTeamMember TeamItemMember
+	var user User
+	db.Model(User{}).Where("id =?",uid).Find(&user)
+	if user.Role == 1 {
+		 return errmsg.SUCCESE
+	}
 	if uid <= 0 {
 		return errmsg.ERROR
 	}
