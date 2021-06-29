@@ -86,6 +86,7 @@ func (data *Item) GetItemInfo(keyword string, langId int, uid uint , itemId uint
 	}
 
 	itemInfo.LangList = data.LangList
+	itemInfo.Title = data.Title
 	itemInfo.Link = data.Link
 	itemInfo.Lang = data.Lang
 	itemInfo.Menu = itemInfo.GetMenu(keyword, langId, uid, itemId)

@@ -78,6 +78,10 @@ func LoadLangConfig(itemId int) (Lang,int){
 		}
 	}
 	db.Model(Lang{}).Where("id =?",s[0]).Find(&lang)
+	if itemId == 0 {
+		db.Model(Lang{}).Where("id =?",option.OptionValue).Find(&lang)
+	}
+
 	if err != nil {
 		return lang,errmsg.SUCCESE
 	}
