@@ -6,14 +6,14 @@ import (
 )
 
 type ItemAvatar struct {
-	AvatarId uint `gorm:"primaryKey;autoIncrement:true" json:"avatarId"`
+	AvatarId uint `gorm:"primary_key;autoIncrement:true" json:"avatarId"`
 	AvatarName string `gorm:"type:varchar(255)" json:"avatarName"`
 	AvatarUrl string `gorm:"type:varchar(255)" json:"avatarUrl"`
 	AvatarItemId uint `gorm:"type:int" json:"avatarItemId"`
 }
 
 type ItemHeader struct {
-	HeaderId uint `gorm:"primaryKey;autoIncrement:true" json:"headerId"`
+	HeaderId uint `gorm:"primary_key;autoIncrement:true" json:"headerId"`
 	HeaderName string `gorm:"type:varchar(255)" json:"headerName"`
 	HeaderUrl string `gorm:"type:varchar(255)" json:"headerUrl"`
 	ItemId uint `gorm:"type:int" json:"itemId"`
