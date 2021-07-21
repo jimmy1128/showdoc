@@ -129,9 +129,7 @@ func IniRouter(){
 		auth.GET("export/markdown/:item_id",v1.ExportItem)
         //Dashboard
         auth.POST("avatar/update",v1.SaveAvatar)
-		auth.POST("avatar/profile",v1.GetAvatar)
 		auth.POST("avatar/header",v1.SaveHeader)
-		auth.POST("avatar/getHeader",v1.GetHeader)
 		auth.POST("avatar/deleteHeader",v1.DeleteHeader)
 
 
@@ -165,7 +163,9 @@ func IniRouter(){
 		// config
 		router.POST("adminSetting/loadLangConfig",v1.LoadLangConfig)
 		router.GET("export/word",v1.ExportWord)
-
+		//Dashboard
+		router.POST("avatar/getHeader",v1.GetHeader)
+		router.POST("avatar/profile",v1.GetAvatar)
 
 
 	}
