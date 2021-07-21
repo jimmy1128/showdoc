@@ -40,11 +40,8 @@ func SaveAvatar(itemId int,name string , url string,uid uint)int{
 
 	return errmsg.SUCCESE
 }
-func GetAvatar(itemId int,v uint)(ItemAvatar,int){
+func GetAvatar(itemId int)(ItemAvatar,int){
 	var avatar ItemAvatar
-	if v < 1 {
-		return avatar,errmsg.ERROR_USER_NO_RIGHT
-	}
 	err = db.Model(ItemAvatar{}).Where("avatar_item_id = ?",itemId).Find(&avatar).Error
 
 	return avatar , errmsg.SUCCESE
@@ -93,11 +90,8 @@ func SaveHeader(itemId int , v uint,data string)int {
 	return errmsg.SUCCESE
 }
 
-func GetHeader(itemId int , uid uint , langId int)([]ItemHeader,int){
+func GetHeader(itemId int , langId int)([]ItemHeader,int){
 	var itemHeader []ItemHeader
-	if uid <0 {
-		return itemHeader,errmsg.ERROR_USER_NO_RIGHT
-	}
 	db.Model(ItemHeader{}).Where("item_id = ?",itemId).Where("cid =?",langId).Find(&itemHeader)
 	return itemHeader , errmsg.SUCCESE
 }

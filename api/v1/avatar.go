@@ -24,11 +24,9 @@ func SaveAvatar(c *gin.Context){
 }
 
 func GetAvatar (c *gin.Context){
-	session := sessions.Default(c)
-	user := session.Get("id")
-	v , _ := user.(uint)
+
 	itemId ,_ := strconv.Atoi(c.PostForm("item_id"))
-	data , code := models.GetAvatar( itemId,v)
+	data , code := models.GetAvatar( itemId,)
 	c.JSON(http.StatusOK,gin.H{
 		"status":code,
 		"data":data,
@@ -50,12 +48,9 @@ func SaveHeader (c *gin.Context){
 	})
 }
 func GetHeader(c *gin.Context){
-	session := sessions.Default(c)
-	user := session.Get("id")
-	v , _ := user.(uint)
 	itemId ,_ := strconv.Atoi(c.PostForm("item_id"))
 	langId ,_ := strconv.Atoi(c.PostForm("lang_id"))
-	data , code := models.GetHeader(itemId,v,langId)
+	data , code := models.GetHeader(itemId,langId)
 	c.JSON(http.StatusOK,gin.H{
 		"status":code ,
 		"data":data,
