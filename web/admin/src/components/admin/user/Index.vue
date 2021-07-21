@@ -105,7 +105,7 @@ export default {
     },
     get_user_list () {
       var that = this
-      var url = this.DocConfig.server + '/adminUser/getList'
+      var url = DocConfig.server + '/adminUser/getList'
       var params = new URLSearchParams()
       params.append('username', this.username)
       params.append('page', this.page)
@@ -147,7 +147,7 @@ export default {
     },
     delete_user (row) {
       var that = this
-      var url = this.DocConfig.server + '/adminUser/deleteUser'
+      var url = DocConfig.server + '/adminUser/deleteUser'
       this.$confirm(that.$t('confirm_delete'), ' ', {
         confirmButtonText: that.$t('confirm'),
         cancelButtonText: that.$t('cancel'),
@@ -177,7 +177,7 @@ export default {
     },
     add_user () {
       var that = this
-      var url = this.DocConfig.server + '/adminUser/addUser'
+      var url = DocConfig.server + '/adminUser/addUser'
       var params = new URLSearchParams()
       params.append('username', that.addForm.username)
       params.append('password', this.addForm.password)

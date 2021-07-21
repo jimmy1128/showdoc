@@ -165,7 +165,7 @@ export default {
   methods: {
     onSubmit () {
       var that = this
-      var url = this.DocConfig.server + '/adminSetting/saveConfig'
+      var url = DocConfig.server + '/adminSetting/saveConfig'
       var params = new URLSearchParams()
       params.append('register_open', that.form.register_open)
       that.$http.post(url, params).then(function (response) {
@@ -178,7 +178,7 @@ export default {
     },
     loadConfig () {
       var that = this
-      var url = this.DocConfig.server + '/adminSetting/loadConfig'
+      var url = DocConfig.server + '/adminSetting/loadConfig'
       var params = new URLSearchParams()
       that.$http.get(url, params).then(function (response) {
         if (response.data.status === 200) {
@@ -205,7 +205,7 @@ export default {
     },
     get_item_list () {
       var that = this
-      var url = this.DocConfig.server + '/adminItem/getList'
+      var url = DocConfig.server + '/adminItem/getList'
       var params = new URLSearchParams()
       params.append('page', 1)
       params.append('count', 1000)

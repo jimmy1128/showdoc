@@ -2,7 +2,7 @@ body{
     margin: 0;
   }
   .grey-bg{
-    background-color: rgb(250, 250, 250);
+    background-color: rgb(255, 255, 255);
   }
   #app {
       font: 14px/1.5 "PingFang SC","Microsoft Yahei", 微软雅黑, Tahoma, Arial, Helvetica, STHeiti;

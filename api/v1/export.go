@@ -27,3 +27,23 @@ func ExportItem(c *gin.Context){
 
 }
 
+func ExportWord(c *gin.Context){
+	session := sessions.Default(c)
+	user := session.Get("id")
+	v ,_ := user.(uint)
+	itemId,_ := strconv.Atoi(c.Query("item_id"))
+	CatId,_ := strconv.Atoi(c.Query("cat_id"))
+	PageId,_ := strconv.Atoi(c.Query("page_id"))
+	code = models.ExportWord(uint(itemId), uint(CatId), uint(PageId),v)
+
+	c.Header("Content-type","application/octet-steam")
+	c.Header("Content-Disposition","filename="+"1"+".doc")
+	c.Header("Content-Description","File Transfer")
+	c.Header("Content-Type","application/octet-stream")
+	c.Header("Content-Transfer-Encoding","binary")
+	c.Header("Expires","0")
+	c.Header("Cache-Control","must-revalidate,post-check=0,pre-check=0")
+	c.Header("Pragma","public")
+
+}
+

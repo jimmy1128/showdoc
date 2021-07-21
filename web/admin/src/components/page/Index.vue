@@ -6,12 +6,15 @@
          <div class="doc-title-box">
             <span id="doc-title-span" class="dn"></span>
             <h2 id="doc-title">{{page_title}}</h2>
+            <i class="el-icon-full-screen" id="full-page" v-show="showfullPageBtn" @click="clickFullPage"
+        ></i>
         </div>
         <div id="doc-body" >
-        <div id="page_md_content" ><Editormd v-bind:content="content" v-if="content" type="html"></Editormd></div>
+        <div id="page_md_content" class="page_content_main"><Editormd v-bind:content="content" v-if="content" type="html"></Editormd></div>
         </div>
       </div>
       <BackToTop></BackToTop>
+      <Toc v-if="page_id && showToc"></Toc>
     <Footer> </Footer>
     <div class=""></div>
   </div>
@@ -100,7 +103,7 @@ export default {
     get_page_content () {
       var that = this
       var page_id = that.$route.params.page_id
-      var url = this.DocConfig.server + '/admin/page'
+      var url = DocConfig.server + '/admin/page'
       var params = new URLSearchParams()
       params.append('page_id', page_id)
       that.$http.post(url, params)
@@ -137,7 +140,8 @@ export default {
       })
     }
     // 给body添加类，设置背景色*/
-    document.getElementsByTagName('body')[0].className = 'grey-bg'
+    //document.getElementsByTagName('body')[0].className = 'grey-bg'
+    document.body.removeAttribute('class', 'grey-bg')
   },
   beforeDestroy () {
     // 去掉添加的背景色*/

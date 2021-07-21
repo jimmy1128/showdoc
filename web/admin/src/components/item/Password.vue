@@ -54,7 +54,7 @@ export default {
       var item_id = this.$route.params.item_id ? this.$route.params.item_id : 0
       var page_id = this.$route.query.page_id ? this.$route.query.page_id : 0
       var that = this
-      var url = this.DocConfig.server + '/item/pwd'
+      var url = DocConfig.server + '/item/pwd'
       var params = new URLSearchParams()
       params.append('item_id', item_id)
       params.append('page_id', page_id)

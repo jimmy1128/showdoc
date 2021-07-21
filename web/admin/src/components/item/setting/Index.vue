@@ -28,6 +28,10 @@
             <el-tab-pane :label="$t('recycle')" name="five">
               <Recycle></Recycle>
             </el-tab-pane>
+
+            <el-tab-pane :label="$t('profile')" name="six">
+              <Profile></Profile>
+            </el-tab-pane>
           </el-tabs>
         </template>
       </el-card>
@@ -43,6 +47,7 @@ import Member from '@/components/item/setting/Member'
 import Advanced from '@/components/item/setting/Advanced'
 import OpenApi from '@/components/item/setting/OpenApi'
 import Recycle from '@/components/item/setting/Recycle'
+import Profile from '@/components/item/setting/Profile'
 export default {
   name: 'Login',
   components: {
@@ -50,7 +55,8 @@ export default {
     Member,
     Advanced,
     OpenApi,
-    Recycle
+    Recycle,
+    Profile
   },
   data () {
     return {
@@ -60,7 +66,7 @@ export default {
   methods: {
     get_item_info () {
       var that = this
-      var url = this.DocConfig.server + '/item/detail'
+      var url = DocConfig.server + '/item/detail'
       var params = new URLSearchParams()
       params.append('item_id', that.$route.params.item_id)
       that.$http

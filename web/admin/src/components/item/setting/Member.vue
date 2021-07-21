@@ -225,7 +225,7 @@ export default {
     },
     get_members () {
       var that = this
-      var url = this.DocConfig.server + '/itemmember/getList'
+      var url = DocConfig.server + '/itemmember/getList'
       var params = new URLSearchParams()
       params.append('item_id', that.$route.params.item_id)
       that.$http.post(url, params).then(function (response) {
@@ -240,7 +240,7 @@ export default {
     },
     get_teams () {
       var that = this
-      var url = this.DocConfig.server + '/team/list'
+      var url = DocConfig.server + '/team/list'
       var params = new URLSearchParams()
       that.$http.post(url, params).then(function (response) {
         if (response.data.status === 200) {
@@ -253,7 +253,7 @@ export default {
     },
     getTeamItem () {
       var that = this
-      var url = this.DocConfig.server + '/teamitem/list'
+      var url = DocConfig.server + '/teamitem/list'
       var params = new URLSearchParams()
       params.append('item_id', that.$route.params.item_id)
       that.$http.post(url, params).then(function (response) {
@@ -268,7 +268,7 @@ export default {
     getTeamItemMember (team_id) {
       var that = this
       this.dialogFormTeamMemberVisible = true
-      var url = this.DocConfig.server + '/teamitemmember/list'
+      var url = DocConfig.server + '/teamitemmember/list'
       var params = new URLSearchParams()
       params.append('item_id', that.$route.params.item_id)
       params.append('team_id', team_id)
@@ -283,7 +283,7 @@ export default {
     },
     MyFormSubmit () {
       var that = this
-      var url = this.DocConfig.server + '/itemmember/save'
+      var url = DocConfig.server + '/itemmember/save'
       var params = new URLSearchParams()
       params.append('item_id', that.$route.params.item_id)
       params.append('username', this.MyForm.username)
@@ -311,7 +311,7 @@ export default {
     },
     addTeam () {
       var that = this
-      var url = this.DocConfig.server + '/teamitem/save'
+      var url = DocConfig.server + '/teamitem/save'
       var params = new URLSearchParams()
       params.append('item_id', that.$route.params.item_id)
       params.append('team_id', this.MyForm2.team_id)
@@ -327,7 +327,7 @@ export default {
     },
     delete_member (item_member_id) {
       var that = this
-      var url = this.DocConfig.server + '/itemmember/delete'
+      var url = DocConfig.server + '/itemmember/delete'
       this.$confirm(that.$t('confirm_delete'), ' ', {
         confirmButtonText: that.$t('confirm'),
         cancelButtonText: that.$t('cancel'),
@@ -339,6 +339,7 @@ export default {
         that.$http.post(url, params).then(function (response) {
           if (response.data.status === 200) {
             that.get_members()
+            // window.location.reload()
           } else {
             that.$alert(response.data.message)
           }
@@ -347,7 +348,7 @@ export default {
     },
     deleteTeam (ID) {
       var that = this
-      var url = this.DocConfig.server + '/teamitem/delete'
+      var url = DocConfig.server + '/teamitem/delete'
       this.$confirm(that.$t('confirm_delete'), ' ', {
         confirmButtonText: that.$t('confirm'),
         cancelButtonText: that.$t('cancel'),
@@ -366,7 +367,7 @@ export default {
     },
     changeTeamItemMemberGroup (member_group_id, ID) {
       var that = this
-      var url = this.DocConfig.server + '/teamitemmember/save'
+      var url = DocConfig.server + '/teamitemmember/save'
       var params = new URLSearchParams()
       params.append('memberGroupId', member_group_id)
       params.append('id', ID)
@@ -380,7 +381,7 @@ export default {
     },
     getAllUser (queryString) {
       var that = this
-      var url = this.DocConfig.server + '/admin/user'
+      var url = DocConfig.server + '/admin/user'
       var params = new URLSearchParams()
       if (!queryString) {
         queryString = ''
@@ -389,7 +390,6 @@ export default {
       that.$http.post(url, params).then(response => {
         if (response.data.status === 200) {
           var Info = response.data.data
-          console.log(Info)
           var newInfo = []
           // 过滤掉已经是成员的用户
           for (var i = 0; i < Info.length; i++) {
@@ -415,16 +415,18 @@ export default {
     // 判断某个用户是否已经是会员
     isMember (username) {
       const list = this.members
-      for (let i = 0; i < list.length; i++) {
-        if (list[i].username === username) {
-          return true
+      if (list !== null) {
+        for (let i = 0; i < list.length; i++) {
+          if (list[i].username === username) {
+            return true
+          }
         }
+        return false
       }
-      return false
     },
     get_catalog () {
       var that = this
-      var url = this.DocConfig.server + '/catListGroup'
+      var url = DocConfig.server + '/catListGroup'
       var params = new URLSearchParams()
       params.append('item_id', that.$route.params.item_id)
       that.$http.post(url, params).then(function (response) {
@@ -432,21 +434,21 @@ export default {
           var Info = response.data.data
           Info.unshift({
             cat_id: 0,
-            catname: that.$t('all_cat')
+            cat_name: that.$t('all_cat')
           })
           that.catalogs = Info
         } else {
-          that.$alert(response.data.message)
+          that.$message(response.data.message)
         }
       })
     },
     changeTeamItemMemberCat (cat_id, id) {
       var that = this
-      var url = this.DocConfig.server + '/teamitemmember/save'
+      var url = DocConfig.server + '/teamitemmember/save'
       var params = new URLSearchParams()
       params.append('cat_id', cat_id)
       params.append('id', id)
-      that.axios.post(url, params).then(function (response) {
+      that.$http.post(url, params).then(function (response) {
         if (response.data.status === 200) {
           that.$message(that.$t('cat_success'))
         } else {

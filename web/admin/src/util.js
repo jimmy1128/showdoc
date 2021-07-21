@@ -1,4 +1,4 @@
-import { Url } from './http'
+// import { Url } from './http'
 
 // 全局函数/变量
 export default {
@@ -6,10 +6,10 @@ export default {
     Vue.prototype.getData = function () {
       console.log('我是插件中的方法')
     }
-    Vue.prototype.DocConfig = {
-      server: 'http://103.118.82.117:8080/api/v1'
-    // "server":'../server/index.php?s=',
-    }
+    // Vue.prototype.DocConfig = {
+    //  server: 'http://localhost:8080/api/v1'
+    // // "server":'../server/index.php?s=',
+    // }
     Vue.prototype.request = function () {
 
     }
@@ -22,7 +22,7 @@ export default {
     }
     Vue.prototype.get_user_info = function (callback) {
       var that = this
-      var url = this.DocConfig.server + '/user/info'
+      var url = window.DocConfig.server + '/user/info'
       var params = new URLSearchParams()
       params.append('redirect_login', false)
       that.$http.post(url, params)
@@ -32,7 +32,7 @@ export default {
     }
     Vue.prototype.get_notice = function (callback) {
       var that = this
-      var url = Url + '/admin/template'
+      var url = window.DocConfig.server + '/admin/template'
       var params = new URLSearchParams()
       params.append('notice_type', 'unread')
       params.append('count', '1')

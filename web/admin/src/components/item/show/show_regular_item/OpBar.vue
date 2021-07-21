@@ -26,44 +26,27 @@
       </el-dropdown>
     </div>
     <div class="op-bar" v-if="show_op_bar">
-
-      <div >
-      <!-- Comment
-      <el-form >
-      <el-form-item >
-        <el-select  v-model="selected" :placeholder="$t('lang_choose')" @change="LangChange" class='el-select-lang'>
-          <el-option
-            v-for="itemlang in langs"
-            :key="itemlang.id"
-            :label="itemlang.name"
-            :value="itemlang">
-            <span style="float: left">{{ itemlang.name }}</span>
-            <svg class="icon" aria-hidden="true" style="float: right; color: #8492a6; font-size: 13px" v-html="itemlang.icon" >
-            </svg>
-          </el-option>
-        </el-select>
-      </el-form-item>
-      </el-form >-->
+      <!-- <div >
      <el-tooltip class="item" effect="dark" :content="$t('language1')" placement="top">
-     <el-dropdown trigger="click" class='el-select-lang' @command="LangChange" style="padding-left:40px" placement="top-start" v-if="selected != null">
+     <el-dropdown trigger="click" class='el-select-lang' @command="LangChange" style="padding-left:0px" placement="top-start" v-if="selected != null">
       <span class="el-dropdown-link" >
-        <svg class="icons" aria-hidden="true" style="float: left; color: #8492a6; font-size: 14px" v-html="selected">
+        <svg class="icons" aria-hidden="true" style="float: left; color: #8492a6; font-size: 10px" v-html="selected">
             </svg>
       </span>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item
-        v-for="itemlang in langs"
+        v-for="itemlang in belong_to_lang"
         :key="itemlang.id"
         :label="itemlang.name"
         :value="itemlang"
-        :command="itemlang"> {{itemlang.name}}
+        :command="itemlang"> {{ itemlang.name }}
         <svg class="icon" aria-hidden="true" style="float: left; color: #8492a6; font-size: 13px" v-html="itemlang.icon" >
             </svg>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
     </el-tooltip>
-     </div>
+     </div> -->
       <span v-if="item_info.is_login">
         <el-tooltip class="item" effect="dark" :content="$t('goback')" placement="left">
           <router-link to="/item/index">
@@ -133,7 +116,7 @@
             <i class="el-icon-info" @click="show_page_info"></i>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="$t('export')" placement="left">
-            <router-link :to="'/item/export/'+item_info.item_id" v-if="item_info.itempermn">
+            <router-link :to="'/item/export/'+item_info.id" v-if="item_info.itempermn">
               <i class="el-icon-download"></i>
             </router-link>
           </el-tooltip>
@@ -141,9 +124,9 @@
             <i class="el-icon-delete" @click="delete_page"></i>
           </el-tooltip>
 
-          <span v-if="item_info.ItemCreator">
+          <span v-if="item_info.itemcreator">
             <el-tooltip class="item" effect="dark" :content="$t('item_setting')" placement="top">
-              <router-link :to="'/item/setting/'+item_info.item_id" v-if="item_info.itemcreator">
+              <router-link :to="'/item/setting/'+item_info.id" v-if="item_info.itemcreator">
                 <i class="el-icon-setting"></i>
               </router-link>
             </el-tooltip>
@@ -275,7 +258,7 @@ export default {
     item_domain: {},
     page_id: {},
     item_info: {},
-    page_info: {}
+    page_info: []
 
   },
   data () {
@@ -299,11 +282,41 @@ export default {
       selected: '',
       itemlang: [],
       icon: '',
-      value: {}
+      value: {},
+      lang_array:[]
     }
   },
   components: {
     HistoryVersion
+  },
+  computed:{
+    belong_to_lang: function () {
+      var that = this
+      if (that.item_info.lang_list === undefined){
+              return []
+            }
+            var langInfo =that.item_info.lang_list.split(',')
+            var lang_array = []
+
+            if (that.langs.length > 0){
+              for (var k=0; k < langInfo.length; k++){
+                if (langInfo[k] === ""){
+                  return that.langs
+                }
+              for (var j=0; j < that.langs.length; j++){
+                if (that.langs[j].id === parseInt(langInfo[k])){
+                  lang_array.push({
+                    id: that.langs[j].id,
+                    name: that.langs[j].name,
+                    icon: that.langs[j].icon
+                  })
+                }
+              }
+              }
+            }
+            return lang_array
+
+    }
   },
   methods: {
     changeLang () {
@@ -315,41 +328,41 @@ export default {
         this.lang = false
         this.locale = 'ZH_CN'
       }
-      this.$cookies.set('lng', this.locale === 'ZH_CN' ? this.locale : this.locale, '30d')
+      //this.$cookies.set('lng', this.locale === 'ZH_CN' ? this.locale : this.locale, '30d')
       // this.$cookies.config('30d')
       // window.location.reload() // 进行刷新改变cookie里的值
     },
     get_lang () {
       var that = this
-      var url = this.DocConfig.server + '/lang'
+      var url = DocConfig.server + '/lang'
       var params = new URLSearchParams()
       that.$http.get(url, params)
         .then(function (response) {
           if (response.data.status === 200) {
             that.langs = response.data.data
-          } else {
-            that.$alert(response.data.message)
           }
         })
         .catch(function (error) {
           console.log(error)
         })
     },
+
     LangChange (value) {
       this.$emit('itemlangId', value.id)
       this.selected = value
-      if (this.$cookies.get('selected') === null) {
+      // if (this.$cookies.get('selected') === null) {
         this.$cookies.set('selected', value.icon)
-      }
-
-      if (value.name === 'English') {
+      // }
+      if (value.name === 'English' || value.icon === '#icon-world-flag_-GBR--UnitedKingdom') {
         this.locale = 'EN_US'
         this.lang = true
+        // this.$cookies.set('lng', this.locale === 'EN_US' ? this.locale : this.locale, '1d')
       } else {
         this.lang = false
         this.locale = 'ZH_CN'
+        // this.$cookies.set('lng', this.locale === 'ZH_CN' ? this.locale : this.locale, '30d')
       }
-      this.$cookies.set('lng', this.locale === 'ZH_CN' ? this.locale : this.locale, '30d')
+
     },
     edit_page () {
       var page_id = this.page_id > 0 ? this.page_id : 0
@@ -363,7 +376,7 @@ export default {
         this.getRootPath() + '#/' + path + '?page_id=' + page_id
       // this.share_single_link= this.getRootPath()+"/page/"+page_id ;
       this.qr_page_link =
-        this.DocConfig.server +
+        DocConfig.server +
         '/api/common/qrcode&size=3&url=' +
         encodeURIComponent(this.share_page_link)
       // this.qr_single_link = DocConfig.server +'/api/common/qrcode&size=3&url='+encodeURIComponent(this.share_single_link);
@@ -399,7 +412,7 @@ export default {
     delete_page () {
       var page_id = this.page_id > 0 ? this.page_id : 0
       var that = this
-      var url = this.DocConfig.server + '/page/delete'
+      var url = DocConfig.server + '/page/delete'
       this.$confirm(that.$t('comfirm_delete'), ' ', {
         confirmButtonText: that.$t('confirm'),
         cancelButtonText: that.$t('cancel'),
@@ -437,7 +450,7 @@ export default {
     CreateSiglePage () {
       var page_id = this.page_id > 0 ? this.page_id : 0
       var that = this
-      var url = this.DocConfig.server + '/page/createSinglePage'
+      var url = DocConfig.server + '/page/createSinglePage'
       var params = new URLSearchParams()
       params.append('page_id', page_id)
       params.append('isCreateSiglePage', this.isCreateSiglePage)
@@ -515,7 +528,7 @@ export default {
     },
     get_item_info () {
       var that = this
-      var url = this.DocConfig.server + '/item/detail'
+      var url = DocConfig.server + '/item/detail'
       var params = new URLSearchParams()
       params.append('item_id', that.$route.params.item_id)
       that.$http
@@ -543,10 +556,12 @@ export default {
         })
     },
     loadConfig () {
+      var item_id = this.$route.params.item_id ? this.$route.params.item_id : 0
       var that = this
-      var url = this.DocConfig.server + '/adminSetting/loadLangConfig'
+      var url = DocConfig.server + '/adminSetting/loadLangConfig'
       var params = new URLSearchParams()
-      that.$http.get(url, params).then(function (response) {
+      params.append('id', item_id)
+      that.$http.post(url, params).then(function (response) {
         if (response.data.status === 200) {
           if (response.data.data.id === 0) {
             return
@@ -554,20 +569,79 @@ export default {
           that.selected = '<use xlink:href="' + response.data.data.icon + '"></use>'
           that.$cookies.set('selected', that.selected)
           that.value = response.data.data
-          that.LangChange(that.value)
+          that.value.icon = '<use xlink:href="' + response.data.data.icon + '"></use>'
+
+          if (response.data.access === 1) {
+            // defaultlang 是全局语言
+            localStorage.setItem('defaultlang', that.value.id)
+            that.LangChange(that.value)
+          }
+        } else {
+          that.$alert(response.data.message)
+        }
+      })
+    },
+    publicloadConfig (value) {
+      var that = this
+      var url = DocConfig.server + '/public/lang'
+      var params = new URLSearchParams()
+      params.append('lang', value)
+      that.$http.post(url, params).then(function (response) {
+        if (response.data.status === 200) {
+          if (response.data.data.id === 0) {
+            return
+          }
+          that.value = response.data.data
+          that.value.icon = '<use xlink:href="' + response.data.data.icon + '"></use>'
+          if (response.data.access === 1) {
+             that.LangChange(that.value)
+             this.selected = '<use xlink:href="' + response.data.data.icon + '"></use>'
+             this.$cookies.set('selected', that.selected)
+          }
         } else {
           this.$alert(response.data.message)
         }
       })
+    },
+    get_lang1 (value) {
+      var that = this
+      var url = DocConfig.server + '/lang/info'
+      var params = new URLSearchParams()
+      params.append('icon', value)
+      that.$http.post(url, params).then(function (response) {
+        if (response.data.status === 200) {
+          if (response.data.data.id === 0) {
+            return
+          }
+          that.selected = '<use xlink:href="' + response.data.data.icon + '"></use>'
+          that.$cookies.set('selected', that.selected)
+          that.value = response.data.data
+          that.value.icon = '<use xlink:href="' + response.data.data.icon + '"></use>'
+        } else {
+          that.$alert(response.data.message)
+        }
+      })
     }
   },
+
+  created(){
+  },
   mounted () {
-    this.get_item_info()
-    this.get_lang()
-    if (this.$cookies.get('selected') === null) {
-      this.loadConfig()
-    }
     var that = this
+    var page_id = this.$route.query.page_id ? this.$route.query.page_id : 0
+
+    this.get_item_info()
+    //this.get_lang()
+    if (this.$cookies.get('lng') === null ) {
+      this.locale = DocConfig.lang
+    this.$cookies.set('lng', this.locale === 'EN_US' ? this.locale : this.locale, '1d')
+    }
+    //  if (this.$cookies.get('selected') === null) {
+    //   this.loadConfig()
+    // }
+    // if (this.$cookies.get('selected') === null) {
+    //   this.publicloadConfig(page_id)
+    // }
     if (this.page_info.unique_key) {
       this.isCreateSiglePage = true
       this.share_single_link =
@@ -580,8 +654,11 @@ export default {
       this.locale = 'ZH_CN'
       this.lang = false
     }
-    this.selected = this.$cookies.get('selected')
-    this.$cookies.remove('selected')
+    // this.selected = this.$cookies.get('selected')
+    // if (this.selected !== null) {
+    //   this.get_lang1(this.selected)
+    //   //this.$cookies.remove('selected')
+    // }
     this.lang = this.$cookies.get('lng', this.locale === 'ZH_CN' ? this.locale : this.locale, 50)
     document.onkeydown = function (e) {
       // 对整个页面文档监听 其键盘快捷键
@@ -608,6 +685,7 @@ export default {
       this.show_menu_btn = true
       this.show_op_bar = false
     }
+
   },
   watch: {
     page_info: function () {
@@ -626,6 +704,7 @@ export default {
   },
   destroyed () {
     document.onkeydown = undefined
+
   }
 }
 </script>

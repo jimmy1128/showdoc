@@ -62,9 +62,10 @@ export default {
     },
     get_content () {
       var that = this
-      var url = this.DocConfig.server + '/page/history'
+      var url = DocConfig.server + '/page/history'
       var params = new URLSearchParams()
-      params.append('page_id', that.page_id)
+      const page_id = this.page_id ? this.page_id : that.$route.params.page_id
+      params.append('page_id', page_id)
       that.$http.post(url, params)
         .then(function (response) {
           if (response.data.status === 200) {
@@ -90,11 +91,11 @@ export default {
       this.get_content()
     },
     recover (row) {
-      this.callback(row.page_content, true)
+      this.callback(row.pagecontent, true)
       this.dialogTableVisible = false
     },
     preview_diff (row) {
-      var page_history_id = row.page.page_history_id
+      var page_history_id = row.ID
       var page_id = this.$route.params.page_id
       var url = '#/page/diff/' + page_id + '/' + page_history_id
       window.open(url)

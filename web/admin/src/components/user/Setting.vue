@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     async getUserInfo () {
-      var url = this.DocConfig.server + '/user/info'
+      var url = DocConfig.server + '/user/info'
       const { data: res } = await this.$http.post(url)
       if (res.status !== 200) {
         this.$router.push('/')
@@ -75,7 +75,7 @@ export default {
       this.emailForm.status = status
     },
     async passwordFormSubmit () {
-      var url = this.DocConfig.server + '/admin/resetPassword'
+      var url = DocConfig.server + '/admin/resetPassword'
       var formdata = new FormData()
       formdata.append('password', this.passwordForm.password)
       formdata.append('new_password', this.passwordForm.new_password)
@@ -90,7 +90,7 @@ export default {
     },
     emailFormSubmit () {
       var that = this
-      var url = this.DocConfig.server + '/api/user/updateEmail'
+      var url = DocConfig.server + '/api/user/updateEmail'
       var params = new URLSearchParams()
       params.append('email', this.emailForm.email)
       params.append('password', this.emailForm.password)

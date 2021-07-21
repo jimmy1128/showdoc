@@ -81,7 +81,7 @@ export default {
     },
     getList () {
       var that = this
-      var url = this.DocConfig.server + '/member/list '
+      var url = DocConfig.server + '/member/list '
       var params = new URLSearchParams()
       params.append('teamid', this.team_id)
       that.$http.post(url, params).then(function (response) {
@@ -96,7 +96,7 @@ export default {
     },
     MyFormSubmit () {
       var that = this
-      var url = this.DocConfig.server + '/member/save'
+      var url = DocConfig.server + '/member/save'
       var params = new URLSearchParams()
       params.append('teamid', this.team_id)
       params.append('member_username', this.MyForm.member_username)
@@ -112,7 +112,7 @@ export default {
     },
     deleteTeamMember (id) {
       var that = this
-      var url = this.DocConfig.server + '/member/delete'
+      var url = DocConfig.server + '/member/delete'
       this.$confirm(that.$t('confirm_delete'), ' ', {
         confirmButtonText: that.$t('confirm'),
         cancelButtonText: that.$t('cancel'),
@@ -138,7 +138,7 @@ export default {
     },
     getAllUser () {
       var that = this
-      var url = this.DocConfig.server + '/admin/user'
+      var url = DocConfig.server + '/admin/user'
       var params = new URLSearchParams()
       params.append('username', '')
       that.$http.post(url, params).then(function (response) {

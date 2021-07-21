@@ -12,6 +12,7 @@
       id="header-left-btn"
       @click="show_menu"
     ></i>
+    <el-aside :class="menumarginleft3" width="450px" id="left-side-menu"></el-aside>
     <el-aside
       :class="menuMarginLeft"
       id="left-side-menu"
@@ -21,8 +22,9 @@
     >
       <el-menu
         @select="select_menu"
-        background-color="#fafafa"
+        background-color="#F4F7F9"
         text-color
+
         active-text-color="#008cff"
         :default-active="item_info.defaultpageid"
         :default-openeds="openeds"
@@ -68,9 +70,10 @@ export default {
       menu: '',
       show_menu_btn: false,
       hideScrollbar: true,
-      asideWidth: '250px',
+      asideWidth: '330px',
       menuMarginLeft: 'menu-margin-left1',
-      scrollIntoView: ''
+      scrollIntoView: '',
+      menumarginleft3:'menu-margin-left3'
     }
   },
   components: {
@@ -178,11 +181,12 @@ export default {
 #left-side-menu {
   color: #333;
   position:fixed;
-  margin-top: -20px;
-  height: 790px;
+  margin-top: -19px;
+  height: 100%;
+  background-color: #F4F7F9;
 }
 .menu-margin-left1 {
-  margin-left: -273px;
+  margin-left: -353px;
 }
 .menu-margin-left2 {
   margin-left: -323px;
@@ -245,11 +249,12 @@ export default {
   margin-top: 5px;
   cursor: pointer;
   position: fixed;
+  border: solid;
 }
 </style>
 <style type="text/css">
 #left-side-menu .el-input__inner {
-  background-color: #fafafa;
+  background-color: #F4F7F9;
   padding-right: 10px;
 }
 .hide-scrollbar .el-submenu__title {
@@ -297,4 +302,9 @@ export default {
     margin-bottom: 10px;
     column-width: 300px;
   }
+.menu-margin-left3 {
+  margin-left: -800px;
+  background-color: #F4F7F9;
+  display: flex;
+}
 </style>

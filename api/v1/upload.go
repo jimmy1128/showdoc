@@ -44,3 +44,25 @@ func UpLoad(c *gin.Context) {
 	})
 
 }
+func UpLoadImg(c *gin.Context) {
+	var code int
+	var url string //文件 url
+	// single file
+	file, err := c.FormFile("file")
+	if err != nil {
+		code = errmsg.ERROR
+	}
+	log.Println(file.Filename)
+
+	err = c.SaveUploadedFile(file, "upload/"+file.Filename)
+	url = c.Request.URL.Host + "upload/" + file.Filename
+	if err != nil {
+		code = errmsg.ERROR
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status":  code,
+		"message": errmsg.GetErrMsg(code),
+		"url":     url,
+	})
+}

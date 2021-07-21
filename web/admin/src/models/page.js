@@ -87,7 +87,7 @@ const rederPageContent = (page_content, globalParams = {}) => {
       if (!one.name || (one.disable && one.disable >= 1)) return
       newContent += `|${one.name} |${one.require > 0 ? '是' : '否'} |${
         one.type
-        } |${one.remark ? one.remark : '无'}   |
+      } |${one.remark ? one.remark : '无'}   |
 `
     })
   }
@@ -104,7 +104,7 @@ const rederPageContent = (page_content, globalParams = {}) => {
       if (!one.name || (one.disable && one.disable >= 1)) return
       newContent += `|${one.name} |${one.require > 0 ? '是' : '否'} |${
         one.type
-        } |${one.remark ? one.remark : '无'}   |
+      } |${one.remark ? one.remark : '无'}   |
 `
     })
   }
@@ -130,7 +130,7 @@ ${params}
       if (!one.name) return
       newContent += `|${one.name} |${one.require > 0 ? '是' : '否'} |${
         one.type
-        } |${one.remark ? one.remark : '无'}   |
+      } |${one.remark ? one.remark : '无'}   |
 `
     })
   }
@@ -159,7 +159,7 @@ ${obj.response.responseExample}
       if (!one.name) return
       newContent += `|${one.name} |${one.type} |${
         one.remark ? one.remark : '无'
-        }   |
+      }   |
 `
     })
   }

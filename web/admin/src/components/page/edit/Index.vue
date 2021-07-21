@@ -11,6 +11,16 @@
           <el-form-item :label="$t('title')+' : '">
             <el-input  placeholder="" v-model="title"></el-input>
           </el-form-item>
+          <el-form-item :label="$t('lang_setting')+' : '">
+                <el-select  v-model="cid" :placeholder="$t('lang_choose')" class="lang" @change="selectCatalog">
+                <el-option
+                v-for="itemlang in belong_to_lang"
+                :key="itemlang.id"
+                :label="itemlang.name"
+                :value="itemlang.id">
+               </el-option>
+              </el-select>
+            </el-form-item>
           <el-form-item :label="$t('catalog') + ' : '">
             <el-select
               :placeholder="$t('optional')"
@@ -26,16 +36,6 @@
               ></el-option>
             </el-select>
           </el-form-item>
-             <el-form-item :label="$t('lang_setting')+' : '">
-                <el-select  v-model="cid" :placeholder="$t('lang_choose')" class="lang">
-                <el-option
-                v-for="itemlang in langs"
-                :key="itemlang.id"
-                :label="itemlang.name"
-                :value="itemlang.id">
-               </el-option>
-              </el-select>
-            </el-form-item>
             <el-form-item label>
             <el-button type="text" @click="ShowSortPage">{{
               $t('sort_pages')
@@ -210,7 +210,7 @@
     margin-top: 5px;
   }
   .cat{
-    width: 130px;
+    width: 180px;
   }
   .num{
     width: 60px;
@@ -234,6 +234,12 @@ import AttachmentList from '@/components/page/edit/AttachmentList'
 import PasteTable from '@/components/page/edit/PasteTable'
 import SortPage from '@/components/page/edit/SortPage'
 import { rederPageContent } from '@/models/page'
+import {
+  apiTemplateZh,
+  databaseTemplateZh,
+  apiTemplateEn,
+  databaseTemplateEn
+} from '@/models/template'
 // var $s = require('scriptjs')
 var $ = require('jquery')
 
@@ -258,7 +264,9 @@ export default {
       intervalId: 0,
       saving: false,
       lang: '',
-      langs: []
+      langs: [],
+      lang_array:[],
+      infoForm: []
     }
   },
   computed: {
@@ -293,6 +301,32 @@ export default {
       var no_cat = { cat_id: 0, cat_name: this.$t('none') }
       cat_array.push(no_cat)
       return cat_array
+    },
+    belong_to_lang: function () {
+      var that = this
+      if (that.infoForm.lang_list === undefined){
+              return []
+            }
+            var langInfo =that.infoForm.lang_list.split(',')
+            var lang_array = []
+            if (that.langs.length > 0){
+              for (var k=0; k < langInfo.length; k++){
+                if (langInfo[k] === ""){
+                  return that.langs
+                }
+              for (var j=0; j < that.langs.length; j++){
+                if (that.langs[j].id === parseInt(langInfo[k])){
+                  lang_array.push({
+                    id: that.langs[j].id,
+                    name: that.langs[j].name,
+                    icon: that.langs[j].icon
+                  })
+                }
+              }
+              }
+            }
+            return lang_array
+
     }
   },
   components: {
@@ -308,12 +342,29 @@ export default {
   methods: {
     get_lang () {
       var that = this
-      var url = this.DocConfig.server + '/lang'
+      var url = DocConfig.server + '/lang'
       var params = new URLSearchParams()
       that.$http.get(url, params)
         .then(function (response) {
           if (response.data.status === 200) {
             that.langs = response.data.data
+          }
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+    get_item_info () {
+      var that = this
+      var url = DocConfig.server + '/item/detail'
+      var params = new URLSearchParams()
+      params.append('item_id', that.$route.params.item_id)
+      that.$http
+        .post(url, params)
+        .then(function (response) {
+          if (response.data.status === 200) {
+            var Info1 = response.data.data
+            that.infoForm = Info1
           } else {
             that.$alert(response.data.message)
           }
@@ -328,7 +379,7 @@ export default {
         page_id = this.page_id
       }
       var that = this
-      var url = this.DocConfig.server + '/admin/page'
+      var url = DocConfig.server + '/admin/page'
       var params = new URLSearchParams()
       params.append('page_id', page_id)
       that.$http.post(url, params)
@@ -361,11 +412,12 @@ export default {
           console.log(error)
         })
     },
-    get_catalog (item_id) {
+    get_catalog (item_id, value) {
       var that = this
-      var url = this.DocConfig.server + '/catListGroup'
+      var url = DocConfig.server + '/catListGroup'
       var params = new URLSearchParams()
       params.append('item_id', item_id)
+      params.append('cid', value)
       that.$http
         .post(url, params)
         .then(function (response) {
@@ -375,7 +427,7 @@ export default {
 
             that.get_default_cat()
           } else {
-            that.$alert(response.data.message)
+            that.$message(response.data.message)
           }
         })
         .catch(function (error) {
@@ -385,7 +437,7 @@ export default {
     // 获取默认该选中的目录
     get_default_cat () {
       var that = this
-      var url = this.DocConfig.server + '/getDefaultCat'
+      var url = DocConfig.server + '/getDefaultCat'
       var params = new URLSearchParams()
       params.append('page_id', this.$route.params.page_id)
       params.append('item_id', that.$route.params.item_id)
@@ -401,6 +453,11 @@ export default {
           }
         })
     },
+    // 根据语言选择目录
+    selectCatalog () {
+      var that = this
+      that.get_catalog(this.$route.params.item_id, this.cid)
+    },
     // 插入数据到编辑器中。插入到光标处。如果参数is_cover为真，则清空后再插入(即覆盖)。
     insertValue (value, is_cover) {
       if (value) {
@@ -414,11 +471,23 @@ export default {
     },
     // 插入api模板
     insert_api_template () {
-      this.insertValue(this.$refs.api_doc_templ.innerHTML)
+      var val
+      if (this.$cookies.get('lng') === 'ZH_CN') {
+        val = apiTemplateZh
+      } else {
+        val = apiTemplateEn
+      }
+      this.insertValue(val)
     },
     // 插入数据字典模板
     insert_database_template () {
-      this.insertValue(this.$refs.database_doc_templ.innerHTML)
+      var val
+      if (this.$cookies.get('lng') === 'ZH_CN') {
+        val = databaseTemplateZh
+      } else {
+        val = databaseTemplateEn
+      }
+      this.insertValue(val)
     },
     editor_unwatch () {
       const childRef = this.$refs.Editormd // 获取子组件
@@ -479,7 +548,7 @@ export default {
       var cat_id = this.cat_id
       var item_id = that.$route.params.item_id
       var page_id = that.$route.params.page_id
-      var url = this.DocConfig.server + '/page/save'
+      var url = DocConfig.server + '/page/save'
       var params = new URLSearchParams()
       params.append('page_id', page_id)
       params.append('item_id', item_id)
@@ -509,9 +578,9 @@ export default {
             that.deleteDraft()
             if (page_id <= 0) {
               that.$router.push({
-                path: '/page/edit/' + item_id + '/' + response.data.data.page_id
+                path: '/page/edit/' + item_id + '/' + response.data.data.ID
               })
-              that.page_id = response.data.data.page_id
+              that.page_id = response.data.data.ID
             }
           } else {
             that.$alert(response.data.message)
@@ -539,7 +608,7 @@ export default {
       var content = childRef.getMarkdown()
       this.$prompt(that.$t('save_templ_title'), ' ', {
       }).then(function (data) {
-        var url = this.DocConfig.server + '/template/save'
+        var url = DocConfig.server + '/template/save'
         var params = new URLSearchParams()
         params.append('template_title', data.value)
         params.append('template_content', content)
@@ -560,7 +629,7 @@ export default {
     /** 粘贴上传图片 **/
     on_paste () {
       var that = this
-      var url = this.DocConfig.server + '/upload'
+      var url = DocConfig.server + '/upload'
       document.addEventListener('paste', function (e) {
         var clipboard = e.clipboardData
         for (var i = 0, len = clipboard.items.length; i < len; i++) {
@@ -586,7 +655,7 @@ export default {
                 case 'success':
                   loading.close()
                   if (data.success === 1) {
-                    var value = '![](' + data.url + ')'
+                    var value = '![](/' + data.url + ')'
                     that.insertValue(value)
                   } else {
                     that.$alert('失败')
@@ -664,7 +733,7 @@ export default {
     },
     // 锁定
     async setLock () {
-      var url = this.DocConfig.server + '/page/setLock'
+      var url = DocConfig.server + '/page/setLock'
       var formdata = new FormData()
       formdata.append('page_id', this.page_id)
       formdata.append('item_id', this.item_id)
@@ -680,7 +749,7 @@ export default {
       if (!this.isLock) {
         return // 本来处于未锁定中的话，不发起请求
       }
-      var url = this.DocConfig.server + '/page/setLock'
+      var url = DocConfig.server + '/page/setLock'
       var formdata = new FormData()
       formdata.append('page_id', this.page_id)
       formdata.append('item_id', this.item_id)
@@ -700,7 +769,7 @@ export default {
     },
     // 判断页面是否被锁定编辑
     async remoteIsLock () {
-      var url = this.DocConfig.server + '/page/isLock'
+      var url = DocConfig.server + '/page/isLock'
       var formdata = new FormData()
       formdata.append('page_id', this.page_id)
       const { data: res } = await this.$http.post(url, formdata)
@@ -730,9 +799,8 @@ export default {
         page_id: this.page_id,
         item_id: this.item_id,
         lock_to: 1000,
-        user_token: user_token
       })
-      const url = this.DocConfig.server + '/page/setLock'
+      const url = DocConfig.server + '/page/setLock'
       if ('sendBeacon' in navigator) {
         navigator.sendBeacon(url, analyticsData)
       } else {
@@ -744,6 +812,7 @@ export default {
   },
   mounted () {
     var that = this
+    this.get_item_info()
     this.item_id = this.$route.params.item_id
     this.page_id = this.$route.params.page_id
     this.copy_page_id = this.$route.query.copy_page_id ? this.$route.query.copy_page_id : ''
@@ -753,31 +822,31 @@ export default {
       this.get_page_content(this.page_id)
     } else {
       this.item_id = this.$route.params.item_id
-      this.content = this.$t('welcome_use_showdoc')
+      this.content = this.$t('welcome_use_doc')
     }
     this.cid = this.itemList.cid
     this.get_catalog(this.$route.params.item_id)
     this.get_lang()
-    that.on_paste()
     this.heartBeatLock()
     this.remoteIsLock()
+    that.on_paste()
     document.onkeydown = function (e) { // 对整个页面文档监听 其键盘快捷键
       var keyNum = window.event ? e.keyCode : e.which // 获取被按下的键值
       if (keyNum === 83 && e.ctrlKey) { // Ctrl +S 为保存
         that.save()
         e.preventDefault()
-      };
+      }
     }
-    document.addEventListener('paste', this.on_paste)
+    // document.addEventListener('paste', this.on_paste)
     window.addEventListener('beforeunload', this.unLockOnClose)
   },
   beforeDestroy () {
-    // 解除对粘贴上传图片的监听
-    document.removeEventListener('paste', this.on_paste)
-    this.$message.closeAll()
-    clearInterval(this.intervalId)
-    this.unlock()
-    window.removeEventListener('beforeunload', this.unLockOnClose)
+  //   // 解除对粘贴上传图片的监听
+  //   document.removeEventListener('paste', this.on_paste)
+  this.$message.closeAll()
+  clearInterval(this.intervalId)
+   this.unlock()
+   window.removeEventListener('beforeunload', this.unLockOnClose)
   }
 }
 </script>

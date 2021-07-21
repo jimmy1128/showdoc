@@ -4,7 +4,7 @@
       <el-submenu v-for="(catalog2 ) in catalog" :index="catalog2.ID.toString()" :key="catalog2.id">
         <template slot="title">
           <img src="static/images/folder.png" />
-          {{catalog2.catname}}
+          {{catalog2.cat_name}}
         </template>
         <!-- 三级目录的页面 -->
         <template v-if="catalog2.pages">

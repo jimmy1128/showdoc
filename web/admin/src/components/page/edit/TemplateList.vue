@@ -6,8 +6,8 @@
 
       <el-dialog :title="$t('templ_list')" :visible.sync="dialogTableVisible">
         <el-table :data="content">
-          <el-table-column property="addtime" :label="$t('save_time')" width="170"></el-table-column>
-          <el-table-column property="template_title" :label="$t('templ_title')" ></el-table-column>
+          <el-table-column property="CreatedAt" :label="$t('save_time')" width="170" :formatter="dateFormat"></el-table-column>
+          <el-table-column property="title" :label="$t('templ_title')" ></el-table-column>
           <el-table-column
             :label="$t('operation')"
             width="150">
@@ -44,9 +44,16 @@ export default {
 
   },
   methods: {
+    dateFormat: function (row, column) {
+      var date = row[column.property]
+      if (date === undefined) {
+        return ''
+      }
+      return moment(date).format('YYYY-MM-DD HH:mm:ss')
+    },
     get_content () {
       var that = this
-      var url = this.DocConfig.server + '/admin/template'
+      var url = DocConfig.server + '/admin/template'
       var params = new URLSearchParams()
       // params.append('page_id',  that.$route.params.page_id);
       that.$http.post(url, params)
@@ -80,7 +87,7 @@ export default {
     deleteTemplate (row) {
       var id = row.id
       var that = this
-      var url = this.DocConfig.server + '/template/delete'
+      var url = DocConfig.server + '/template/delete'
       var params = new URLSearchParams()
       params.append('id', id)
       that.axios.post(url, params)

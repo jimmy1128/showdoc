@@ -3,7 +3,11 @@ package models
 import (
 	"archive/zip"
 	"awesomeProject3/utils/errmsg"
+	"container/list"
 	"encoding/json"
+	"fmt"
+	"github.com/microcosm-cc/bluemonday"
+	"github.com/russross/blackfriday"
 	"io"
 	"io/ioutil"
 	"math/rand"
@@ -219,4 +223,168 @@ func Zip(src_dir string, zip_file_name string) {
 		}
 		return nil
 	})
+}
+
+func ExportWord (itemId uint , catId uint , pageId uint , uid uint)int {
+	var item Item
+	var page Page
+	var menu Menu
+	var pages []*Page
+	var catalogs []Catalogs
+	fmt.Println(itemId,catId,pageId,uid)
+	if CheckItemEdit(uid , itemId) != true {
+		return errmsg.ERROR_USER_NO_RIGHT
+	}
+
+	db.Model(Item{}).Where("id =? ",itemId).Find(&item)
+	fmt.Println(item)
+	menu = getContent(itemId,0)
+	if pageId >0 {
+		db.Model(Page{}).Where("id =?",pageId).Find(&page)
+
+	}else if catId != 0  {
+		for _, catalog := range menu.Catalogs {
+			if catId == catalog.ID{
+				pages= catalog.Page
+				catalogs = catalog.Catalogs
+			}else {
+				if catalog.Catalogs != nil {
+					for _, c := range catalog.Catalogs {
+						if catId == c.ID{
+							pages = c.Page
+							catalogs = c.Catalogs
+							//fmt.Println(catalogs)
+						}
+					}
+
+				}
+
+			}
+		}
+	}else {
+		pages = menu.Page
+		catalogs = menu.Catalogs
+	}
+	var data = ""
+	//var data1 interface{}
+	//var data1 map[int]interface{}
+	var parent = 1
+	var count int
+	if pages != nil {
+		listHaiCoder := list.New()
+
+			for _, p := range pages {
+				if pageCount(pages) > 0 {
+					parentStr := strconv.Itoa(parent)
+					listHaiCoder.PushFront( "<h1>" + parentStr + "," + p.PageTitle + "</h1>")
+				} else {
+					listHaiCoder.PushFront( "<h1>" + p.PageTitle + "</h1>")
+				}
+				listHaiCoder.PushFront( `<div style=\"margin-left:20px;\">`)
+				//tmp_content = runApiToMd(p.PageContent)
+				unsafe := blackfriday.MarkdownCommon([]byte(p.PageContent))
+				html := bluemonday.UGCPolicy().SanitizeBytes(unsafe)
+				listHaiCoder.PushFront(string(html))
+				//listHaiCoder.PushFront("</div>")
+				parent++
+
+			}
+		//dname, err := ioutil.TempDir("./", "tmpfile")
+		for i := listHaiCoder.Back(); i != nil; i = i.Prev() {
+			fmt.Println("Element =", i.Value)
+
+			bytevalue := []byte(fmt.Sprintf("%v",i.Value))
+			err = ioutil.WriteFile("./dat2.doc",bytevalue,0666)
+			if err != nil {
+				return errmsg.ERROR
+			}
+
+		}
+
+	}
+	if catalogs != nil {
+		for _, catalog := range catalogs {
+			parentStr := strconv.Itoa(parent)
+			data = "<h1>" + parentStr +"," + catalog.Name + "</h1>"
+			data = `<div style=\"margin-left:0px;\">`
+			child := 1
+			if catalog.Page != nil {
+				childStr := strconv.Itoa(child)
+				for _, p := range catalog.Page {
+					data = "<h2>" + parentStr+"." +childStr +"," + p.PageTitle+"</h2>"
+					data = `<div style=\"margin-left:0px;\">`
+					unsafe := blackfriday.MarkdownCommon([]byte(p.PageContent))
+					html := bluemonday.UGCPolicy().SanitizeBytes(unsafe)
+					data= string(html)
+					data = "</div>"
+					child ++
+				}
+			}
+			if catalog.Catalogs != nil {
+				parent2 := 1
+				for _, c := range catalog.Catalogs {
+					parent2Str := strconv.Itoa(parent2)
+					data = "<h2>" + parentStr+"."+ parent2Str+ c.Name +"</h2>"
+					data = `<div style="margin-left:0px;">`
+					child2 := 1
+					if c.Page != nil {
+						for _, p := range c.Page {
+							child2Str := strconv.Itoa(child2)
+							data = "<h3>"+parentStr+"." + parent2Str +"." +child2Str+","+p.PageTitle+"</h3>"
+							data = `<div style="margin-left:0px;">`
+							unsafe := blackfriday.MarkdownCommon([]byte(p.PageContent))
+							html := bluemonday.UGCPolicy().SanitizeBytes(unsafe)
+							data= string(html)
+							data = "</div>"
+							child2 ++
+						}
+					}
+					if c.Catalogs !=nil{
+						parent3 := 1
+						parent3Str := strconv.Itoa(parent3)
+						for _, c2 := range c.Catalogs {
+							data = "<h2>" + parent2Str +"." + parent2Str + "." + parent3Str+"、"+c2.Name+"</h2>"
+							data = `<div style="margin-left:0px;">`
+							child3 := 1
+							if c2.Page !=nil {
+									child3Str := strconv.Itoa(child3)
+									for _, p := range c2.Page {
+										data = "<h3>" + parentStr + "." + parent2Str + "."+parent3Str+"."+child3Str+","+p.PageContent+"</h3>"
+										data = `<div style="margin-left:0px;">`
+										unsafe := blackfriday.MarkdownCommon([]byte(p.PageContent))
+										html := bluemonday.UGCPolicy().SanitizeBytes(unsafe)
+										data= string(html)
+										data = "</div>"
+										child3 ++
+									}
+								}
+								data= "</div>"
+								parent3++
+						}
+					}
+					data = "</div>"
+					parent2++
+				}
+			}
+			data = "</div>"
+			parent++
+		}
+	}
+	fmt.Println(data, parent,count)
+
+return 200
+}
+func pageCount(pages []*Page) int{
+var count int
+	for i := range pages {
+		count = i
+	}
+	return count
+
+}
+func runApiToMd ( content string){
+	if content != "" {
+
+
+	}
 }

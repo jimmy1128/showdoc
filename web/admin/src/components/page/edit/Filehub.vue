@@ -92,7 +92,7 @@ export default {
       attachment_type: '-1',
       used: 0,
       used_flow: 0,
-      uploadUrl: this.DocConfig.server + '/api/page/upload'
+      uploadUrl: DocConfig.server + '/api/page/upload'
     }
   },
   components: {},

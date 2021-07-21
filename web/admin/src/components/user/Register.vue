@@ -42,7 +42,7 @@ export default {
   methods: {
     async onSubmit () {
       // this.$message.success(this.username)
-      var url = this.DocConfig.server + '/user/register'
+      var url = DocConfig.server + '/user/register'
 
       const { data: res } = await this.$http.post(url, {
         username: this.username,

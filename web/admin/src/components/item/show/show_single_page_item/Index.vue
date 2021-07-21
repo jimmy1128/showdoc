@@ -140,7 +140,7 @@ export default {
   methods: {
     get_page_content (page_id) {
       var that = this
-      var url = this.DocConfig.server + '/admin/page'
+      var url = DocConfig.server + '/admin/page'
       if (!page_id) {
         page_id = that.page_id
       }

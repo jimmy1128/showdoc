@@ -93,7 +93,7 @@ export default {
     // 获取某目录下的所有页面
     get_pages () {
       var that = this
-      var url = this.DocConfig.server + '/catalog/getPagesBycat'
+      var url = DocConfig.server + '/catalog/getPagesBycat'
       var params = new URLSearchParams()
       params.append('item_id', this.item_id)
       params.append('cat_id', this.cat_id)
@@ -120,7 +120,7 @@ export default {
     },
     sort_page (data) {
       var that = this
-      var url = this.DocConfig.server + '/page/sort'
+      var url = DocConfig.server + '/page/sort'
       var params = new URLSearchParams()
       params.append('pages', JSON.stringify(data))
       params.append('item_id', this.item_id)

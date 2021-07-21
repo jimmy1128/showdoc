@@ -40,7 +40,7 @@ export default {
   methods: {
     get_list () {
       var that = this
-      var url = this.DocConfig.server + '/recycle/getList'
+      var url = DocConfig.server + '/recycle/getList'
       var params = new URLSearchParams()
       params.append('item_id', that.$route.params.item_id)
       that.$http.post(url, params).then(function (response) {
@@ -54,7 +54,7 @@ export default {
     },
     recover (page_id) {
       var that = this
-      var url = this.DocConfig.server + '/recycle/recover'
+      var url = DocConfig.server + '/recycle/recover'
       this.$confirm(this.$t('recover_tips'), ' ', {
         confirmButtonText: that.$t('confirm'),
         cancelButtonText: that.$t('cancel'),

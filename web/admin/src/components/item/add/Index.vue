@@ -55,7 +55,7 @@ export default {
   methods: {
     get_item_info () {
       var that = this
-      var url = this.DocConfig.server + '/item/detail'
+      var url = DocConfig.server + '/item/detail'
       var params = new URLSearchParams()
       params.append('item_id', that.$route.params.item_id)
       that.$http
@@ -89,6 +89,7 @@ export default {
 .center-card {
   text-align: center;
   width: 463px;
+  height: 650px;
   min-height: 600px;
   max-height: 800px;
 }

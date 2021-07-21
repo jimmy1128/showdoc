@@ -94,7 +94,7 @@ export default {
     },
     get_item_list () {
       var that = this
-      var url = this.DocConfig.server + '/adminItem/getList'
+      var url = DocConfig.server + '/adminItem/getList'
       var params = new URLSearchParams()
       params.append('item_name', this.item_name)
       params.append('username', this.username)
@@ -135,7 +135,7 @@ export default {
     },
     delete_item (row) {
       var that = this
-      var url = this.DocConfig.server + '/adminItem/deleteItem'
+      var url = DocConfig.server + '/adminItem/deleteItem'
       this.$confirm(that.$t('confirm_delete'), ' ', {
         confirmButtonText: that.$t('confirm'),
         cancelButtonText: that.$t('cancel'),
@@ -159,7 +159,7 @@ export default {
     },
     attorn () {
       var that = this
-      var url = this.DocConfig.server + '/adminItem/attorn'
+      var url = DocConfig.server + '/adminItem/attorn'
       var params = new URLSearchParams()
       params.append('item_id', that.attorn_item_id)
       params.append('username', this.attornForm.username)

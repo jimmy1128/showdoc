@@ -37,7 +37,6 @@
 
 <script>
 export default {
-/* eslint-disable */
   name: 'Login',
   components: {
   },
@@ -49,13 +48,13 @@ export default {
       item_domain: '',
       show_copy: false,
       itemList: {},
-      copy_item_id: ''
+      copy_item_id: '',
     }
   },
   methods: {
     getItemList () {
       var that = this
-      var url = this.DocConfig.server + '/admin/list'
+      var url = DocConfig.server + '/admin/list'
       var params = new URLSearchParams()
       that.$http.get(url, params).then(function (response) {
         if (response.data.status === 200) {
@@ -75,7 +74,7 @@ export default {
       }
     },
     async onSubmit () {
-      var url = this.DocConfig.server + '/item/add'
+      var url = DocConfig.server + '/item/add'
 
       var formdata = new FormData()
       formdata.append('types', this.item_type)

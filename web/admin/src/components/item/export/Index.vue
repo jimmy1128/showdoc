@@ -42,9 +42,9 @@
             <el-select class="cat" v-model="page_id" v-if="pages">
               <el-option
                 v-for="page in pages "
-                :key="page.page_title"
-                :label="page.page_title"
-                :value="page.page_id"
+                :key="page.pagetitle"
+                :label="page.pagetitle"
+                :value="page.ID"
               ></el-option>
             </el-select>
           </el-form-item>
@@ -75,10 +75,10 @@ export default {
       item_id: 0,
       export_format: 'word',
       pages: [{
-        page_id: '0',
-        page_title: this.$t('all_pages')
+        ID: '0',
+        pagetitle: this.$t('all_pages')
       }],
-      page_id: '0'
+      ID: '0'
     }
   },
   computed: {
@@ -89,23 +89,24 @@ export default {
       for (var i = 0; i < Info.length; i++) {
         cat_array.push(Info[i])
         var sub = Info[i].sub
-        if (sub.length > 0) {
+
+        if (sub !== null) {
           for (var j = 0; j < sub.length; j++) {
             cat_array.push({
-              cat_id: sub[j].ID,
-              cat_name: Info[i].name + ' / ' + sub[j].name
+              cat_id: sub[j].cat_id,
+              cat_name: Info[i].cat_name + ' / ' + sub[j].cat_name
             })
             var sub_sub = sub[j].sub
-            if (sub_sub.length > 0) {
+            if (sub_sub !== null) {
               for (var k = 0; k < sub_sub.length; k++) {
                 cat_array.push({
-                  cat_id: sub_sub[k].ID,
+                  cat_id: sub_sub[k].cat_id,
                   cat_name:
-                    Info[i].name +
+                    Info[i].cat_name +
                     ' / ' +
-                    sub[j].name +
+                    sub[j].cat_name +
                     ' / ' +
-                    sub_sub[k].name
+                    sub_sub[k].cat_name
                 })
               }
             }
@@ -121,17 +122,17 @@ export default {
     // 获取所有目录
     get_catalog (item_id) {
       var that = this
-      var url = this.DocConfig.server + '/catListGroup'
+      var url = DocConfig.server + '/catListGroup'
       var params = new URLSearchParams()
       params.append('item_id', item_id)
-      that.axios
+      that.$http
         .post(url, params)
         .then(function (response) {
           if (response.data.status === 200) {
             var Info = response.data.data
             that.catalogs = Info
           } else {
-            that.$alert(response.data.message)
+            that.$message(response.data.message)
           }
         })
         .catch(function (error) {
@@ -143,13 +144,13 @@ export default {
         this.cat_id = ''
       }
       var url =
-        this.DocConfig.server +
-        '/api/export/word&item_id=' +
+        DocConfig.server +
+        '/export/word?item_id=' +
         this.item_id +
         '&cat_id=' +
-        this.cat_id + '&page_id=' + this.page_id
+        this.cat_id + '&page_id=' + this.ID
       if (this.export_format === 'markdown') {
-        url = this.DocConfig.server + '/api/export/markdown&item_id=' + this.item_id
+        url = DocConfig.server + '/export/markdown/' + this.item_id
       }
       window.location.href = url
     },
@@ -159,21 +160,21 @@ export default {
     // 获取某目录下的所有页面
     get_pages (cat_id) {
       var that = this
-      var url = this.DocConfig.server + '/catalog/getPagesBycat'
+      var url = DocConfig.server + '/catalog/getPagesBycat'
       var params = new URLSearchParams()
       params.append('item_id', this.item_id)
       params.append('cat_id', cat_id)
-      that.axios
+      that.$http
         .post(url, params)
         .then(function (response) {
           if (response.data.status === 200) {
             var pages = response.data.data
             pages.unshift({
-              page_id: '0',
-              page_title: that.$t('all_pages')
+              ID: '0',
+              pagetitle: that.$t('all_pages')
             })
             that.pages = pages
-            that.page_id = '0'
+            that.ID = '0'
           } else {
             that.$alert(response.data.message)
           }

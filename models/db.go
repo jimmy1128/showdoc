@@ -17,7 +17,7 @@ func IniDb(){
 		fmt.Println(err)
 	}
 	db.SingularTable(true)
-	db.AutoMigrate(&User{},&Catalogs{},&Page{},&Item{},&Template{},&Lang{},&Team{},&PageLock{},&ItemSort{},&TeamMember{},&PageHistory{},&TeamItem{},&TeamItemMember{},&Result{},&Data{},&ItemMember{},&Options{})
+	db.AutoMigrate(&User{},&Catalogs{},&Page{},&Item{},&Template{},&Lang{},&Team{},ItemAvatar{},&PageLock{},&ItemSort{},&TeamMember{},&PageHistory{},&TeamItem{},ItemHeader{},&TeamItemMember{},&Result{},&Data{},&ItemMember{},&Options{})
 	db.DB().SetMaxIdleConns(10)
 	db.DB().SetMaxOpenConns(100)
 	db.DB().SetConnMaxLifetime(10 *time.Second)

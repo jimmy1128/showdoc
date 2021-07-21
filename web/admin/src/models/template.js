@@ -10,6 +10,7 @@ const apiTemplateZh = `
 ##### 请求方式
 - POST
 ##### 参数
+
 |参数名|必选|类型|说明|
 |:----    |:---|:----- |-----   |
 |username |是  |string |用户名   |
@@ -30,6 +31,7 @@ const apiTemplateZh = `
   }
 \`\`\`
 ##### 返回参数说明
+
 |参数名|类型|说明|
 |:-----  |:-----|-----                           |
 |groupid |int   |用户组id，1：超级管理员；2：普通用户  |
@@ -40,6 +42,7 @@ const apiTemplateZh = `
 const databaseTemplateZh = `
 
 -  用户表，储存用户信息
+
 |字段|类型|空|默认|注释|
 |:----    |:-------    |:--- |---|------      |
 |uid    |int(10)     |否 |  |             |
@@ -60,6 +63,7 @@ const apiTemplateEn = `
 ##### Method
 - POST
 ##### Parameter
+
 |Parameter name|Required|Type|Explain|
 |:----    |:---|:----- |-----   |
 |username |Yes  |string |Your username   |
@@ -89,6 +93,7 @@ const apiTemplateEn = `
 const databaseTemplateEn = `
 
 -  User table , to store user information
+
 |Field|Type|Empty|Default|Explain|
 |:----    |:-------    |:--- |-- -|------      |
 |uid    |int(10)     |No |  |             |

@@ -30,7 +30,8 @@ export default {
       item_info: '',
       keyword: '',
       itemlangId2: '',
-      itemlangId3: ''
+      itemlangId3: '',
+      access : ''
       // loading: false
     }
   },
@@ -44,7 +45,8 @@ export default {
       this.itemlangId2 = value
       if (value !== undefined) {
         this.item_info = ''
-        this.get_item_menu()
+        console.log(value)
+        this.get_item_menu(this.keyword)
       }
     },
     // 获取菜单
@@ -55,7 +57,7 @@ export default {
       // var loading = this.$loading()
       var item_id = this.$route.params.item_id ? this.$route.params.item_id : 0
       var page_id = this.$route.query.page_id ? this.$route.query.page_id : 0
-      var url = this.DocConfig.server + '/item/info'
+      var url = DocConfig.server + '/item/info'
       var formdata = new FormData()
       formdata.append('id', item_id)
       formdata.append('keyword', keyword)
@@ -67,14 +69,14 @@ export default {
       if (res.status === 200) {
         // loading.close()
         var json = res.data
-        console.log(json.defaultpageid)
         if (json.defaultpageid <= 0 || json.defaultpageid === undefined) {
           if (json.menu.pages[0]) {
             json.defaultpageid = String(json.menu.pages[0].ID)
-            // console.log(json.defaultpageid)
           }
         }
         this.item_info = json
+        this.itemtitle = json.itemtitle
+        this.access = res.access
         if (json.unread_count > 0) {
           this.$message({
             showClose: true,
@@ -83,6 +85,7 @@ export default {
             message: '<a href="#/notice/index">你有新的未读消息，点击查看</a>'
           })
         }
+        document.title =this.itemtitle +'--Doc'
       } else if (res.status === 10307) {
         // 需要输入密码
         this.$router.replace({
@@ -104,10 +107,12 @@ export default {
       this.get_item_menu(keyword)
     },
     loadConfig () {
+      var item_id = this.$route.params.item_id ? this.$route.params.item_id : 0
       var that = this
-      var url = this.DocConfig.server + '/adminSetting/loadLangConfig'
+      var url = DocConfig.server + '/adminSetting/loadLangConfig'
       var params = new URLSearchParams()
-      that.$http.get(url, params).then(function (response) {
+      params.append('id', item_id)
+      that.$http.post(url, params).then(function (response) {
         if (response.data.status === 200) {
           if (response.data.data.length === 0) {
             return
@@ -123,13 +128,17 @@ export default {
     }
   },
   mounted () {
+    // defaultlang 是全局语言
+    this.itemlangId2 = localStorage.getItem("defaultlang")
     this.loadConfig()
-    this.get_item_menu()
+    this.get_item_menu(this.keyword)
     this.$store.dispatch('changeOpenCatId', 0)
+    this.$cookies.remove('selected')
+    localStorage.removeItem('defaultlang')
   },
   beforeDestroy () {
     this.$message.closeAll()
-    document.title = 'Doc'
+    document.title ='Doc'
   }
 }
 </script>

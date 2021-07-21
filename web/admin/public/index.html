@@ -21,19 +21,24 @@
       };
 
     });
-
+    var lang = (navigator.language || navigator.browserLanguage).toLowerCase().substring(0, 2)
+        if (lang = 'en'){
+           lang = 'EN_US'
+        } else if (lang = 'zh'){
+           lang = 'ZH_CN'
+        }
     //挂在window下的全局配置
     window.DocConfig = {
-      //"server":'http://127.0.0.1/showdoc/server/index.php?s=',
-      "server": window.location.protocol +'//'+ window.location.host + window.location.pathname+ '../server/index.php?s=',
-      //"lang" :'en'
-      "lang" :'zh-cn'
+      //"server":'http://localhost:8080/api/v1',
+      "server": window.location.protocol +'//'+ window.location.host + '/api/v1',
+      //"lang" :'ZH_CN'
+      "lang" :lang
   }
   </script>
   </head>
   <body class="grey-bg">
     <div id="app"></div>
     <!-- built files will be auto injected -->
-    <div style="display:none">本网站基于开源版showdoc搭建，仅供私人使用。如需访问doc官网，请在搜索引擎里搜索showdoc字样或者直接访问showdoc.com.cn</div>
+    <div style="display:none">本网站基于开源版doc搭建，仅供私人使用。如需访问doc官网，请在搜索引擎里搜索doc字样</div>
   </body>
 </html>

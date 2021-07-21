@@ -26,7 +26,9 @@ export default {
     return {
       height: '',
       link: '',
-      link_text: ''
+      link_text: '',
+      lang: false,
+      locale: 'ZH_CN'
     }
   },
   methods: {
@@ -42,6 +44,8 @@ export default {
     }
   },
   mounted () {
+    this.locale = DocConfig.lang
+    this.$cookies.set('lng', this.locale === 'EN_US' ? this.locale : this.locale, 50)
     var that = this
     this.getHeight()
     that.link = '/user/register'
@@ -52,7 +56,12 @@ export default {
         that.link_text = that.$t('my_item')
       }
     })
-  }
+  },
+  watch: {
+    locale (val) {
+      this.$i18n.locale = val
+    }
+  },
 }
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->

@@ -21,6 +21,7 @@ import ItemSetting from '@/components/item/setting/Index'
 import ItemExport from '@/components/item/export/Index'
 import Attachment from '@/components/attachment/Index'
 import Admin from '@/components/admin/Index'
+import PageDiff from '@/components/page/Diff'
 
 Vue.use(Router)
 
@@ -129,6 +130,11 @@ const routes = [
     path: '/attachment/index',
     name: 'Attachment',
     component: Attachment
+  },
+  {
+    path: '/page/diff/:page_id/:page_history_id',
+    name: 'PageDiff',
+    component: PageDiff
   }
 ]
 const router = new Router({

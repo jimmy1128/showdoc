@@ -36,7 +36,7 @@ export default {
     onSubmit () {
       // this.$message.success(this.username);
       var that = this
-      var url = this.DocConfig.server + '/api/user/resetPasswordByUrl'
+      var url = DocConfig.server + '/api/user/resetPasswordByUrl'
       var params = new URLSearchParams()
       params.append('new_password', this.new_password)
       params.append('uid', this.$route.query.uid)

@@ -127,9 +127,12 @@ func IniRouter(){
 		auth.POST("import/auto",v1.ImportItem)
 		//ExportItem
 		auth.GET("export/markdown/:item_id",v1.ExportItem)
-
-
-
+        //Dashboard
+        auth.POST("avatar/update",v1.SaveAvatar)
+		auth.POST("avatar/profile",v1.GetAvatar)
+		auth.POST("avatar/header",v1.SaveHeader)
+		auth.POST("avatar/getHeader",v1.GetHeader)
+		auth.POST("avatar/deleteHeader",v1.DeleteHeader)
 
 
 	}
@@ -146,6 +149,7 @@ func IniRouter(){
 
 		// 上传模块
 		router.POST("upload",v1.UpLoad)
+		router.POST("uploadImg",v1.UpLoadImg)
 		router.POST("user/register",v1.AddUser)
 		//item 模块
 		router.GET("admin/list",v1.MyList)
@@ -160,6 +164,7 @@ func IniRouter(){
 		router.POST("public/lang",v1.GetLangs)
 		// config
 		router.POST("adminSetting/loadLangConfig",v1.LoadLangConfig)
+		router.GET("export/word",v1.ExportWord)
 
 
 

@@ -35,14 +35,14 @@ export default {
     return {
       email: '',
       vCode: '',
-      vCodeImg: this.DocConfig.server + '/api/common/verify'
+      vCodeImg: DocConfig.server + '/api/common/verify'
     }
   },
   methods: {
     onSubmit () {
       // this.$message.success(this.username)
       var that = this
-      var url = this.DocConfig.server + '/api/user/resetPasswordEmail'
+      var url = DocConfig.server + '/api/user/resetPasswordEmail'
       var params = new URLSearchParams()
       params.append('email', this.email)
       params.append('v_code', this.v_code)

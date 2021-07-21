@@ -19,6 +19,14 @@
         <el-radio v-model="isOpenItem" :label="false">{{$t('private_item')}}</el-radio>
       </el-form-item>
 
+      <el-form-item>
+      <div>
+        <el-checkbox-group v-model="dataIntArr" size="mini" @change="handleClick" :border="true">
+        <el-checkbox-button v-for="langs in lang" :label="langs.id" :key="langs.id">{{langs.name}}</el-checkbox-button>
+        </el-checkbox-group>
+      </div>
+      </el-form-item>
+
       <el-form-item v-show="!isOpenItem">
         <el-input
           type="password"
@@ -42,13 +50,17 @@ export default {
   data () {
     return {
       infoForm: {},
-      isOpenItem: true
+      isOpenItem: true,
+      lang: [],
+      checkboxGroup3:[],
+      list:[],
+      dataIntArr:[]
     }
   },
   methods: {
     get_item_info () {
       var that = this
-      var url = this.DocConfig.server + '/item/detail'
+      var url = DocConfig.server + '/item/detail'
       var params = new URLSearchParams()
       params.append('item_id', that.$route.params.item_id)
       that.$http
@@ -60,6 +72,10 @@ export default {
               that.isOpenItem = false
             }
             that.infoForm = Info
+            var langInfo =that.infoForm.lang_list.split(',')
+            langInfo.forEach(item => {
+            that.dataIntArr.push(+item)
+            })
           } else {
             that.$alert(response.data.message)
           }
@@ -68,9 +84,12 @@ export default {
           console.log(error)
         })
     },
+    handleClick(tab) {
+      this.list = tab
+    },
     FormSubmit () {
       var that = this
-      var url = this.DocConfig.server + '/item/update'
+      var url = DocConfig.server + '/item/update'
       if (!this.isOpenItem && !this.infoForm.password) {
         that.$alert(that.$t('private_item_passwrod'))
         return false
@@ -84,11 +103,12 @@ export default {
       params.append('description', this.infoForm.description)
       // params.append('item_domain', this.infoForm.item_domain)
       params.append('password', this.infoForm.password)
+      params.append('langlist', this.list)
       that.$http
         .post(url, params)
         .then(function (response) {
           if (response.data.status === 200) {
-            that.$message.success(that.$t('modify_success'))
+            that.$message.success(response.data.message)
           } else {
             that.$alert(response.data.message)
           }
@@ -96,10 +116,29 @@ export default {
         .catch(function (error) {
           console.log(error)
         })
-    }
+    },
+    get_lang () {
+      var that = this
+      var url = DocConfig.server + '/lang'
+      var params = new URLSearchParams()
+      that.$http.get(url, params)
+        .then(function (response) {
+          if (response.data.status === 200) {
+            var lang = response.data.data
+            // 创建上级目录选项
+            var Lang2 = lang.slice(0)
+            that.lang = Lang2
+
+          }
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
   },
   mounted () {
     this.get_item_info()
+    this.get_lang()
   }
 }
 </script>

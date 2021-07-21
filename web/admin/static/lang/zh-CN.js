@@ -24,7 +24,9 @@ export const ZH_CN = {
     'www.doc.cc 提供安全稳定的在线文档托管服务<br>你可以放心地选择托管你的文档数据在云端',
   section_title8: '立即体验',
   section_description8: '超过6000+互联网团队正在使用Doc',
-
+  paste_insert_table: '粘贴插入表格',
+  paste_insert_table_tips:
+    '你可以从网页或者excel中复制表格，然后粘贴在此处。粘贴并确定后，程序将自动把源表格转为markdown格式的表格。注：复制excel后，请鼠标右击，粘贴为纯文本。否则会当做图片上传。',
   login: '登录',
   username: '用户名',
   password: '密码',
@@ -51,19 +53,23 @@ export const ZH_CN = {
   new_password: '新密码',
   modify_success: '修改成功',
   update_email_success: '更新邮箱成功！请登录邮箱查收验证邮件',
-
+  update: '更新',
+  memu_manage: '目录管理',
+  page_manage: '页面管理',
+  lang_manage: '语言管理',
   personal_setting: '个人设置',
   web_home: '网站首页',
   logout: '退出登录',
   add_an_item: '添加一个新项目',
   new_item: '新建项目',
   feedback: '反馈',
+  add_header: '添加自定义',
   more: '更多',
   my_notice: '我的消息',
   item_setting: '项目设置',
   item_top: '置顶项目',
   cancel_item_top: '取消置顶',
-
+  setting: '设置',
   item_type1: '常规项目',
   item_type2: '单页项目',
   item_name: '项目名',
@@ -82,7 +88,9 @@ export const ZH_CN = {
   select_cat_2: '选择二级目录：',
   select_cat_3: '选择三级目录：',
   begin_export: '开始导出',
-
+  add_link: '添加跳转',
+  page_menu: '页面目录',
+  dest_addr: '跳转目地',
   base_info: '基础信息',
   member_manage: '成员管理',
   advance_setting: '高级设置',
@@ -149,11 +157,12 @@ export const ZH_CN = {
   item_page_address: '项目页面地址',
   single_page_address: '单页面地址',
   page_diff_tips: '项目页面地址和单页面地址有什么区别？',
-
+  group_page: '页面组合',
   title: '标题',
   catalog: '目录',
   level_2_directory: '二级目录',
   level_3_directory: '三级目录',
+  under_develop: '小哥还在开发中',
   s_number: '序号',
   s_number_explain: '(可选)默认是99，数字越小越靠前',
   optional: '可选',
@@ -185,7 +194,7 @@ export const ZH_CN = {
   save_templ_title: '请为要保存的模板设置标题',
   save_templ_text:
     '已经保存好模板。你以后新建或者编辑编辑页面时，点击“更多模板”按钮，便可以使用你保存的模板',
-  welcome_use_showdoc: '欢迎使用Doc！',
+  welcome_use_doc: '欢迎使用Doc！',
   templ_list: '模板列表',
   templ_title: '模板标题',
   lang_setting: '语言设置',
@@ -193,6 +202,7 @@ export const ZH_CN = {
   lang_choose: '语言选项',
   cat_lang: '语言目录',
   icon: '图标',
+  save_success: '保存成功',
   no_templ_text:
     '你尚未保存过任何模板。你可以在编辑页面时，在“保存”按钮右边点击，在下拉菜单中选择“另存为模板”。把页面内容保存为模板后，你下次新建或者编辑页面时便可以使用你之前保存的模板',
   save_time: '保存时间',
@@ -310,7 +320,7 @@ export const ZH_CN = {
 
   sort_pages: '页面排序',
   sort_pages_tips: '选择特定的目录后，你可以对该目录下的页面进行拖动排序',
-
+  item_language: '项目语言',
   regular_item: '常规项目',
   single_item: '单页项目',
   copy_item: '复制项目',
@@ -383,5 +393,6 @@ export const ZH_CN = {
   language: 'English',
   english: '英文',
   chinese_simplified: '简体中文',
-  link_item: '语言切换'
+  link_item: '语言切换',
+  profile: '自定义'
 }

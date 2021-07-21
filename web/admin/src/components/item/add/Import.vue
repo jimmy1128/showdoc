@@ -13,6 +13,8 @@
         :on-success="success"
         :before-upload="beforeUpload"
         :show-file-list="false"
+        :with-credentials="true"
+        :headers="myHeaders"
       >
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">
@@ -26,6 +28,7 @@
 </template>
 
 <script>
+var token =  `Bearer ${window.sessionStorage.getItem('token')}`
 export default {
   name: 'Login',
   components: {},
@@ -34,16 +37,17 @@ export default {
       api_key: '',
       api_token: '',
       loading: '',
-      upload_url: this.DocConfig.server + '/api/import/auto'
+      upload_url: DocConfig.server + '/import/auto',
+      myHeaders: {Authorization: token}
     }
   },
   methods: {
     success (data) {
       this.loading.close()
-      if (data.error_code === 0) {
+      if (data.status === 200) {
         this.$router.push({ path: '/item/index' })
       } else {
-        this.$alert(data.error_message)
+        this.$alert(data.message)
       }
     },
     beforeUpload () {

@@ -81,7 +81,7 @@ export default {
       attachment_type: '-1',
       used: 0,
       used_flow: 0,
-      uploadUrl: this.DocConfig.server + '/page/upload'
+      uploadUrl: DocConfig.server + '/page/upload'
     }
   },
   methods: {

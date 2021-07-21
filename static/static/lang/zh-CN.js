@@ -63,12 +63,13 @@ export const ZH_CN = {
   add_an_item: '添加一个新项目',
   new_item: '新建项目',
   feedback: '反馈',
+  add_header: '添加自定义',
   more: '更多',
   my_notice: '我的消息',
   item_setting: '项目设置',
   item_top: '置顶项目',
   cancel_item_top: '取消置顶',
-
+  setting: '设置',
   item_type1: '常规项目',
   item_type2: '单页项目',
   item_name: '项目名',
@@ -87,7 +88,9 @@ export const ZH_CN = {
   select_cat_2: '选择二级目录：',
   select_cat_3: '选择三级目录：',
   begin_export: '开始导出',
-
+  add_link: '添加跳转',
+  page_menu: '页面目录',
+  dest_addr: '跳转目地',
   base_info: '基础信息',
   member_manage: '成员管理',
   advance_setting: '高级设置',
@@ -390,5 +393,6 @@ export const ZH_CN = {
   language: 'English',
   english: '英文',
   chinese_simplified: '简体中文',
-  link_item: '语言切换'
+  link_item: '语言切换',
+  profile: '自定义'
 }

@@ -38,7 +38,7 @@ export default {
   methods: {
     async onSubmit () {
       // this.$message.success(this.username);
-      var url = this.DocConfig.server + '/login'
+      var url = DocConfig.server + '/login'
       const { data: res } = await this.$http.post(url, {
         username: this.username,
         password: this.password

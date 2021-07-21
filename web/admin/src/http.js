@@ -2,11 +2,10 @@ import axios from 'axios'
 import Vue from 'vue'
 import router from '@/router/index'
 
-const Url = 'http://103.118.82.117:8080/api/v1'
-
+const Url = window.DocConfig.server
 // axios 配置
 axios.defaults.timeout = 20000
-axios.defaults.baseURL = Url
+axios.defaults.baseURL = window.DocConfig.server
 axios.defaults.withCredentials = true
 axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded'
 // http request 拦截器

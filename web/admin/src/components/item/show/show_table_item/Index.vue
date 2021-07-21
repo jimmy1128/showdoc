@@ -114,7 +114,7 @@ export default {
   methods: {
     async getPageContent (page_id) {
       var that = this
-      var url = this.DocConfig.server + '/admin/page'
+      var url = DocConfig.server + '/admin/page'
       if (!page_id) {
         page_id = that.page_id
       }
@@ -173,7 +173,7 @@ export default {
         : this.item_info.id
       this.share_item_link = this.getRootPath() + '#/' + path
       this.qr_item_link =
-        this.DocConfig.server +
+        DocConfig.server +
         '/common/qrcode&size=3&url=' +
         encodeURIComponent(this.share_item_link)
       this.dialogVisible = true
@@ -184,7 +184,7 @@ export default {
       this.$message(this.$t('copy_success'))
     },
     async save () {
-      var url = this.DocConfig.server + '/page/save'
+      var url = DocConfig.server + '/page/save'
       var formdata = new FormData()
       formdata.append('page_id', this.page_id)
       formdata.append('page_title', this.item_info.itemtitle)
@@ -263,7 +263,7 @@ export default {
     },
     // 锁定
     async setLock () {
-      var url = this.DocConfig.server + '/page/setLock'
+      var url = DocConfig.server + '/page/setLock'
       var formdata = new FormData()
       formdata.append('page_id', this.page_id)
       formdata.append('item_id', this.item_info.id)
@@ -279,7 +279,7 @@ export default {
       if (!this.isLock) {
         return // 本来处于未锁定中的话，不发起请求
       }
-      var url = this.DocConfig.server + '/page/setLock'
+      var url = DocConfig.server + '/page/setLock'
       var formdata = new FormData()
       formdata.append('page_id', this.page_id)
       formdata.append('item_id', this.item_info.id)
@@ -299,7 +299,7 @@ export default {
     },
     // 判断页面是否被锁定编辑
     async remoteIsLock () {
-      var url = this.DocConfig.server + '/page/isLock'
+      var url = DocConfig.server + '/page/isLock'
       var formdata = new FormData()
       formdata.append('page_id', this.page_id)
       const { data: res } = await this.$http.post(url, formdata)
@@ -393,7 +393,7 @@ export default {
           'static/xspreadsheet/locale/en.js'
         ],
         () => {
-          if (this.DocConfig.lang === 'en') {
+          if (DocConfig.lang === 'en') {
             x_spreadsheet.locale('en')
           } else {
             x_spreadsheet.locale('zh-cn')

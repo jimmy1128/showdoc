@@ -66,7 +66,7 @@ export default {
         noticeType = 'all'
       }
       var that = this
-      var url = this.DocConfig.server + '/api/notice/getList'
+      var url = DocConfig.server + '/api/notice/getList'
       var params = new URLSearchParams()
       params.append('notice_type', noticeType)
       that.axios.post(url, params)
@@ -90,7 +90,7 @@ export default {
       that.$alert(row.notice_content, '', {
         dangerouslyUseHTMLString: true
       })
-      var url = this.DocConfig.server + '/api/notice/setRead'
+      var url = DocConfig.server + '/api/notice/setRead'
       var params = new URLSearchParams()
       params.append('notice_id', noticeId)
       that.axios.post(url, params)
@@ -106,7 +106,7 @@ export default {
     deleteNotice (row) {
       var noticeId = row.notice_id
       var that = this
-      var url = this.DocConfig.server + '/api/notice/delete'
+      var url = DocConfig.server + '/api/notice/delete'
       this.$confirm('确认删除吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

@@ -53,7 +53,7 @@ export default {
   methods: {
     get_item_list () {
       var that = this
-      var url = this.DocConfig.server + '/admin/list'
+      var url = DocConfig.server + '/admin/list'
       var params = new URLSearchParams()
       that.$http.get(url, params).then(function (response) {
         if (response.data.status === 200) {
@@ -75,7 +75,7 @@ export default {
     },
     FormSubmit () {
       var that = this
-      var url = this.DocConfig.server + '/item/add'
+      var url = DocConfig.server + '/item/add'
       if (!this.isOpenItem && !this.infoForm.password) {
         that.$alert(that.$t('private_item_passwrod'))
         return false

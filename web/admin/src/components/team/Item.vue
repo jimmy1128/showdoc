@@ -42,7 +42,7 @@
           </el-select>
         </el-form>
         <br />
-        <router-link to="/item/index" target="_blank">{{$t('go_to_new_an_item')}}</router-link>
+        <router-link to="/item/index" target="">{{$t('go_to_new_an_item')}}</router-link>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">{{$t('cancel')}}</el-button>
           <el-button type="primary" @click="MyFormSubmit">{{$t('confirm')}}</el-button>
@@ -149,7 +149,7 @@ export default {
     },
     geList () {
       var that = this
-      var url = this.DocConfig.server + '/teamitem/listbyteam'
+      var url = DocConfig.server + '/teamitem/listbyteam'
       var params = new URLSearchParams()
       params.append('team_id', this.team_id)
       that.$http.post(url, params).then(function (response) {
@@ -163,7 +163,7 @@ export default {
     },
     getItemList () {
       var that = this
-      var url = this.DocConfig.server + '/admin/list'
+      var url = DocConfig.server + '/admin/list'
       var params = new URLSearchParams()
       that.$http.get(url, params).then(function (response) {
         if (response.data.status === 200) {
@@ -176,7 +176,7 @@ export default {
     },
     MyFormSubmit () {
       var that = this
-      var url = this.DocConfig.server + '/teamitem/save'
+      var url = DocConfig.server + '/teamitem/save'
       var params = new URLSearchParams()
       params.append('team_id', this.team_id)
       params.append('item_id', this.MyForm.item_id)
@@ -192,7 +192,7 @@ export default {
     },
     deleteTeamItem (cid) {
       var that = this
-      var url = this.DocConfig.server + '/teamitem/delete'
+      var url = DocConfig.server + '/teamitem/delete'
       this.$confirm(that.$t('confirm_unassign'), ' ', {
         confirmButtonText: that.$t('confirm'),
         cancelButtonText: that.$t('cancel'),
@@ -220,7 +220,7 @@ export default {
       var that = this
       this.dialogFormTeamMemberVisible = true
       this.get_catalog(item_id)
-      var url = this.DocConfig.server + '/teamitemmember/list'
+      var url = DocConfig.server + '/teamitemmember/list'
       var params = new URLSearchParams()
       params.append('item_id', item_id)
       params.append('team_id', this.team_id)
@@ -235,7 +235,7 @@ export default {
     },
     changeTeamItemMemberGroup (member_group_id, ID) {
       var that = this
-      var url = this.DocConfig.server + '/teamitemmember/save'
+      var url = DocConfig.server + '/teamitemmember/save'
       var params = new URLSearchParams()
 
       params.append('memberGroupId', member_group_id)
@@ -250,7 +250,7 @@ export default {
     },
     changeTeamItemMemberCat (cat_id, id) {
       var that = this
-      var url = this.DocConfig.server + '/teamitemmember/save'
+      var url = DocConfig.server + '/teamitemmember/save'
       var params = new URLSearchParams()
       params.append('cat_id', cat_id)
       params.append('id', id)
@@ -258,13 +258,13 @@ export default {
         if (response.data.status === 200) {
           that.$message(that.$t('cat_success'))
         } else {
-          that.$alert(response.data.message)
+          that.$message(response.data.message)
         }
       })
     },
     get_catalog (ID) {
       var that = this
-      var url = this.DocConfig.server + '/catListGroup'
+      var url = DocConfig.server + '/catListGroup'
       var params = new URLSearchParams()
       params.append('item_id', ID)
       that.$http.post(url, params).then(function (response) {
@@ -272,11 +272,11 @@ export default {
           var Info = response.data.data
           Info.unshift({
             cat_id: 0,
-            catname: that.$t('all_cat')
+            cat_name: that.$t('all_cat')
           })
           that.catalogs = Info
         } else {
-          that.$alert(response.data.message)
+          that.$message(response.data.message)
         }
       })
     }

@@ -101,7 +101,7 @@ export default {
     delete_page () {
       var page_id = this.page_id > 0 ? this.page_id : 0
       var that = this
-      var url = this.DocConfig.server + '/page/delete'
+      var url = DocConfig.server + '/page/delete'
       this.$confirm(that.$t('comfirm_delete'), ' ', {
         confirmButtonText: that.$t('confirm'),
         cancelButtonText: that.$t('cancel'),

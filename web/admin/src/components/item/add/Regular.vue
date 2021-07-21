@@ -29,7 +29,7 @@
         </el-tooltip>
       </el-form-item>
 
-      <el-form-item>
+      <el-form-item >
         <el-tooltip class="item" effect="dark" :content="$t('item_description')" placement="right">
           <el-input
             type="text"
@@ -38,6 +38,16 @@
             :placeholder="$t('item_description')"
           ></el-input>
         </el-tooltip>
+      </el-form-item>
+
+      <el-form-item >
+      <el-tooltip class="item" effect="dark" :content="$t('item_language')" placement="right">
+      <div >
+        <el-checkbox-group v-model="infoForm.lang_list" size="mini" @change="handleClick" :border="true">
+        <el-checkbox-button v-for="langs in lang" :label="langs.id" :key="langs.id">{{langs.name}}</el-checkbox-button>
+        </el-checkbox-group>
+      </div>
+      </el-tooltip>
       </el-form-item>
 
       <el-form-item label>
@@ -72,15 +82,18 @@ export default {
         item_description: '',
         item_domain: '',
         password: '',
-        item_type: '1'
+        item_type: '1',
+        lang_list: [1]
       },
-      isOpenItem: true
+      isOpenItem: true,
+      lang: [],
+      list:[]
     }
   },
   methods: {
     FormSubmit () {
       var that = this
-      var url = this.DocConfig.server + '/item/add'
+      var url = DocConfig.server + '/item/add'
       if (!this.isOpenItem && !this.infoForm.password) {
         that.$alert(that.$t('private_item_passwrod'))
         return false
@@ -94,6 +107,7 @@ export default {
       params.append('description', this.infoForm.item_description)
       params.append('item_domain', this.infoForm.item_domain)
       params.append('password', this.infoForm.password)
+      params.append('langlist', this.infoForm.lang_list)
       that.$http.post(url, params).then(function (response) {
         if (response.data.status === 200) {
           that.$router.push({ path: '/item/index' })
@@ -101,9 +115,32 @@ export default {
           that.$alert(response.data.message)
         }
       })
-    }
+    },
+    get_lang () {
+      var that = this
+      var url = DocConfig.server + '/lang'
+      var params = new URLSearchParams()
+      that.$http.get(url, params)
+        .then(function (response) {
+          if (response.data.status === 200) {
+            var lang = response.data.data
+            // 创建上级目录选项
+            var Lang2 = lang.slice(0)
+            that.lang = Lang2
+          }
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+    handleClick(tab) {
+      this.infoForm.lang_list = tab
+      console.log(tab)
+    },
   },
-  mounted () {}
+  mounted () {
+    this.get_lang()
+  }
 }
 </script>
 

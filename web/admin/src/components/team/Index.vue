@@ -115,7 +115,7 @@ export default {
   methods: {
     geList () {
       var that = this
-      var url = this.DocConfig.server + '/team/list'
+      var url = DocConfig.server + '/team/list'
       var params = new URLSearchParams()
       that.$http.post(url, params).then(function (response) {
         if (response.data.status === 200) {
@@ -128,7 +128,7 @@ export default {
     },
     MyFormSubmit () {
       var that = this
-      var url = this.DocConfig.server + '/team/save'
+      var url = DocConfig.server + '/team/save'
       var params = new URLSearchParams()
       params.append('id', this.MyForm.id)
       params.append('team_name', this.MyForm.teamname)
@@ -152,7 +152,7 @@ export default {
     },
     deleteTeam (ID) {
       var that = this
-      var url = this.DocConfig.server + '/team/delete'
+      var url = DocConfig.server + '/team/delete'
       this.$confirm(that.$t('confirm_delete'), ' ', {
         confirmButtonText: that.$t('confirm'),
         cancelButtonText: that.$t('cancel'),
@@ -182,11 +182,10 @@ export default {
     attornDialog (row) {
       this.attornForm.team_id = row.ID
       this.dialogAttornVisible = true
-      console.log(row)
     },
     attorn () {
       var that = this
-      var url = this.DocConfig.server + '/team/attorn'
+      var url = DocConfig.server + '/team/attorn'
       var params = new URLSearchParams()
       params.append('team_id', this.attornForm.team_id)
       params.append('username', this.attornForm.username)

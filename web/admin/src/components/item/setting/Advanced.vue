@@ -161,7 +161,7 @@ export default {
   methods: {
     deleteItem () {
       var that = this
-      var url = this.DocConfig.server + '/item/delete'
+      var url = DocConfig.server + '/item/delete'
       var params = new URLSearchParams()
       params.append('item_id', that.$route.params.item_id)
       params.append('password', this.deleteForm.password)
@@ -184,7 +184,7 @@ export default {
     },
     archive () {
       var that = this
-      var url = this.DocConfig.server + '/item/archive'
+      var url = DocConfig.server + '/item/archive'
       var params = new URLSearchParams()
       params.append('item_id', that.$route.params.item_id)
       params.append('password', this.archiveForm.password)
@@ -207,7 +207,7 @@ export default {
     },
     getItemList () {
       var that = this
-      var url = this.DocConfig.server + '/admin/list'
+      var url = DocConfig.server + '/admin/list'
       var params = new URLSearchParams()
       that.$http.get(url, params).then(function (response) {
         if (response.data.status === 200) {
@@ -220,7 +220,7 @@ export default {
     },
     attorn () {
       var that = this
-      var url = this.DocConfig.server + '/item/attorn'
+      var url = DocConfig.server + '/item/attorn'
       var params = new URLSearchParams()
       params.append('item_id', that.$route.params.item_id)
       params.append('username', this.attornForm.username)
@@ -244,7 +244,7 @@ export default {
     },
     linkItem () {
       var that = this
-      var url = this.DocConfig.server + '/item/link'
+      var url = DocConfig.server + '/item/link'
       var params = new URLSearchParams()
       params.append('item_id', that.$route.params.item_id)
       params.append('id', this.MyForm.link)
@@ -263,7 +263,7 @@ export default {
     },
     get_item_info () {
       var that = this
-      var url = this.DocConfig.server + '/item/detail'
+      var url = DocConfig.server + '/item/detail'
       var params = new URLSearchParams()
       params.append('item_id', that.$route.params.item_id)
       that.$http

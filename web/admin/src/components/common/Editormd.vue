@@ -1,5 +1,4 @@
 <template>
-
   <div :id="id" class="main-editor">
     <textarea v-html="content" style="display:none;"></textarea>
         <!-- 放大图片 -->
@@ -8,7 +7,7 @@
 </template>
 <style src="@/../static/editor.md/css/editormd.min.css"></style>
 <style src="@/../static/highlight/a11y-light.min.css"></style>
-<style scoped>
+<style>
 .editormd-preview-container {
   min-height: 60%;
 }
@@ -76,7 +75,7 @@ export default {
           htmlDecode: 'style,script,iframe|filterXSS',
           imageUpload: true,
           imageFormats: ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'webp', 'JPG', 'JPEG', 'GIF', 'PNG', 'BMP', 'WEBP'],
-          imageUploadURL: this.DocConfig.server + '/upload',
+          imageUploadURL: DocConfig.server + '/upload',
           onload: () => {
             console.log('onload')
           },
@@ -244,7 +243,7 @@ export default {
           if (this.type === 'editor') {
             this.instance = editorMD(this.id, this.editorConfig)
             // 草稿
-            this.draft()
+            // this.draft()
             // window.addEventListener('beforeunload', e => this.beforeunloadHandler(e));
           } else {
             this.instance = editorMD.markdownToHTML(this.id, this.editorConfig)
@@ -255,7 +254,7 @@ export default {
     },
     // 插入数据到编辑器中。插入到光标处
     insertValue (insertContent) {
-      this.instance.insertValue(insertContent)
+      this.instance.insertValue(this.html_decode(insertContent))
     },
     getMarkdown () {
       return this.instance.getMarkdown()
@@ -286,6 +285,9 @@ export default {
           that.insertValue(page_content)
           localStorage.removeItem('page_content')
         })
+          .catch(() => {
+            localStorage.removeItem('page_content')
+          })
       }
     },
     // 关闭前提示
@@ -405,7 +407,7 @@ export default {
       s = s.replace(/&nbsp;/g, ' ')
       s = s.replace(/&#39;/g, "'")
       s = s.replace(/&quot;/g, '"')
-      // s = s.replace(/<br>/g, "\n");
+      // s = s.replace(/<br>/g, '\n')
       return s
     },
     parseURL (url) {

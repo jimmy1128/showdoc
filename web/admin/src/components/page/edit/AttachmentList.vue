@@ -78,7 +78,7 @@ export default {
       currentDate: new Date(),
       content: [],
       dialogTableVisible: false,
-      uploadUrl: this.DocConfig.server + '/api/page/upload'
+      uploadUrl: DocConfig.server + '/api/page/upload'
     }
   },
   components: {
@@ -95,7 +95,7 @@ export default {
   methods: {
     get_content () {
       var that = this
-      var url = this.DocConfig.server + '/api/page/uploadList'
+      var url = DocConfig.server + '/api/page/uploadList'
       var params = new URLSearchParams()
       params.append('page_id', this.page_id)
       that.axios.post(url, params).then(function (response) {
@@ -125,7 +125,7 @@ export default {
       }).then(() => {
         var file_id = row.file_id
         var that = this
-        var url = this.DocConfig.server + '/api/page/deleteUploadFile'
+        var url = DocConfig.server + '/api/page/deleteUploadFile'
         var params = new URLSearchParams()
         params.append('file_id', file_id)
         params.append('page_id', that.page_id)

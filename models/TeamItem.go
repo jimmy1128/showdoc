@@ -80,6 +80,11 @@ func SaveTeamItem(uid uint , id string,teamId int)(TeamItem,int){
 
 func checkItemCreator (uid uint, item_id int)int{
 	var item Item
+	var user User
+	db.Model(User{}).Where("id = ?",uid).Find(&user)
+	if user.Role == 1 {
+		 return errmsg.SUCCESE
+	}
 	if uid == 0 {
 		return errmsg.ERROR
 	}

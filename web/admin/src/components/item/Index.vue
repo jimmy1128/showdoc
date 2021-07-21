@@ -15,24 +15,6 @@
               <i class="material-icons md-20" style="display: flex; align-items: baseline;" :key="lang?'ZH_CN':'EN_US'" @click="changeLang()" >language</i>
             </router-link>
           </el-tooltip>
-
-          <el-tooltip class="item" effect="dark" :content="$t('feedback')" placement="top">
-            <router-link to>
-              <i @click="feedback" class="el-icon-phone-outline"></i>
-            </router-link>
-          </el-tooltip>
-
-          <el-tooltip
-            class="item"
-            effect="dark"
-            content="客户端"
-            placement="top"
-          >
-            <a target="_blank" href="">
-              <i class="el-icon-mobile-phone"></i>
-            </a>
-          </el-tooltip>
-
           <el-tooltip
             class="item"
             effect="dark"
@@ -69,11 +51,14 @@
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>
-                  <router-link to="/user/setting">{{$t("Logged")}}:{{username}}</router-link>
+                  <router-link to="/user/setting" :disabled="true">{{$t("Logged")}}:{{username}}</router-link>
                 </el-dropdown-item>
-                <el-dropdown-item>
-                  <router-link to="/attachment/index">{{$t("my_attachment")}}</router-link>
+                <el-tooltip class="item" effect="dark" :content="$t('under_develop')" placement="top">
+                <el-dropdown-item >
+                  <!-- <router-link to="/attachment/index" >{{$t("my_attachment")}}</router-link> -->
+                  <router-link to="" >{{$t("my_attachment")}}</router-link>
                 </el-dropdown-item>
+                </el-tooltip>
                 <el-dropdown-item :command="logout">{{$t("logout")}}</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -227,7 +212,7 @@ a {
   -webkit-box-shadow: none;
   box-shadow: none;
   text-decoration: none;
-  background-color: #f2f5e9;
+  background-color: #F4F7F9;
 }
 .thumbnail {
   display: block;
@@ -339,7 +324,7 @@ export default {
     },
     getItemList () {
       var that = this
-      var url = this.DocConfig.server + '/admin/list'
+      var url = DocConfig.server + '/admin/list'
       var params = new URLSearchParams()
       that.$http.get(url, params).then(function (response) {
         if (response.data.status === 200) {
@@ -352,12 +337,12 @@ export default {
     },
     feedback () {
       if (this.lang === true) {
-        window.open('https://github.com/star7th/doc/issues')
+        window.open('https://')
       } else {
         var msg =
           '你正在使用免费开源版doc，如有问题或者建议，请到github提issue：'
         msg +=
-          "<a href='https://github.com/star7th/doc/issues' target='_blank'></a><br>"
+          "<a href='https://' target='_blank'></a><br>"
         msg +=
           '如果你觉得doc好用，不妨给开源项目点一个star。良好的关注度和参与度有助于开源项目的长远发展。'
         this.$alert(msg, {
@@ -399,7 +384,7 @@ export default {
         action = 'top'
       }
       var that = this
-      var url = this.DocConfig.server + '/item/top'
+      var url = DocConfig.server + '/item/top'
       var params = new URLSearchParams()
       params.append('action', action)
       params.append('item_id', itemId)
@@ -419,14 +404,8 @@ export default {
         cancelButtonText: that.$t('cancel'),
         type: 'warning'
       }).then(() => {
-        var url = this.DocConfig.server + '/item/exitItem'
+        var url = DocConfig.server + '/item/exitItem'
         var params = new URLSearchParams()
-        var keys = document.cookies.match(/[^ =;]+(?=)/g)
-        if (keys) {
-          for (var i = keys.length; i--;) {
-            document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString()
-          }
-        }
         params.append('item_id', itemId)
         that.$http.post(url, params).then(function (response) {
           if (response.data.status === 200) {
@@ -438,7 +417,7 @@ export default {
       })
     },
     async logout () {
-      var url = this.DocConfig.server + '/exit'
+      var url = DocConfig.server + '/exit'
       const { data: res } = await this.$http.get(url)
       window.sessionStorage.clear()
       this.$router.push('/')
@@ -456,12 +435,11 @@ export default {
     },
     sort_item (data) {
       var that = this
-      var url = this.DocConfig.server + '/item/sort'
+      var url = DocConfig.server + '/item/sort'
       var params = new URLSearchParams()
       params.append('data', JSON.stringify(data))
       that.$http.post(url, params).then(function (response) {
         if (response.data.status === 200) {
-          this.get_item_list()
           // window.location.reload();
         } else {
           that.$alert(response.data.message, '', {
@@ -516,6 +494,7 @@ export default {
       this.locale = 'ZH_CN'
       this.lang = false
     }
+
     this.$cookies.set('lng', this.locale === 'ZH_CN' ? this.locale : this.locale, '30d')
   },
   watch: {

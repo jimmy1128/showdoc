@@ -65,7 +65,7 @@
         </el-form-item>
       </el-form>
       <div style="margin: 0 auto;width: 260px">
-    <e-icon-picker ref="iconPicker" v-model="icon" :options="options"/>
+    <e-icon-picker ref="iconPicker" v-model="addForm.icon" :options="options"/>
     名称：{{ icon }}
     <e-icon :icon-name="icon"/>
   </div>
@@ -118,7 +118,7 @@ export default {
     },
     get_user_list () {
       var that = this
-      var url = this.DocConfig.server + '/lang'
+      var url = DocConfig.server + '/lang'
       var params = new URLSearchParams()
       params.append('page', this.page)
       params.append('count', this.count)
@@ -140,7 +140,7 @@ export default {
     },
     delete_user (row) {
       var that = this
-      var url = this.DocConfig.server + '/lang/delete'
+      var url = DocConfig.server + '/lang/delete'
       this.$confirm(that.$t('confirm_delete'), ' ', {
         confirmButtonText: that.$t('confirm'),
         cancelButtonText: that.$t('cancel'),
@@ -160,20 +160,21 @@ export default {
       })
     },
     click_edit (row) {
+      var lists = row.icon.split('"')
       this.dialogAddVisible = true
       this.addForm = {
         id: row.id,
         name: row.name,
-        icon: row.icon
+        icon: lists[1]
       }
     },
     add_user () {
       var that = this
-      var url = this.DocConfig.server + '/lang/add'
+      var url = DocConfig.server + '/lang/add'
       var params = new URLSearchParams()
       params.append('id', that.addForm.id)
       params.append('name', that.addForm.name)
-      params.append('icon', that.icon)
+      params.append('icon', that.addForm.icon)
       that.$http
         .post(url, params)
         .then(function (response) {
@@ -193,12 +194,12 @@ export default {
     },
     update_lang_config () {
       var that = this
-      var url = this.DocConfig.server + '/adminSetting/saveLangConfig'
+      var url = DocConfig.server + '/adminSetting/saveLangConfig'
       var params = new URLSearchParams()
       params.append('lang', 0)
       that.$http.post(url, params).then(function (response) {
         if (response.data.status === 200) {
-          that.$message.success('成功')
+          that.$message.success(response.data.message)
         } else {
           that.$alert(response.data.message)
         }
@@ -206,12 +207,12 @@ export default {
     },
     update_config (row) {
       var that = this
-      var url = this.DocConfig.server + '/adminSetting/saveLangConfig'
+      var url = DocConfig.server + '/adminSetting/saveLangConfig'
       var params = new URLSearchParams()
       params.append('lang', row.id)
       that.$http.post(url, params).then(function (response) {
         if (response.data.status === 200) {
-          that.$message.success('成功')
+          that.$message.success(response.data.message)
         } else {
           that.$alert(response.data.message)
         }
@@ -219,9 +220,9 @@ export default {
     },
     loadConfig () {
       var that = this
-      var url = this.DocConfig.server + '/adminSetting/loadLangConfig'
+      var url = DocConfig.server + '/adminSetting/loadLangConfig'
       var params = new URLSearchParams()
-      that.$http.get(url, params).then(function (response) {
+      that.$http.post(url, params).then(function (response) {
         if (response.data.status === 200) {
           if (response.data.data.length === 0) {
             return
@@ -243,6 +244,7 @@ export default {
     this.get_user_list()
     this.loadConfig()
     this.addIcon()
+    localStorage.removeItem('defaultlang')
   },
   beforeDestroy () {
     this.$message.closeAll()

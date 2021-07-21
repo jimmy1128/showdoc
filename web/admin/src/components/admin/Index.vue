@@ -138,7 +138,7 @@ export default {
     },
     check_upadte () {
       var that = this
-      var url = this.DocConfig.server + '/api/adminUser/checkUpdate'
+      var url = DocConfig.server + '/api/adminUser/checkUpdate'
       var params = new URLSearchParams()
       that.$http.post(url, params).then(function (response) {
         if (

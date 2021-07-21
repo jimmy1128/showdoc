@@ -40,7 +40,7 @@ export default {
   methods: {
     get_key_info () {
       var that = this
-      var url = this.DocConfig.server + '/item/getKey'
+      var url = DocConfig.server + '/item/getKey'
       var params = new URLSearchParams()
       params.append('item_id', that.$route.params.item_id)
       that.$http
@@ -60,7 +60,7 @@ export default {
     },
     resetKey () {
       var that = this
-      var url = this.DocConfig.server + '/item/resetKey'
+      var url = DocConfig.server + '/item/resetKey'
       var params = new URLSearchParams()
       params.append('item_id', that.$route.params.item_id)
       that.$http
