@@ -5,6 +5,7 @@ import (
 	"awesomeProject3/utils/errmsg"
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"github.com/jinzhu/gorm"
 	"gorm.io/plugin/soft_delete"
 	"html"
@@ -65,13 +66,13 @@ type DiffPage struct {
 func GetPagesByCatId(id uint, keyword string, itemId uint) []*Page {
 	var pages []*Page
 	if keyword == "" {
-		err := db.Where("item_id =?", itemId).Where("cat_id =?", id).Order("s_number asc , id asc").Find(&pages).Error
+		err = db.Where("item_id =?", itemId).Where("cat_id =?", id).Order("s_number asc , id asc").Find(&pages).Error
 		if err != nil {
 			return pages
 		}
 		return pages
 	}
-	err := db.Where("item_id =?", itemId).Where("cat_id =?", id).Where("page_content LIKE ? OR page_title LIKE ?", "%"+keyword+"%", "%"+keyword+"%").Order("s_number asc , id asc").Find(&pages).Error
+	err = db.Where("item_id =?", itemId).Where("cat_id =?", id).Where("page_content LIKE ? OR page_title LIKE ?", "%"+keyword+"%", "%"+keyword+"%").Order("s_number asc , id asc").Find(&pages).Error
 	if err != nil {
 		return pages
 	}
@@ -94,13 +95,13 @@ func GetPagesByItemId(id uint, keyword string, langId int) []*Page {
 		return pages
 	}
 	if keyword == "" {
-		err := db.Where("item_id =?", id).Preload("Lang").Where("cat_id =?", 0).Where("cid = ?", langId).Find(&pages).Error
+		err = db.Where("item_id =?", id).Preload("Lang").Where("cat_id =?", 0).Where("cid = ?", langId).Find(&pages).Error
 		if err != nil {
 			return pages
 		}
 		return pages
 	}
-	err := db.Where("item_id =?", id).Preload("Lang").Where("cid = ?", langId).Where("page_content LIKE ? OR page_title LIKE ?", "%"+keyword+"%", "%"+keyword+"%").Find(&pages).Error
+	err = db.Where("item_id =?", id).Preload("Lang").Where("cid = ?", langId).Where("page_content LIKE ? OR page_title LIKE ?", "%"+keyword+"%", "%"+keyword+"%").Find(&pages).Error
 	if err != nil {
 		return pages
 	}
@@ -109,7 +110,7 @@ func GetPagesByItemId(id uint, keyword string, langId int) []*Page {
 
 func GetPage(id int) (Page, int) {
 	var page Page
-	err := db.Where("id =?", id).Preload("Lang").First(&page).Error
+	err = db.Where("id =?", id).Preload("Lang").First(&page).Error
 	if err != nil {
 		return page, errmsg.ERROR
 	}
@@ -121,7 +122,7 @@ func DeletePage(id int, v uint) int {
 	var user User
 	db.Where("id=?", v).Find(&user)
 	db.Unscoped().Model(page).Where("id =?", id).Update("is_del", 1).Update("del_name", user.Username)
-	err := db.Where("id =?", id).Delete(&page).Error
+	err = db.Where("id =?", id).Delete(&page).Error
 
 	if err != nil {
 		return errmsg.ERROR
@@ -130,7 +131,7 @@ func DeletePage(id int, v uint) int {
 }
 
 func CreatePage(page *Page) int {
-	err := db.Create(&page).Error
+	err = db.Create(&page).Error
 	if err != nil {
 		return errmsg.ERROR
 	}
@@ -160,8 +161,9 @@ func (data *Page) SavePage() (*Page, int) {
 	}
 
 	if data.ID == 0 {
-		err := db.Create(&data).Error
+		err = db.Create(&data).Error
 		if err != nil {
+			fmt.Println()
 			return data, errmsg.ERROR
 		}
 	} else {
@@ -178,7 +180,7 @@ func (data *PageHistory) SaveHistoryPage() ([]PageHistory, int) {
 	var user User
 	db.Model(User{}).Where("id = ?", data.AuthorUid).Find(&user)
 	data.AuthorUsername = user.Username
-	err := db.Model(PageHistory{}).Create(&data).Error
+	err = db.Model(PageHistory{}).Create(&data).Error
 	if err != nil {
 		return pagehistory, errmsg.ERROR
 	}
@@ -232,7 +234,7 @@ func SetLock(pageId int, itemId int, lockTo int, uid uint) (int, PageLock) {
 	pageLock.LockUid = int(uid)
 	pageLock.LockUsername = user.Username
 	pageLock.LockTo = lockTo + 5*60
-	err := db.Model(PageLock{}).Create(&pageLock).Error
+	err = db.Model(PageLock{}).Create(&pageLock).Error
 	if err != nil {
 		return errmsg.ERROR, pageLock
 	}
@@ -267,7 +269,7 @@ func UpdateHistoryComments(uid uint, pageId int, pageComments string, pageHistor
 	if CheckItemPermn(uid, int(page.ItemId)) != errmsg.SUCCESE {
 		return errmsg.ERROR
 	}
-	err := db.Model(PageHistory{}).Where("id = ?", pageHistoryId).Update("pagecomment", pageComments).Error
+	err = db.Model(PageHistory{}).Where("id = ?", pageHistoryId).Update("pagecomment", pageComments).Error
 	if err != nil {
 		return errmsg.ERROR
 	}
