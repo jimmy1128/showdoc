@@ -12,7 +12,7 @@
       id="header-left-btn"
       @click="show_menu"
     ></i>
-    <el-aside :class="menumarginleft3" width="450px" id="left-side-menu"></el-aside>
+    <el-aside :class="menumarginleft3" width="480px" id="left-side-menu"></el-aside>
     <el-aside
       :class="menuMarginLeft"
       id="left-side-menu"
