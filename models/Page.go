@@ -5,7 +5,6 @@ import (
 	"awesomeProject3/utils/errmsg"
 	"encoding/base64"
 	"encoding/json"
-	"fmt"
 	"github.com/jinzhu/gorm"
 	"gorm.io/plugin/soft_delete"
 	"html"
@@ -17,6 +16,7 @@ type Page struct {
 	Lang         Lang                  `gorm:"foreignKey:cid"`
 	ItemId       uint                  `gorm:"type:int;not null" json:"itemid"`
 	AuthorUid    uint                  `gorm:"type:int;not null" json:"authoruid"`
+	AuthorName   string                `gorm:"type:varchar(255)" json:"authorName"`
 	CatId        uint                  `gorm:"type:int;not null" json:"catid"`
 	PageTitle    string                `gorm:"type:varchar(255);not null" json:"pagetitle"`
 	PageContent  string                `gorm:"type:longtext" json:"pagecontent"`
@@ -110,7 +110,10 @@ func GetPagesByItemId(id uint, keyword string, langId int) []*Page {
 
 func GetPage(id int) (Page, int) {
 	var page Page
+	var user User
 	err = db.Where("id =?", id).Preload("Lang").First(&page).Error
+	db.Model(User{}).Where("id = ?",page.AuthorUid).Find(&user)
+	page.AuthorName = user.Name
 	if err != nil {
 		return page, errmsg.ERROR
 	}
@@ -163,7 +166,6 @@ func (data *Page) SavePage() (*Page, int) {
 	if data.ID == 0 {
 		err = db.Create(&data).Error
 		if err != nil {
-			fmt.Println()
 			return data, errmsg.ERROR
 		}
 	} else {
