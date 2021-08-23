@@ -23,7 +23,7 @@ type Guest struct {
 	gorm.Model
 	GUsername  string    `gorm:"type:varchar(255);not null" json:"username" label:"账号"`
 	GPassword  string    `gorm:"type:varchar(30);not null" json:"password" label:"密码"`
-	GName      string    `gorm:"type:varchar(255):not null" json:"name" label:"用户名"`
+	GName      string    `gorm:"type:varchar(255);not null" json:"name" label:"用户名"`
 	LastLogin *time.Time    `gorm:"type:datetime" json:"last_login"`
 }
 
@@ -157,6 +157,7 @@ func CheckLogin(username string ,password string)(User,int){
 	//if user.Role != 3{
 	//	return user,errmsg.ERROR_USER_NO_RIGHT
 	//}
+
 	currentTime := time.Now()
 	db.Model(User{}).Where("username =?",username).Update("last_login",currentTime.Format("2006-01-02 15:04:05"))
 
@@ -176,6 +177,8 @@ func CheckLoginFront(username string, password string) (Guest, int) {
 	if password != guest.GPassword{
 		return guest,errmsg.ERROR_PASSWORD_WRONG
 	}
+	currentTime := time.Now()
+	db.Model(Guest{}).Where("id =?",guest.ID).Update("last_login",currentTime.Format("2006-01-02 15:04:05"))
 	return guest, errmsg.SUCCESE
 }
 func checkAdminUser ()int{
