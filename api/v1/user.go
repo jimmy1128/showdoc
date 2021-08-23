@@ -112,6 +112,35 @@ func DeleteUser(c *gin.Context){
 		"message":errmsg.GetErrMsg(code),
 	})
 }
+func AddGuest(c *gin.Context){
+	var data models.Guest
+	var msg string
+
+	_ = c.ShouldBindJSON(&data)
+	msg,code =validator.Validate(&data)
+	if code != errmsg.SUCCESE{
+		c.JSON(http.StatusOK,gin.H{
+			"status" : code,
+			"message" : msg,
+		})
+		return
+	}
+	code = models.CheckGuest(data.GName)
+	if code == errmsg.SUCCESE{
+		models.CreateGuest(&data)
+	}
+	if code == errmsg.ERROR_USERNAME_USED{
+		code = errmsg.ERROR_USERNAME_USED
+	}
+	c.JSON(http.StatusOK ,gin.H{
+		"status":code,
+		"message":errmsg.GetErrMsg(code),
+	})
+}
+
+
+
+
 
 
 

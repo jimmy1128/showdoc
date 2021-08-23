@@ -3,7 +3,6 @@ package models
 import (
 	"awesomeProject3/utils/errmsg"
 	"encoding/base64"
-	"fmt"
 	"github.com/jinzhu/gorm"
 	"golang.org/x/crypto/scrypt"
 	"log"
@@ -17,6 +16,14 @@ type User struct {
 	Role      int       `gorm:"type:int;DEFAULT:2" json:"role"`
 	Email     string    `gorm:"type:varchar(255)" json:"email"`
 	Name      string    `gorm:"type:varchar(255)" json:"name"`
+	LastLogin *time.Time    `gorm:"type:datetime" json:"last_login"`
+}
+
+type Guest struct {
+	gorm.Model
+	GUsername  string    `gorm:"type:varchar(255);not null" json:"username" label:"账号"`
+	GPassword  string    `gorm:"type:varchar(30);not null" json:"password" label:"密码"`
+	GName      string    `gorm:"type:varchar(255):not null" json:"name" label:"用户名"`
 	LastLogin *time.Time    `gorm:"type:datetime" json:"last_login"`
 }
 
@@ -156,20 +163,20 @@ func CheckLogin(username string ,password string)(User,int){
 	return user,errmsg.SUCCESE
 }
 // 前台登入
-func CheckLoginFront(username string, password string) (User, int) {
-	var user User
+func CheckLoginFront(username string, password string) (Guest, int) {
+	var guest Guest
 
 
-	db.Where("username = ?", username).First(&user)
+	db.Where("g_username = ?", username).First(&guest)
 
 
-	if user.ID == 0 {
-		return user, errmsg.ERROR_USER_NOT_EXIST
+	if guest.ID == 0 {
+		return guest, errmsg.ERROR_USER_NOT_EXIST
 	}
-	if ScryptPw(password) != user.Password{
-		return user,errmsg.ERROR_PASSWORD_WRONG
+	if password != guest.GPassword{
+		return guest,errmsg.ERROR_PASSWORD_WRONG
 	}
-	return user, errmsg.SUCCESE
+	return guest, errmsg.SUCCESE
 }
 func checkAdminUser ()int{
 	var user User
@@ -188,11 +195,27 @@ func checkAdminUser ()int{
     	return errmsg.ERROR
 	}
 	db.Model(Lang{}).Last(&lang)
-    fmt.Println(lang)
     if lang.ID <= 0 {
     	db.Model(Lang{}).Create(&Lang{Name: "中文",Icon: "#icon-world-flag_-CHN--China"})
 		db.Model(Lang{}).Create(&Lang{Name: "English",Icon: "#icon-world-flag_-GBR--UnitedKingdom"})
 	}
 
+	return errmsg.SUCCESE
+}
+
+func CreateGuest(data *Guest)int{
+	err:= db.Create(&data).Error
+	if err != nil{
+		return errmsg.ERROR //500
+	}
+	return errmsg.SUCCESE
+}
+
+func CheckGuest(name string)(code int){
+	var guest Guest
+	err = db.Model(Guest{}).Where("g_username= ?",name).First(&guest).Error
+	if guest.ID >= 1{
+		return errmsg.ERROR_USERNAME_USED
+	}
 	return errmsg.SUCCESE
 }

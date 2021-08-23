@@ -131,6 +131,8 @@ func IniRouter(){
         auth.POST("avatar/update",v1.SaveAvatar)
 		auth.POST("avatar/header",v1.SaveHeader)
 		auth.POST("avatar/deleteHeader",v1.DeleteHeader)
+		//评论模块
+		auth.POST("delcomment",v1.DeleteComment)
 
 
 	}
@@ -166,6 +168,15 @@ func IniRouter(){
 		//Dashboard
 		router.POST("avatar/getHeader",v1.GetHeader)
 		router.POST("avatar/profile",v1.GetAvatar)
+		//Guest 注册
+		router.POST("guest/register",v1.AddGuest)
+		router.POST("guest/login",v1.LoginFront)
+		//评论模块
+		router.POST("addcomment",v1.AddComment)
+		router.POST("comment/info",v1.GetComment)
+		router.POST("commentfront",v1.GetCommentListFront)
+		router.GET("commentcount/:id",v1.GetCommentCount)
+
 
 
 	}

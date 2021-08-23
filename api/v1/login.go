@@ -27,6 +27,23 @@ func Login(c *gin.Context){
 		"status":code,
 		"message":errmsg.GetErrMsg(code),
 		"token":token,
+		"data":formData.Name,
+		"id":formData.ID,
+	})
+}
+
+func LoginFront(c *gin.Context){
+	var formData models.Guest
+	_ = c.ShouldBindJSON(&formData)
+	var token string
+	var code int
+	formData , code = models.CheckLoginFront(formData.GUsername,formData.GPassword)
+	c.JSON(http.StatusOK,gin.H{
+		"status":code,
+		"data":formData.GUsername,
+		"id":formData.ID,
+		"message":errmsg.GetErrMsg(code),
+		"token":token,
 	})
 }
 

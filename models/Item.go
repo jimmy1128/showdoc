@@ -26,6 +26,7 @@ type Item struct {
 	Username    string `gorm:"type:varchar(255)" json:"username"`
 	ItemDomain string `gorm:"type:varchar(255)" json:"itemdomain"`
 	LangList string  `gorm:"type:text;not null" json:"lang_list"`
+	IsComment int `gorm:"type:int;default:0" json:"is_comment"`
 }
 type ItemInfo struct {
 	Id            int    `gorm:"primaryKey" json:"id"`
@@ -42,6 +43,7 @@ type ItemInfo struct {
 	ItemCreator   bool   `gorm:"type:bool" json:"itemcreator"`
 	Lang          int    `gorm:"type:int" json:"lang"`
 	Link          int    `gorm:"type:int" json:"link"`
+	IsComment int `gorm:"type:int" json:"is_comment"`
 	Menu          Menu   `json:"menu"`
 }
 type Menu struct {
@@ -84,7 +86,7 @@ func (data *Item) GetItemInfo(keyword string, langId int, uid uint , itemId uint
 			}
 			itemInfo.DefaultPageId = b
 	}
-
+    itemInfo.IsComment = data.IsComment
 	itemInfo.LangList = data.LangList
 	itemInfo.Title = data.Title
 	itemInfo.Link = data.Link
@@ -295,9 +297,15 @@ func CreateItem(data *Item, password string) int {
 	}
 	return errmsg.SUCCESE
 }
-func EditItem(id int, title string, description string, password string,langlist string) int {
-
+func EditItem(id int, title string, description string, password string,langlist string,isComment string) int {
+    var comment int
 	var maps = make(map[string]interface{})
+	if isComment == "true" {
+		comment =1
+	}else {
+		comment = 0
+	}
+	maps["is_comment"] = comment
 	maps["title"] = title
 	maps["description"] = description
 	maps["lang_list"] = langlist
