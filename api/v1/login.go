@@ -40,7 +40,7 @@ func LoginFront(c *gin.Context){
 	formData , code = models.CheckLoginFront(formData.GUsername,formData.GPassword)
 	c.JSON(http.StatusOK,gin.H{
 		"status":code,
-		"data":formData.GUsername,
+		"data":formData.GName,
 		"id":formData.ID,
 		"message":errmsg.GetErrMsg(code),
 		"token":token,
