@@ -30,7 +30,7 @@ export const ZH_CN = {
   login: '登录',
   username: '用户名',
   password: '密码',
-  account: '',
+  account: '账号',
   register_new_account: '注册新账号',
   forget_password: '忘记密码',
   username_description: '用户名/邮箱',
@@ -368,7 +368,7 @@ export const ZH_CN = {
 
   import_excel: '你可以选择Excel文件导入',
   table: '表格',
-
+  create_your_account: '创建账号',
   attachment_manage: '附件管理',
   op_success: '操作成功',
   display_name: '展示名字',

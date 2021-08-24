@@ -21,9 +21,9 @@ type User struct {
 
 type Guest struct {
 	gorm.Model
-	GUsername  string    `gorm:"type:varchar(255);not null" json:"username" label:"账号"`
-	GPassword  string    `gorm:"type:varchar(30);not null" json:"password" label:"密码"`
-	GName      string    `gorm:"type:varchar(255);not null" json:"name" label:"用户名"`
+	GUsername  string    `gorm:"type:varchar(255);not null" json:"username" validate:"required,min=2,max=50" label:"账号"`
+	GPassword  string    `gorm:"type:varchar(30);not null" json:"password" validate:"required,min=5,max=20" label:"密码"`
+	GName      string    `gorm:"type:varchar(255);not null" json:"name" validate:"required,min=2,max=50"label:"用户名"`
 	LastLogin *time.Time    `gorm:"type:datetime" json:"last_login"`
 }
 
@@ -167,7 +167,9 @@ func CheckLogin(username string ,password string)(User,int){
 func CheckLoginFront(username string, password string) (Guest, int) {
 	var guest Guest
 
-
+     if username =="" || password ==""{
+     	return guest, errmsg.ERROR_PASSWORD_WRONG
+	 }
 	db.Where("g_username = ?", username).First(&guest)
 
 

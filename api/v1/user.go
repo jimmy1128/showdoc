@@ -116,7 +116,6 @@ func DeleteUser(c *gin.Context){
 func AddGuest(c *gin.Context){
 	var data models.Guest
 	var msg string
-
 	_ = c.ShouldBindJSON(&data)
 	msg,code =validator.Validate(&data)
 	if code != errmsg.SUCCESE{
