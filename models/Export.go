@@ -44,12 +44,11 @@ func ExportMarkdown (itemId uint , uid uint)int {
 	}
 	defer os.RemoveAll(dname)
 	fname := filepath.Join(dname , "prefix_info.json")
-	fname1 := filepath.Join(dname , "prefix_readme.md")
+	//fname1 := filepath.Join(dname , "prefix_readme.md")
 	err = ioutil.WriteFile(fname,exportJson,0666)
-	err = ioutil.WriteFile(fname1, []byte("由于页面标题可能含有特殊字符导致异常，所以markdown文件的命名均为英文（md5串），以下是页面标题和文件的对应关系：\n"),0666)
+	//err = ioutil.WriteFile(fname1, []byte("由于页面标题可能含有特殊字符导致异常，所以markdown文件的命名均为英文（md5串），以下是页面标题和文件的对应关系：\n"),0666)
 		_markdownTofile(iteminfo.Pages,dname,exportitem)
-	Zip("./"+dname, "showdoc.zip")
-
+	Zip("./teamdoc", "showdoc.zip")
 
 return errmsg.SUCCESE
 }
@@ -182,7 +181,6 @@ func _getExportPagesByItemId(id uint) []*ImportPageInfo {
 		return pages
 }
 func Zip(src_dir string, zip_file_name string) {
-
 	// 预防：旧文件无法覆盖
 	os.RemoveAll(zip_file_name)
 
@@ -196,7 +194,6 @@ func Zip(src_dir string, zip_file_name string) {
 
 	// 遍历路径信息
 	filepath.Walk(src_dir, func(path string, info os.FileInfo, _ error) error {
-
 		// 如果是源路径，提前进行下一个遍历
 		if path == src_dir {
 			return nil
@@ -205,7 +202,6 @@ func Zip(src_dir string, zip_file_name string) {
 		// 获取：文件头信息
 		header, _ := zip.FileInfoHeader(info)
 		header.Name = strings.TrimPrefix(path, src_dir+`\`)
-
 		// 判断：文件是不是文件夹
 		if info.IsDir() {
 			header.Name += `/`
@@ -231,13 +227,11 @@ func ExportWord (itemId uint , catId uint , pageId uint , uid uint)int {
 	var menu Menu
 	var pages []*Page
 	var catalogs []Catalogs
-	fmt.Println(itemId,catId,pageId,uid)
 	if CheckItemEdit(uid , itemId) != true {
 		return errmsg.ERROR_USER_NO_RIGHT
 	}
 
 	db.Model(Item{}).Where("id =? ",itemId).Find(&item)
-	fmt.Println(item)
 	menu = getContent(itemId,0)
 	if pageId >0 {
 		db.Model(Page{}).Where("id =?",pageId).Find(&page)
@@ -253,7 +247,6 @@ func ExportWord (itemId uint , catId uint , pageId uint , uid uint)int {
 						if catId == c.ID{
 							pages = c.Page
 							catalogs = c.Catalogs
-							//fmt.Println(catalogs)
 						}
 					}
 
@@ -291,7 +284,6 @@ func ExportWord (itemId uint , catId uint , pageId uint , uid uint)int {
 			}
 		//dname, err := ioutil.TempDir("./", "tmpfile")
 		for i := listHaiCoder.Back(); i != nil; i = i.Prev() {
-			fmt.Println("Element =", i.Value)
 
 			bytevalue := []byte(fmt.Sprintf("%v",i.Value))
 			err = ioutil.WriteFile("./dat2.doc",bytevalue,0666)

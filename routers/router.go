@@ -126,7 +126,7 @@ func IniRouter(){
 		//ImportItem
 		auth.POST("import/auto",v1.ImportItem)
 		//ExportItem
-		auth.GET("export/markdown/:item_id",v1.ExportItem)
+		//auth.GET("export/markdown/:item_id",v1.ExportItem)
         //Dashboard
         auth.POST("avatar/update",v1.SaveAvatar)
 		auth.POST("avatar/header",v1.SaveHeader)
@@ -176,7 +176,8 @@ func IniRouter(){
 		router.POST("comment/info",v1.GetComment)
 		router.POST("commentfront",v1.GetCommentListFront)
 		router.GET("commentcount/:id",v1.GetCommentCount)
-
+		//ExportItem
+		router.GET("export/markdown/:item_id",v1.ExportItem)
 
 
 	}

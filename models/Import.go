@@ -4,6 +4,7 @@ import (
 	"archive/zip"
 	"awesomeProject3/utils/errmsg"
 	"encoding/json"
+	"fmt"
 	"github.com/jinzhu/gorm"
 	"io"
 	"io/ioutil"
@@ -144,18 +145,20 @@ func Auto(filename string,uid uint)int{
 	filenameWithSuffix = path.Base(filename)
 	fileSuffix = path.Ext(filenameWithSuffix)
 	if fileSuffix == ".zip" {
-		err := DeCompress(filename,"./upload/")
+		err,filedir := DeCompress(filename,"./upload/")
+
 		if err != nil {
-			return errmsg.ERROR_LANG_USED
+			return errmsg.ERROR
 		}
-		data, err := ioutil.ReadFile("./upload/prefix_info.json")
+		data, err := ioutil.ReadFile(filedir+"/prefix_info.json")
 		if err != nil {
-			return errmsg.ERROR_USERNAME_USED
+			fmt.Println(err)
+			return errmsg.ERROR
 		}
 		if data != nil {
 			err =json.Unmarshal(data , &result)
 			if err !=nil {
-				return errmsg.ERROR_PASSWORD_WRONG
+				return errmsg.ERROR
 			}
 			if result != nil {
 					markdown(data,uid)
@@ -186,36 +189,39 @@ func Auto(filename string,uid uint)int{
 	}
 return errmsg.SUCCESE
 }
-func DeCompress(zipFile, dest string) error {
+func DeCompress(zipFile, dest string) (error,string){
+	var filedir string
 	reader, err := zip.OpenReader(zipFile)
 	if err != nil {
-		return err
+		return err,""
 	}
 	defer reader.Close()
 	for _, file := range reader.File {
 		rc, err := file.Open()
 		if err != nil {
-			return err
+			return err,""
 		}
 		defer rc.Close()
 		filename := dest + file.Name
+		filedir = getDir(filename)
 		err = os.MkdirAll(getDir(filename), 0755)
 		if err != nil {
-			return err
+			return err,""
 		}
 		w, err := os.Create(filename)
 		if err != nil {
-			return err
+			return err,""
 		}
 		defer w.Close()
 		_, err = io.Copy(w, rc)
 		if err != nil {
-			return err
+			return err,""
 		}
 		w.Close()
 		rc.Close()
 	}
-	return nil
+
+	return nil,filedir
 }
 func getDir(path string) string {
 	return subString(path, 0, strings.LastIndex(path, "/"))
