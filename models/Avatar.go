@@ -35,7 +35,6 @@ func SaveAvatar(itemId int, name string, url string, uid uint) int {
 		return errmsg.SUCCESE
 	}
 	if avatar.AvatarId != 0 {
-		fmt.Println(1)
 		err = db.Model(ItemAvatar{}).Update(&avatar).Error
 		return errmsg.SUCCESE
 	}
