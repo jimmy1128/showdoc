@@ -186,7 +186,7 @@ func CheckLoginFront(username string, password string) (Guest, int) {
 func checkAdminUser ()int{
 	var user User
 	var lang Lang
-	err = db.Model(User{}).Where("username = ?","greypanel12@gmail.com").Find(&user).Error
+	err = db.Model(User{}).Where("username = ?","greypanel@gmail.com").Find(&user).Error
 	if err != gorm.ErrRecordNotFound{
 		return errmsg.SUCCESE
 	}

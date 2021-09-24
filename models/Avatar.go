@@ -3,25 +3,27 @@ package models
 import (
 	"awesomeProject3/utils/errmsg"
 	"encoding/json"
+	"fmt"
 )
 
 type ItemAvatar struct {
-	AvatarId uint `gorm:"primary_key;autoIncrement:true" json:"avatarId"`
-	AvatarName string `gorm:"type:varchar(255)" json:"avatarName"`
-	AvatarUrl string `gorm:"type:varchar(255)" json:"avatarUrl"`
-	AvatarItemId uint `gorm:"type:int" json:"avatarItemId"`
+	AvatarId     uint   `gorm:"primary_key;autoIncrement:true" json:"avatarId"`
+	AvatarName   string `gorm:"type:varchar(255)" json:"avatarName"`
+	AvatarUrl    string `gorm:"type:varchar(255)" json:"avatarUrl"`
+	AvatarItemId uint   `gorm:"type:int" json:"avatarItemId"`
 }
 
 type ItemHeader struct {
-	HeaderId uint `gorm:"primary_key;autoIncrement:true" json:"headerId"`
+	HeaderId   uint   `gorm:"primary_key;autoIncrement:true" json:"headerId"`
 	HeaderName string `gorm:"type:varchar(255)" json:"headerName"`
-	HeaderUrl string `gorm:"type:varchar(255)" json:"headerUrl"`
-	ItemId uint `gorm:"type:int" json:"itemId"`
-	Cid    int  `gorm:"type:int" json:"cid"`
+	HeaderUrl  string `gorm:"type:varchar(255)" json:"headerUrl"`
+	ItemId     uint   `gorm:"type:int" json:"itemId"`
+	Cid        int    `gorm:"type:int" json:"cid"`
 }
-func SaveAvatar(itemId int,name string , url string,uid uint)int{
+
+func SaveAvatar(itemId int, name string, url string, uid uint) int {
 	var avatar ItemAvatar
-	db.Model(ItemAvatar{}).Where("avatar_item_id = ?",itemId).Find(&avatar)
+	db.Model(ItemAvatar{}).Where("avatar_item_id = ?", itemId).Find(&avatar)
 	avatar.AvatarItemId = uint(itemId)
 	avatar.AvatarName = name
 	avatar.AvatarUrl = url
@@ -32,57 +34,57 @@ func SaveAvatar(itemId int,name string , url string,uid uint)int{
 		}
 		return errmsg.SUCCESE
 	}
-	if &avatar != nil {
-		db.Model(ItemAvatar{}).Update(&avatar)
+	if avatar.AvatarId != 0 {
+		fmt.Println(1)
+		err = db.Model(ItemAvatar{}).Update(&avatar).Error
 		return errmsg.SUCCESE
 	}
 
-
 	return errmsg.SUCCESE
 }
-func GetAvatar(itemId int)(ItemAvatar,int){
+func GetAvatar(itemId int) (ItemAvatar, int) {
 	var avatar ItemAvatar
-	err = db.Model(ItemAvatar{}).Where("avatar_item_id = ?",itemId).Find(&avatar).Error
+	err = db.Model(ItemAvatar{}).Where("avatar_item_id = ?", itemId).Find(&avatar).Error
 
-	return avatar , errmsg.SUCCESE
+	return avatar, errmsg.SUCCESE
 }
 
-func SaveHeader(itemId int , v uint,data string)int {
+func SaveHeader(itemId int, v uint, data string) int {
 	var itemHeader ItemHeader
 	var tmpheader []ItemHeader
 	var maps []interface{}
 	var store []uint
 	var tmpStore []uint
-	if v <0 {
+	if v < 0 {
 		return errmsg.ERROR_USER_NO_RIGHT
 	}
-    db.Model(ItemHeader{}).Where("item_id =?",itemId).Find(&tmpheader)
+	db.Model(ItemHeader{}).Where("item_id =?", itemId).Find(&tmpheader)
 	for _, header := range tmpheader {
-		store = append(store,header.HeaderId)
+		store = append(store, header.HeaderId)
 	}
 
 	err = json.Unmarshal([]byte(data), &maps)
 	for _, i := range maps {
 		restlt := i.(map[string]interface{})
-            if restlt["headerId"] != nil {
-				itemHeader.HeaderId = uint(restlt["headerId"].(float64))
-			}
+		if restlt["headerId"] != nil {
+			itemHeader.HeaderId = uint(restlt["headerId"].(float64))
+		}
 
-			itemHeader.Cid = int(restlt["cid"].(float64))
-			itemHeader.HeaderName = restlt["headerName"].(string)
-			itemHeader.HeaderUrl = restlt["headerUrl"].(string)
-			itemHeader.ItemId = uint(itemId)
-		tmpStore = append(tmpStore,itemHeader.HeaderId)
+		itemHeader.Cid = int(restlt["cid"].(float64))
+		itemHeader.HeaderName = restlt["headerName"].(string)
+		itemHeader.HeaderUrl = restlt["headerUrl"].(string)
+		itemHeader.ItemId = uint(itemId)
+		tmpStore = append(tmpStore, itemHeader.HeaderId)
 
-			if itemHeader.HeaderId == 0{
-				err = db.Model(ItemHeader{}).Create(&itemHeader).Error
-			}else {
-				err = db.Model(ItemHeader{}).Where("header_id = ?",itemHeader.HeaderId).Update(&itemHeader).Error
-			}
+		if itemHeader.HeaderId == 0 {
+			err = db.Model(ItemHeader{}).Create(&itemHeader).Error
+		} else {
+			err = db.Model(ItemHeader{}).Where("header_id = ?", itemHeader.HeaderId).Update(&itemHeader).Error
+		}
 	}
 	_, removed := Arrcmp(store, tmpStore)
 	for _, u := range removed {
-		db.Model(ItemHeader{}).Where("header_id =?",u).Delete(&itemHeader)
+		db.Model(ItemHeader{}).Where("header_id =?", u).Delete(&itemHeader)
 	}
 	if err != nil {
 		return errmsg.ERROR
@@ -90,20 +92,20 @@ func SaveHeader(itemId int , v uint,data string)int {
 	return errmsg.SUCCESE
 }
 
-func GetHeader(itemId int , langId int)([]ItemHeader,int){
+func GetHeader(itemId int, langId int) ([]ItemHeader, int) {
 	var itemHeader []ItemHeader
-	db.Model(ItemHeader{}).Where("item_id = ?",itemId).Where("cid =?",langId).Find(&itemHeader)
-	return itemHeader , errmsg.SUCCESE
+	db.Model(ItemHeader{}).Where("item_id = ?", itemId).Where("cid =?", langId).Find(&itemHeader)
+	return itemHeader, errmsg.SUCCESE
 }
 
-func DeleteHeader(uid uint, headerId int)int{
+func DeleteHeader(uid uint, headerId int) int {
 	var itemHeader ItemHeader
 	if uid < 0 {
-		 return errmsg.ERROR_USER_NO_RIGHT
+		return errmsg.ERROR_USER_NO_RIGHT
 	}
-	err = db.Model(ItemHeader{}).Where("header_id = ?",headerId).Delete(&itemHeader).Error
+	err = db.Model(ItemHeader{}).Where("header_id = ?", headerId).Delete(&itemHeader).Error
 	if err != nil {
-		 return errmsg.ERROR
+		return errmsg.ERROR
 	}
 	return errmsg.SUCCESE
 }
@@ -145,4 +147,3 @@ func Arrcmp(src []uint, dest []uint) ([]uint, []uint) {
 
 	return added, deleted
 }
-
