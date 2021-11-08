@@ -7,14 +7,14 @@
           <el-button type="text">
             <div class="logo-title ">
               <el-avatar size="large" :src="img" v-if="img"></el-avatar>
-              <el-link :href="logourl"><h1>{{ title }}</h1></el-link>
+              <el-link ><h1>{{ title }}</h1></el-link>
             </div>
           </el-button>
 
       <el-row >
   <el-col :span="8" v-for="(item,index) in header_link" :key="index">
     <div class = header-titles>
-      <el-button type="text" class="button" @click="jump_to_item(item.headerUrl)">{{item.headerName}}</el-button>
+      <el-button type="text" @click="jump_to_item(item.headerUrl)">{{item.headerName}}</el-button>
     </div>
   </el-col>
 </el-row>
@@ -107,6 +107,88 @@
                 :keyword="keyword"
               ></Editormd>
             </div>
+            <el-divider></el-divider>
+            <el-card class="box-card1" v-show='item_info.is_comment != 0'>
+            <div slot="header" >
+            <span>{{$t("comment")}}</span>
+            <el-button style="float: right; padding: 3px 0" type="text" @click="loginFormVisible = true" v-if="!headers.username">{{$t("login")}}</el-button>
+            <el-button v-if="headers.username &&!item_info.is_login" type="text" @click="loginout" style="float: right; padding: 3px 0">{{$t("logout")}}</el-button>
+            <el-dialog :visible.sync="loginFormVisible" :close-on-click-modal="false" width="980px">
+              <div class="wrap-login100">
+              <div class="login100-pic js-tilt" style="transform:perspective(300px) rotateX(0deg) rotateY(0d);will-change:transform;" v-tilt="{speed: 500, perspective: 1200}">
+                <img src="/static/logo/img-01.webp" alt="IMG">
+              </div>
+              <el-form  status-icon  label-width="0px" class="demo-ruleForm">
+              <h2>{{$t("login")}}</h2>
+              <el-form-item label="" >
+              <el-input type="text" :placeholder="$t('account')" v-model="formdata.username" prefix-icon="el-icon-user-solid" class="input100 "></el-input>
+              </el-form-item>
+              <el-form-item label="" >
+              <el-input type="password" :placeholder="$t('password')" v-model="formdata.password"  show-password prefix-icon="el-icon-lock" class="input100" ></el-input>
+              </el-form-item>
+              <el-button @click="cancelLogin()">{{$t("cancel")}}</el-button>
+              <el-button type="primary" @click="onSubmit" style="float: right;">{{$t("Login")}}</el-button>
+            </el-form>
+
+              </div>
+              <div slot="footer" class="dialog-footer">
+              <el-button type="text" @click="hidelogin()">{{$t("create_your_account")}}<i class="el-icon-right" aria-hidden="true"></i></el-button>
+
+              </div>
+              </el-dialog>
+
+              <el-dialog :visible.sync="registerFormVisible" :close-on-click-modal="false" width="980px">
+              <div class="wrap-login100">
+              <div class="login100-pic js-tilt" style="transform:perspective(300px) rotateX(0deg) rotateY(0d);will-change:transform;" v-tilt="{speed: 500, perspective: 1200}">
+                <img src="/static/logo/img-01.webp" alt="IMG">
+              </div>
+              <el-form  status-icon  label-width="0px" class="demo-ruleForm">
+              <h2>{{$t("register")}}</h2>
+              <el-form-item label="" >
+              <el-input type="text" :placeholder="$t('account')" v-model="registerdata.username" prefix-icon="el-icon-user-solid" class="input100 "></el-input>
+              </el-form-item>
+              <el-form-item label="" >
+              <el-input type="password" :placeholder="$t('password')" v-model="registerdata.password" show-password prefix-icon="el-icon-lock" class="input100"></el-input>
+              </el-form-item>
+              <el-form-item label="" >
+              <el-input type="name" :placeholder="$t('display_name')" v-model="registerdata.name" prefix-icon="el-icon-user" class="input100" ></el-input>
+              </el-form-item>
+              <el-button @click="cancelRegister()">{{$t("cancel")}}</el-button>
+              <el-button type="primary" @click="onRegister()" style="float: right;">{{$t("confirm")}}</el-button>
+            </el-form>
+             </div>
+              <div slot="footer" class="dialog-footer">
+              <el-button type="text" @click="hideRegister()">{{$t("login")}}<i class="el-icon-right" aria-hidden="true"/></el-button>
+              </div>
+              </el-dialog>
+            </div>
+              <div v-for="item in commentList" :key="item.ID" class="text item">
+            {{item.username}}>: {{item.CreatedAt | dateformat('YYYY-MM-DD HH:MM')}}
+             <el-tooltip v-if="item_info.is_login" class="items" effect="dark" :content="$t('delete_interface')" placement="right">
+            <i class="el-icon-delete" @click="delete_comment(item.ID)"></i>
+          </el-tooltip>
+            <div > {{item.content}}</div>
+
+            <el-rate v-model="item.rate" show-text></el-rate>
+             <el-divider></el-divider>
+            </div>
+            </el-card>
+            <div class="text-center" v-if="commentList" v-show='item_info.is_comment != 0'>
+            <span class="demonstration"></span>
+            <el-pagination layout="prev, next" :total="total" @current-change="handleCurrentChange" :page-size="count"></el-pagination>
+           </div>
+            <div v-show='item_info.is_comment != 0'>
+              <template>
+                <el-card shadow="always" class="box-card1">
+                <el-alert v-if="!headers.username" type="error" :closable="false">{{$t("login_content")}}</el-alert>
+                <div v-if="headers.username" >
+                    <el-input type="textarea" :rows="2" :placeholder="$t('input_content')" v-model="textarea"></el-input>
+                    <el-rate v-model="value1" show-text></el-rate>
+                    <el-button type="primary" plain size="medium" @click="pushComment()" style="float: right; padding: 10px 20px">{{$t("confirm")}}</el-button>
+                </div>
+                </el-card>
+              </template>
+            </div>
           </div>
         </div>
 
@@ -119,8 +201,9 @@
         ></OpBar>
       </div>
     </div>
+
     <BackToTop></BackToTop>
-    <Toc v-if="page_id && showToc"></Toc>
+    <Toc v-if="page_id && showToc" :item_info="item_info"></Toc>
 
     <!-- 附件列表 -->
     <AttachmentList
@@ -143,7 +226,7 @@ import LeftMenu from "@/components/item/show/show_regular_item/LeftMenu";
 import OpBar from "@/components/item/show/show_regular_item/OpBar";
 import AttachmentList from "@/components/page/edit/AttachmentList";
 import { rederPageContent } from "@/models/page";
-
+const moment = require('moment')
 export default {
   props: {
     item_info: {},
@@ -171,13 +254,36 @@ export default {
       langs: [],
       icon: "",
       value: {},
+      value1: null,
       lang_array: [],
       show_header: true,
       infoProfile:[],
       img:'',
       title:'',
       header_link:[],
-      logourl: '/#/'+this.$route.params.item_id
+      logourl: '/#/'+this.$route.params.item_id,
+      textarea: '',
+      loginFormVisible: false,
+      registerFormVisible:false,
+      formLabelWidth: '120px',
+      page: 1,
+      count: 7,
+      total: 0,
+      commentList: [],
+      enableComment: true,
+      formdata:{
+                username:'',
+                password:''
+      },
+      registerdata:{
+                username:'',
+                password:'',
+                name:''
+      },
+      headers:{
+                Authorization:'',
+                username:''
+            },
     };
   },
   components: {
@@ -222,6 +328,13 @@ export default {
       this.$emit("itemlangId2", this.itemlangId);
       this.item_info.defaultpageid = 0;
     },
+    dateFormat: function (row, column) {
+      var date = row[column.property]
+      if (date === undefined) {
+        return ''
+      }
+      return moment(date).format('YYYY-MM-DD HH:mm:ss')
+    },
     // 获取页面内容
     get_page_content(page_id) {
       if (page_id <= 0) {
@@ -249,6 +362,7 @@ export default {
               : "";
           // 切换变量让它重新加载、渲染子组件
           that.page_id = 0;
+          that.get_comment()
           that.item_info.defaultpageid = page_id;
           that.$nextTick(() => {
             that.page_id = page_id;
@@ -327,6 +441,7 @@ export default {
         });
         $("#left-side").hide();
         $(".op-bar").hide();
+        $(".header").hide();
       }
       this.fullPage = !this.fullPage;
     },
@@ -368,6 +483,26 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
+    },
+    delete_comment(id){
+      var that = this
+      var url = DocConfig.server + '/delcomment'
+      this.$confirm(that.$t('comfirm_delete'), ' ', {
+        confirmButtonText: that.$t('confirm'),
+        cancelButtonText: that.$t('cancel'),
+        type: 'warning'
+      }).then(() => {
+        var params = new URLSearchParams()
+        params.append('comment_id', id)
+        that.$http.post(url, params).then(function (response) {
+          if (response.data.status === 200) {
+            that.$message.success(response.data.message)
+            that.get_comment()
+          } else {
+            that.$alert(response.data.message)
+          }
+        })
+      })
     },
     loadConfig() {
       var item_id = this.$route.params.item_id ? this.$route.params.item_id : 0;
@@ -412,8 +547,7 @@ export default {
             '<use xlink:href="' + response.data.data.icon + '"></use>';
           if (response.data.access === 1) {
             that.LangChange(that.value);
-            this.selected =
-              '<use xlink:href="' + response.data.data.icon + '"></use>';
+            this.selected ='<use xlink:href="' + response.data.data.icon + '"></use>';
             this.$cookies.set("selected", that.selected);
           }
         } else {
@@ -443,6 +577,28 @@ export default {
         }
       });
     },
+    handleCurrentChange (currentPage) {
+      this.page = currentPage
+      this.get_comment()
+    },
+    loginout(){
+            window.sessionStorage.clear('token')
+            window.sessionStorage.clear('username')
+            this.$message.success('退出成功')
+            this.$router.go(0)
+    },
+    cancelRegister(){
+          this.registerFormVisible = false
+          this.registerdata.username =''
+          this.registerdata.password =''
+          this.registerdata.name =''
+
+    },
+    cancelLogin(){
+          this.loginFormVisible = false
+          this.formdata.username =''
+          this.formdata.password =''
+    },
     get_item_info() {
       var that = this;
       var url = DocConfig.server + "/item/detail";
@@ -471,6 +627,27 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
+    },
+    hidelogin(){
+      this.loginFormVisible=false
+      this.registerFormVisible = true
+    },
+    hideRegister(){
+      this.loginFormVisible=true
+      this.registerFormVisible = false
+    },
+    async onSubmit () {
+      // this.$message.success(this.username);
+      var url = DocConfig.server + '/guest/login'
+      const { data: res } = await this.$http.post(url, {
+        username: this.formdata.username,
+        password: this.formdata.password
+      })
+      if (res.status !== 200) return this.$message.error(res.message)
+      window.sessionStorage.setItem('username',res.data)
+      window.sessionStorage.setItem('user_id',res.id)
+      this.loginFormVisible = false
+      this.$router.go(0)
     },
     get_item_avatar() {
       var that = this;
@@ -502,7 +679,6 @@ export default {
         .then(function (response) {
           if (response.data.status === 200) {
            var Info1 = response.data.data
-           console.log(Info1)
            that.header_link = Info1
           } else {
             that.$alert(response.data.message)
@@ -512,6 +688,57 @@ export default {
           console.log(error)
         })
     },
+   async onRegister() {
+     var url = DocConfig.server + '/guest/register'
+
+      const { data: res } = await this.$http.post(url, {
+        username: this.registerdata.username,
+        password: this.registerdata.password,
+        name: this.registerdata.name
+      })
+      if (res.status !== 200) return this.$message.error(res.message)
+      if (res.status === 200) {
+        this.$message.success('添加用户成功')
+        this.registerFormVisible = false
+      }
+   },
+   get_comment(){
+    var that = this
+    var url = DocConfig.server + '/commentfront'
+    var params = new URLSearchParams()
+    params.append('page_id',that.$route.query.page_id)
+    params.append('page', that.page)
+    params.append('count', that.count)
+        that.$http.post(url, params).then(function(response) {
+        if (response.data.status === 200) {
+          that.commentList = response.data.data
+           that.total = response.data.total
+        } else {
+          this.$alert(response.data.message);
+        }
+      });
+   },
+   pushComment(){
+    var that = this
+    var url = DocConfig.server + '/addcomment'
+    var params = new URLSearchParams
+    params.append('guest_id',window.sessionStorage.getItem('user_id'))
+    params.append('username',window.sessionStorage.getItem('username'))
+    params.append('rate',this.value1)
+    params.append('content',this.textarea)
+    params.append('page_id',that.$route.query.page_id)
+    that.$http.post(url, params).then(function(response) {
+        if (response.data.status === 200) {
+           that.$message.success('评论成功')
+          that.get_comment()
+          that.textarea =''
+          that.value1 = 0
+
+        } else {
+          this.$alert(response.data.message);
+        }
+      });
+   }
   },
   mounted() {
     var that = this;
@@ -521,7 +748,10 @@ export default {
     this.get_item_info();
     this.get_lang();
     this.get_item_avatar()
-    //this.get_item_header()
+    this.headers = {
+            Authorization: `Bearer ${window.sessionStorage.getItem('token')}`,
+            username: window.sessionStorage.getItem('username')
+        }
     if (this.$cookies.get("lng") === null) {
       this.locale = DocConfig.lang;
       this.$cookies.set(
@@ -606,9 +836,13 @@ export default {
   margin-left: auto;
   margin-right: auto;
   padding: 20px;
+  margin-top: 80px;
 }
 #header {
   height: 80px;
+  position:fixed;
+  top:0px;
+  z-index: 999;
 }
 #doc-body {
   width: 95%;
@@ -686,11 +920,11 @@ pre ol {
 }
 .masthead {
   width: 1500px;
-  margin-top: 10px;
   background: rgb(255, 255, 255);
   color: #fff;
   margin-left: auto;
   margin-right: auto;
+  height: 80px;
 }
 .logo-title {
   background-color: rgb(255, 255, 255);
@@ -784,7 +1018,8 @@ pre ol {
   border-bottom-color: rgb(212, 218, 223);
   border-bottom-style: solid;
   border-bottom-width: 1px;
-  box-shadow:0 3px 8px 0 rgb(116 129 141 / 10%)
+  box-shadow:0 3px 8px 0 rgb(116 129 141 / 10%);
+
 }
 .clearfix:before,
     .clearfix:after {
@@ -807,5 +1042,45 @@ font-size: 20px;
 }
 .button{
 font-size: 20px;
+}
+.box-card1 {
+    width: 760px;
+    padding-bottom: 10px;
+  }
+.items{
+  float: right;
+}
+.wrap-login100{
+width: 760px;
+border-radius: 10px;
+overflow: hidden;
+display: flex;
+flex-wrap: wrap;
+justify-content: space-between;
+padding: 20px 60px 45px 65px;
+}
+.demo-ruleForm{
+width: 290px;
+}
+.input100{
+font-size: 15px;
+line-height: 1.5;
+color: #666;
+width: 80%;
+display: block;
+background-color: #E6E6E6;
+height: 50px;
+border-radius: 25px;
+padding: 0 30px 0 38px;
+}
+.input100>>> .el-input__inner{
+font-family: Poppins-Medium;
+background-color: #E6E6E6;
+height: 50px;
+border-width: 0px;
+font-size: 15px;
+}
+.input100>>>.el-input__icon{
+width: 30px;
 }
 </style>

@@ -135,7 +135,6 @@ export default {
     },
     handleClick(tab) {
       this.infoForm.lang_list = tab
-      console.log(tab)
     },
   },
   mounted () {

@@ -12,7 +12,7 @@
       id="header-left-btn"
       @click="show_menu"
     ></i>
-    <el-aside :class="menumarginleft3" width="480px" id="left-side-menu"></el-aside>
+    <el-aside :class="menumarginleft3" width="480px" id="left-side-menu1"></el-aside>
     <el-aside
       :class="menuMarginLeft"
       id="left-side-menu"
@@ -112,12 +112,14 @@ export default {
     show_menu () {
       this.show_menu_btn = false
       var element = document.getElementById('left-side-menu')
+      var element1 = document.getElementById('left-side-menu1')
       element.style.display = 'block'
       element.style.marginLeft = '0px'
       element.style.marginTop = '0px'
       element.style.position = 'static'
       element = document.getElementById('p-content')
       element.style.display = 'none'
+      element1.width='0px'
     },
     hide_menu () {
       this.show_menu_btn = true
@@ -179,6 +181,13 @@ export default {
   line-height: 60px;
 }
 #left-side-menu {
+  color: #333;
+  position:fixed;
+  margin-top: -19px;
+  height: 100%;
+  background-color: #F4F7F9;
+}
+#left-side-menu1 {
   color: #333;
   position:fixed;
   margin-top: -19px;

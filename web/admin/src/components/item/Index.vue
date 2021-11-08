@@ -320,7 +320,7 @@ export default {
         this.locale = 'ZH_CN'
       }
       this.$cookies.set('lng', this.locale === 'ZH_CN' ? this.locale : this.locale, 50)
-      // window.location.reload() // 进行刷新改变cookie里的值
+      window.location.reload() // 进行刷新改变cookie里的值
     },
     getItemList () {
       var that = this
@@ -500,7 +500,6 @@ export default {
   watch: {
     locale (val) {
       this.$i18n.locale = val
-      console.log('locale', val)
     }
   },
   beforeDestroy () {

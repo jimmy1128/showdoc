@@ -45,6 +45,8 @@ export default {
       })
       if (res.status !== 200) return this.$message.error(res.message)
       window.sessionStorage.setItem('token', res.token)
+      window.sessionStorage.setItem('username',res.data)
+      window.sessionStorage.setItem('user_id',res.id)
       this.$router.push('/item/index')
     }
   },

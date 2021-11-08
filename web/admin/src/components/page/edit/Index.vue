@@ -256,7 +256,7 @@ export default {
       page_id: '',
       cid: '',
       name: '',
-      cat_id: 0,
+      cat_id: '',
       copy_page_id: '',
       attachment_count: '',
       catalogs: [],

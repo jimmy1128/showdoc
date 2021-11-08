@@ -26,27 +26,6 @@
       </el-dropdown>
     </div>
     <div class="op-bar" v-if="show_op_bar">
-      <!-- <div >
-     <el-tooltip class="item" effect="dark" :content="$t('language1')" placement="top">
-     <el-dropdown trigger="click" class='el-select-lang' @command="LangChange" style="padding-left:0px" placement="top-start" v-if="selected != null">
-      <span class="el-dropdown-link" >
-        <svg class="icons" aria-hidden="true" style="float: left; color: #8492a6; font-size: 10px" v-html="selected">
-            </svg>
-      </span>
-      <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item
-        v-for="itemlang in belong_to_lang"
-        :key="itemlang.id"
-        :label="itemlang.name"
-        :value="itemlang"
-        :command="itemlang"> {{ itemlang.name }}
-        <svg class="icon" aria-hidden="true" style="float: left; color: #8492a6; font-size: 13px" v-html="itemlang.icon" >
-            </svg>
-        </el-dropdown-item>
-      </el-dropdown-menu>
-    </el-dropdown>
-    </el-tooltip>
-     </div> -->
       <span v-if="item_info.is_login">
         <el-tooltip class="item" effect="dark" :content="$t('goback')" placement="left">
           <router-link to="/item/index">
@@ -196,6 +175,7 @@
   top: 100px;
   margin-left: 840px;
   max-width: 250px;
+  z-index: 998;
 }
 .op-bar i {
   cursor: pointer;
@@ -246,7 +226,6 @@ a {
   fill: currentColor;
   overflow: hidden;
 }
-
 </style>
 
 <script>
@@ -328,9 +307,6 @@ export default {
         this.lang = false
         this.locale = 'ZH_CN'
       }
-      //this.$cookies.set('lng', this.locale === 'ZH_CN' ? this.locale : this.locale, '30d')
-      // this.$cookies.config('30d')
-      // window.location.reload() // 进行刷新改变cookie里的值
     },
     get_lang () {
       var that = this
@@ -398,7 +374,7 @@ export default {
     show_page_info () {
       var html =
         '本页面由 ' +
-        this.page_info.authoruid +
+        this.page_info.authorName +
         ' 于 ' +
         this.page_info.CreatedAt +
         ' 更新'
@@ -621,27 +597,18 @@ export default {
           that.$alert(response.data.message)
         }
       })
-    }
+    },
   },
 
-  created(){
-  },
+  created(){},
   mounted () {
     var that = this
-    var page_id = this.$route.query.page_id ? this.$route.query.page_id : 0
-
     this.get_item_info()
     //this.get_lang()
     if (this.$cookies.get('lng') === null ) {
       this.locale = DocConfig.lang
     this.$cookies.set('lng', this.locale === 'EN_US' ? this.locale : this.locale, '1d')
     }
-    //  if (this.$cookies.get('selected') === null) {
-    //   this.loadConfig()
-    // }
-    // if (this.$cookies.get('selected') === null) {
-    //   this.publicloadConfig(page_id)
-    // }
     if (this.page_info.unique_key) {
       this.isCreateSiglePage = true
       this.share_single_link =
@@ -654,11 +621,6 @@ export default {
       this.locale = 'ZH_CN'
       this.lang = false
     }
-    // this.selected = this.$cookies.get('selected')
-    // if (this.selected !== null) {
-    //   this.get_lang1(this.selected)
-    //   //this.$cookies.remove('selected')
-    // }
     this.lang = this.$cookies.get('lng', this.locale === 'ZH_CN' ? this.locale : this.locale, 50)
     document.onkeydown = function (e) {
       // 对整个页面文档监听 其键盘快捷键
@@ -685,7 +647,6 @@ export default {
       this.show_menu_btn = true
       this.show_op_bar = false
     }
-
   },
   watch: {
     page_info: function () {

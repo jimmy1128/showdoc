@@ -384,7 +384,7 @@ export default {
   },
   mounted () {
     this.menu = this.item_info.menu
-    this.page_id = this.menu.pages[0].ID
+    this.page_id = this.item_info.menu.pages[0].ID
     // 加载依赖""
     $s(['static/xspreadsheet/xspreadsheet.js'], () => {
       $s(

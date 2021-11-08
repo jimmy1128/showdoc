@@ -61,7 +61,7 @@ export default {
   props: {
     item_id: {},
     page_id: {},
-    page_info: {}
+    page_info: {},
   },
   data () {
     return {

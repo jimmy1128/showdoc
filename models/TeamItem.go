@@ -45,6 +45,8 @@ func SaveTeamItem(uid uint , id string,teamId int)(TeamItem,int){
 	var teamItem TeamItem
 	var teamMember []TeamMember
 	var teamitemMember TeamItemMember
+	var teamItemMemberAppend []TeamItemMember
+	var teamItemAppend []TeamItem
 	err = db.Model(Team{}).Where("id=?",teamId).Where("uid=?",uid).Find(&teamInfo).Error
 	if err != nil {
 		 return teamItem,errmsg.ERROR
@@ -67,13 +69,18 @@ func SaveTeamItem(uid uint , id string,teamId int)(TeamItem,int){
 			teamitemMember.Member_username =v.Member_username
 			teamitemMember.Item_id= uint(i)
 			teamitemMember.Member_group_id=1
+			teamItemMemberAppend = append(teamItemMemberAppend ,teamitemMember )
 	}
-		db.Create(&teamitemMember)
-		err := db.Create(&teamItem).Error
+		for _, member := range teamItemMemberAppend {
+			 db.Model(TeamItemMember{}).Create(&member)
+		}
+		teamItemAppend = append(teamItemAppend , teamItem)
+	}
+	for _, item := range teamItemAppend {
+		err := db.Model(TeamItem{}).Create(&item).Error
 		if err != nil {
 			return teamItem , errmsg.ERROR_TEAM_ITEM_EXIT
 		}
-
 	}
 	return teamItem , errmsg.SUCCESE
 }

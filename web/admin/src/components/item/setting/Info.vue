@@ -17,8 +17,8 @@
       <el-form-item label>
         <el-radio v-model="isOpenItem" :label="true">{{$t('Open_item')}}</el-radio>
         <el-radio v-model="isOpenItem" :label="false">{{$t('private_item')}}</el-radio>
+        <el-switch v-model="is_comment" active-text="开启评论" inactive-text="关闭评论" ></el-switch>
       </el-form-item>
-
       <el-form-item>
       <div>
         <el-checkbox-group v-model="dataIntArr" size="mini" @change="handleClick" :border="true">
@@ -54,7 +54,8 @@ export default {
       lang: [],
       checkboxGroup3:[],
       list:[],
-      dataIntArr:[]
+      dataIntArr:[],
+      is_comment: false,
     }
   },
   methods: {
@@ -70,6 +71,9 @@ export default {
             var Info = response.data.data
             if (Info.password) {
               that.isOpenItem = false
+            }
+            if (Info.is_comment == 1 ) {
+               that.is_comment = true
             }
             that.infoForm = Info
             var langInfo =that.infoForm.lang_list.split(',')
@@ -101,7 +105,7 @@ export default {
       params.append('item_id', that.$route.params.item_id)
       params.append('title', this.infoForm.titlename)
       params.append('description', this.infoForm.description)
-      // params.append('item_domain', this.infoForm.item_domain)
+      params.append('commendSwitch', this.is_comment)
       params.append('password', this.infoForm.password)
       params.append('langlist', this.list)
       that.$http

@@ -30,7 +30,7 @@
       </el-form-item>
 
       <el-form-item :label="$t('ldap_open_label')">
-        <el-switch v-model="form.ldap_open" disabled></el-switch>
+        <el-switch v-model="form.ldap_open"></el-switch>
       </el-form-item>
 
       <div v-if="form.ldap_open" style="margin-left:50px">
@@ -168,6 +168,8 @@ export default {
       var url = DocConfig.server + '/adminSetting/saveConfig'
       var params = new URLSearchParams()
       params.append('register_open', that.form.register_open)
+      params.append('ldap_open',that.form.ldap_open)
+      params.append('ldap_form',JSON.stringify(that.form.ldap_form))
       that.$http.post(url, params).then(function (response) {
         if (response.data.status === 200) {
           that.$message.success('成功')
@@ -186,8 +188,10 @@ export default {
             return
           }
           that.form.register_open = response.data.data[0].optionValue === 'true'
+          that.form.ldap_open = response.data.data[2].optionValue === 'true'
+          that.form.ldap_form = JSON.parse(response.data.data[3].optionValue)
           this.form.oss_open = response.data.data.oss_open > 0
-          this.form.ldap_open = response.data.data.ldap_open > 0
+          //this.form.ldap_open = response.data.data.ldap_open > 0
           this.form.home_page =
             response.data.data.home_page > 0 ? response.data.data.home_page : 1
           this.form.home_item =

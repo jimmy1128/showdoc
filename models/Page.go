@@ -111,10 +111,10 @@ func GetPagesByItemId(id uint, keyword string, langId int) []*Page {
 func GetPage(id int) (Page, int) {
 	var page Page
 	var user User
-	err = db.Where("id =?", id).Preload("Lang").First(&page).Error
+	err = db.Model(Page{}).Preload("Lang").Where("id =?", id).First(&page).Error
 	db.Model(User{}).Where("id = ?",page.AuthorUid).Find(&user)
 	page.AuthorName = user.Name
-	if err != nil {
+	if err != nil && err != gorm.ErrRecordNotFound{
 		return page, errmsg.ERROR
 	}
 	return page, errmsg.SUCCESE

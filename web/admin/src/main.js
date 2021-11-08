@@ -18,12 +18,13 @@ import { EN_US } from '../static/lang/en'
 import { ZH_CN } from '../static/lang/zh-CN'
 import store from './store/'
 import VueCookies from 'vue-cookies'
-import 'e-icon-picker/dist/symbol.js'
-import 'e-icon-picker/dist/index.css'
-// import LANG from '../static/lang/language'
+import 'e-icon-picker/lib/symbol.js'
+import 'e-icon-picker/lib/index.css'
+import moment from 'moment'
 import eIconPicker, { analyzingIconForIconfont } from 'e-icon-picker'
 import iconfont from '../static/fonts/iconfont.json'
 import '../static/fonts/iconfont.js'
+import VueTilt from 'vue-tilt.js'
 const forIconfont = analyzingIconForIconfont(iconfont)
 Vue.use(util)
 Vue.config.productionTip = false
@@ -34,6 +35,7 @@ Vue.use(VueI18n)
 Vue.use(VueClipboard)
 Vue.use(VueCookies)
 Vue.use(VueDND)
+Vue.use(VueTilt)
 Vue.use(eIconPicker, {
   FontAwesome: false,
   ElementUI: false,
@@ -43,6 +45,9 @@ Vue.use(eIconPicker, {
   removeIconList: []
 })
 // Vue.config.lang = this.DocConfig.lang
+Vue.filter('dateformat', function (indate, outdate) {
+  return moment(indate).format(outdate)
+})
 const i18n = new VueI18n({
   fallbackLocale: 'ZH_CN',
   messages: {

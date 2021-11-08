@@ -263,9 +263,10 @@ export default {
                   headerId : that.infoHeader.headerId
                 }]
       }
+      console.log(ui.data.push.apply(ui.data,that.counter))//不可以删除-融合2个数据
+
       var url = DocConfig.server + '/avatar/header'
       var params = new URLSearchParams()
-      console.log( ui.data.push.apply(ui.data, that.counter) )
       params.append('item_id',ui.itemId)
       params.append('data',JSON.stringify(ui.data))
       that.$http.post(url, params).then(function (response) {
@@ -282,7 +283,6 @@ export default {
          window.open(url)
     },
     handleAvatarSuccess(res, file) {
-      console.log(res.url);
       this.infoProfile.avatarUrl = res.url;
     },
     beforeAvatarUpload(file) {

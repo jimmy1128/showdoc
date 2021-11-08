@@ -88,7 +88,7 @@ func GetUsers(username string) ([]Result,int){
 	}
 	db.Raw("select username from `user` where 1=1 AND deleted_at IS NULL").Find(&result)
 	if err == gorm.ErrRecordNotFound{
-		return result,0
+		return result,errmsg.SUCCESE
 	}
 	return result,errmsg.SUCCESE
 }

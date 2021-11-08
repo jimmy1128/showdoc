@@ -3,7 +3,6 @@ package models
 import (
 	"awesomeProject3/utils/errmsg"
 	"encoding/json"
-	"fmt"
 )
 
 type ItemAvatar struct {

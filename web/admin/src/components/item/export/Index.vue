@@ -8,7 +8,7 @@
           <h2></h2>
           <el-form-item label>
             <el-radio-group v-model="export_format">
-              <el-radio-button label="word">{{$t('export_format_word')}}</el-radio-button>
+              <el-radio-button label="word" disabled>{{$t('export_format_word')}}</el-radio-button>
               <el-radio-button label="markdown">{{$t('export_format_markdown')}}</el-radio-button>
             </el-radio-group>
           </el-form-item>
@@ -73,7 +73,7 @@ export default {
       cat_id: '',
       export_type: '1',
       item_id: 0,
-      export_format: 'word',
+      export_format: 'markdown',
       pages: [{
         ID: '0',
         pagetitle: this.$t('all_pages')

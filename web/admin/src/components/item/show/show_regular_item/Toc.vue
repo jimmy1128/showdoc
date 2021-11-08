@@ -3,8 +3,14 @@
 </template>
 <script>
 export default {
+  props: {
+    item_info: {},
+  },
   data () {
-    return {}
+    return {
+
+     show_op_bar: true
+    }
   },
   mounted () {
     var that = this
@@ -21,6 +27,7 @@ export default {
   },
   methods: {
     toc_main_script () {
+      var that = this
       var $ = require('jquery')
       // 监听点击事件并滑动到相应位置
       $(document).on('click', '.markdown-toc-list a[href]', function (event) {
@@ -34,7 +41,11 @@ export default {
       // 监听展开事件
       $(document).on('click', '.markdown-toc', function (event) {
         if (!$(event.target).is('a')) {
-          $('.markdown-toc').toggleClass('open-list')
+          if (that.item_info.is_login == true){
+             $('.markdown-toc').toggleClass('open-list').css({"top":"200px"})
+          } else {
+            $('.markdown-toc').toggleClass('open-list')
+          }
         }
       })
       // 监听鼠标滚动事件给与颜色加亮
@@ -77,11 +88,12 @@ export default {
   }
 }
 </script>
+
 <!-- 注意，这里是全局css -->
 <style >
 .page_content_main .markdown-toc {
   position: fixed;
-  top: 230px;
+  top: 105px;
   margin-left: 800px;
   min-width: 32px;
   min-height: 32px;
@@ -120,11 +132,10 @@ export default {
   min-width: 150px;
   max-width: 200px;
   padding: 5px 0;
-  background: #fafafa;
-  border: 1px solid #dcdfe6;
+  background: #FFFFFF;
+  border-left: 1px solid #dcdfe6;
   border-radius: 5px;
-  box-shadow: 0 5px 5px #f2f6fc;
-  max-height: 320px;
+  max-height: 720px;
   overflow-y: auto;
   transform: scale(0);
   margin-right: -230px;

@@ -45,7 +45,6 @@ export default {
       this.itemlangId2 = value
       if (value !== undefined) {
         this.item_info = ''
-        console.log(value)
         this.get_item_menu(this.keyword)
       }
     },
