@@ -19,6 +19,8 @@ var (
 
 	Domain string
 	MaxAge int
+
+	Upload string
 )
 
 func init (){
@@ -30,6 +32,7 @@ func init (){
 	LoadServer(file)
 	LoadData(file)
 	LoadCookie(file)
+	LoadUpload(file)
 }
 
 func LoadServer(file *ini.File){
@@ -48,4 +51,7 @@ func LoadData (file *ini.File){
 func LoadCookie (file *ini.File){
 	Domain = file.Section("cookie").Key("Domain").MustString("*")
 	MaxAge = file.Section("cookie").Key("MaxAge").MustInt(3600)
+}
+func LoadUpload(file *ini.File){
+	Upload = file.Section("file").Key("url").MustString("upload/")
 }
