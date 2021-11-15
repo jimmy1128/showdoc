@@ -251,7 +251,7 @@ func DeleteItem(id int, password string, v uint) int {
 	var item Item
 	var user User
 	db.Where("id =?", v).Find(&user)
-	_, code := CheckLogin(user.Username, password)
+	_, code,_ := CheckLogin(user.Username, password)
 	if code == errmsg.SUCCESE {
 		err := db.Where("id =?", id).Delete(&item).Error
 		if err != nil {
@@ -370,7 +370,7 @@ func Archive(itemId int, password string, uid uint) int {
 		return errmsg.ERROR_USER_NO_RIGHT
 	}
 	db.Model(User{}).Where("id=?", uid).Find(&user)
-	_, code := CheckLogin(user.Username, password)
+	_, code,_ := CheckLogin(user.Username, password)
 	if code != errmsg.SUCCESE {
 		return errmsg.ERROR_PASSWORD_WRONG
 	}
@@ -388,7 +388,7 @@ func AttornItem(itemId int, username string, password string, uid uint) int {
 	var user2 User
 
 	db.Model(User{}).Where("id =?", uid).Find(&user)
-	_, code := CheckLogin(user.Username, password)
+	_, code,_ := CheckLogin(user.Username, password)
 	if code != errmsg.SUCCESE {
 		return errmsg.ERROR_PASSWORD_WRONG
 	}
