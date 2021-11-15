@@ -143,16 +143,16 @@ func ScryptPw(password string)string{
 
 }
 //登陆验证
-func CheckLogin(username string ,password string)(User,int){
+func CheckLogin(username string ,password string)(User,int,string){
 	var user User
-
-
+	var option Options
+db.Model(Options{}).Where("option_name =?","ldap_open").Find(option)
 	db.Where("username =?",username).First(&user)
 	if ScryptPw(password) != user.Password{
-		return user,errmsg.ERROR_PASSWORD_WRONG
+		return user,errmsg.ERROR_PASSWORD_WRONG,option.OptionValue
 	}
 	if user.ID==0{
-		return user,errmsg.ERROR_USER_NOT_EXIST
+		return user,errmsg.ERROR_USER_NOT_EXIST,option.OptionValue
 	}
 	//if user.Role != 3{
 	//	return user,errmsg.ERROR_USER_NO_RIGHT
@@ -161,7 +161,7 @@ func CheckLogin(username string ,password string)(User,int){
 	currentTime := time.Now()
 	db.Model(User{}).Where("username =?",username).Update("last_login",currentTime.Format("2006-01-02 15:04:05"))
 
-	return user,errmsg.SUCCESE
+	return user,errmsg.SUCCESE,option.OptionValue
 }
 // 前台登入
 func CheckLoginFront(username string, password string) (Guest, int) {

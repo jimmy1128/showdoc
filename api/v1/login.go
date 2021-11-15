@@ -16,8 +16,8 @@ func Login(c *gin.Context) {
 	c.ShouldBindJSON(&formData)
 	password := formData.Password
 	name := formData.Username
-	formData, code = models.CheckLogin(formData.Username, formData.Password)
-	if code != errmsg.SUCCESE {
+	formData, code ,ldapStatus := models.CheckLogin(formData.Username, formData.Password)
+	if code != errmsg.SUCCESE && ldapStatus=="1"{
 		formData, code = models.CheckLdapLogin(name, password)
 	}
 
