@@ -69,7 +69,7 @@ func Attorn(id int ,uid int,username string,password string)int {
 		return errmsg.ERROR
 	}
 	db.Model(User{}).Select("username").Where("id =?",uid).Find(&user)
-	_,code := CheckLogin(user.Username,password)
+	_,code,_ := CheckLogin(user.Username,password)
 	if code != 200 {
 		return  errmsg.ERROR
 	}

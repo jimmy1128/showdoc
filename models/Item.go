@@ -84,7 +84,7 @@ func (data *Item) GetItemInfo(keyword string, langId int, uid uint , itemId uint
 			if uid > 0 && b=="0"{
 				b = "0"
 			}
-			itemInfo.DefaultPageId = b
+			itemInfo.DefaultPageId = defaultpageid
 	}
     itemInfo.IsComment = data.IsComment
 	itemInfo.LangList = data.LangList
