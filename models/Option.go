@@ -44,6 +44,7 @@ func SaveConfig(uid uint, id int) int {
 }
 func RegisterSetting() string {
 	var option Options
+	var lang Options
 	var ldap Options
 	err = db.Model(Options{}).Where("option_name = ? ", "register_open").Find(&option).Error
 	if err == gorm.ErrRecordNotFound {
@@ -55,12 +56,12 @@ func RegisterSetting() string {
 			return ""
 		}
 	}
-	err = db.Model(Options{}).Where("option_name = ? ", "lang").Find(&option).Error
+	err = db.Model(Options{}).Where("option_name = ? ", "lang").Find(&lang).Error
 	if err == gorm.ErrRecordNotFound {
-		option.OptionId = 2
-		option.OptionName = "lang"
-		option.OptionValue = "0"
-		err = db.Create(&option).Error
+		lang.OptionId = 2
+		lang.OptionName = "lang"
+		lang.OptionValue = "0"
+		err = db.Create(&lang).Error
 		if err != nil {
 			return ""
 		}

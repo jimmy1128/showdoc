@@ -84,6 +84,7 @@ func (data *Item) GetItemInfo(keyword string, langId int, uid uint , itemId uint
 			if uid > 0 && b=="0"{
 				b = "0"
 			}
+			//内链接无法跳转， 暂时优化
 			itemInfo.DefaultPageId = defaultpageid
 	}
     itemInfo.IsComment = data.IsComment

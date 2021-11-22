@@ -146,7 +146,7 @@ func ScryptPw(password string)string{
 func CheckLogin(username string ,password string)(User,int,string){
 	var user User
 	var option Options
-db.Model(Options{}).Where("option_name =?","ldap_open").Find(option)
+db.Model(Options{}).Where("option_name =?","ldap_open").Find(&option)
 	db.Where("username =?",username).First(&user)
 	if ScryptPw(password) != user.Password{
 		return user,errmsg.ERROR_PASSWORD_WRONG,option.OptionValue
