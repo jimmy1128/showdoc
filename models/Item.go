@@ -229,16 +229,18 @@ func GetMyItem(uid uint) ([]Item, int) {
 
 	return result3, errmsg.SUCCESE
 }
-func GetOneItem(uid uint, id int, sid string) (Item, int) {
+func GetOneItem(uid uint, id int, sid string) (Item, int,int) {
 	var item Item
+	var user User
+	db.Model(User{}).Where("id =?",uid).Find(&user)
 	err = db.Where("id =?", id).First(&item).Error
 	if err != nil {
-		return item, errmsg.ERROR_USER_NO_RIGHT
+		return item, errmsg.ERROR_USER_NO_RIGHT,0
 	}
 	if checkItemVisit(uid, id, sid) != errmsg.SUCCESE {
-		return item, errmsg.REQUIRE_PASSWORD_PERMISSION
+		return item, errmsg.REQUIRE_PASSWORD_PERMISSION,0
 	}
-	return item, errmsg.SUCCESE
+	return item, errmsg.SUCCESE,user.Role
 }
 func GetItemDetail(id int, uid uint) (Item, int) {
 	var item Item

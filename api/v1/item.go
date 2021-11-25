@@ -33,8 +33,9 @@ func ItemsInfo(c *gin.Context){
 	user := session.Get("id")
 	defaultpageid :=c.PostForm("defaultpageid")
 	v , _ := user.(uint)
+
 	i , _ :=c.Cookie("visit_item")
-	item, code := models.GetOneItem(v,id,i)
+	item, code,role := models.GetOneItem(v,id,i)
 	itemInfo := item.GetItemInfo(keyword,langId,v,uint(id), defaultpageid)
 	if user == nil {
 		itemInfo.IsLogin = false
@@ -46,7 +47,7 @@ func ItemsInfo(c *gin.Context){
 		}
 	}
 
-	if item.UserId == user{
+	if item.UserId == user || role ==1{
 		itemInfo.ItemCreator = true
 		itemInfo.ItemPermn = true
 	}

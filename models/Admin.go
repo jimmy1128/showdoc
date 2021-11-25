@@ -195,7 +195,11 @@ func AdminItemAttorn(uid uint , username string ,itemId int )int{
 		return errmsg.ERROR
 	}
 	db.Model(Item{}).Where("id =? ",itemId).Find(&item)
-	db.Model(User{}).Where("username =? ",username).Find(&user)
+	err = db.Model(User{}).Where("username =? ",username).Find(&user).Error
+	if err != nil {
+		return errmsg.ERROR_USER_NOT_EXIST
+	}
+
 if &user == nil {
 	return errmsg.ERROR
 }

@@ -30,6 +30,7 @@ export const ZH_CN = {
   login: '登录',
   username: '用户名',
   password: '密码',
+  account: '账号',
   register_new_account: '注册新账号',
   forget_password: '忘记密码',
   username_description: '用户名/邮箱',
@@ -40,9 +41,12 @@ export const ZH_CN = {
   submit: '提交',
   goback: '返回',
   my_email: '我的邮箱',
+  input_content: '请输入内容',
+  login_content: '您还未登入，请登入后留言',
   input_email: '请输入要绑定的邮箱',
   input_login_password: '请输入你的登录密码以验证',
   status: '状态',
+  comment: '评论',
   status_1: '已验证',
   status_2: '未验证',
   status_3: '未绑定',
@@ -117,7 +121,7 @@ export const ZH_CN = {
     '归档后，项目将变为只读，无法再修改/新增内容。如果要重新编辑，请复制到新项目后编辑',
   delete_tips: '删除后将不可恢复！',
   link_tips: '请选择本项目语言，并且选择需要跳转的项目',
-  attorn_username: '项目接受者用户名',
+  attorn_username: '项目接受者的登入账号',
   archive_tips2:
     '说明： 归档项目后，项目将无法再新增和修改内容，并且无法取消归档状态。 如想再次修改内容，可复制本项目，在新的项目基础上修改。复制项目的方法是，在创建项目的时候，选择从已有项目里复制。',
   success_jump: '操作成功！正在跳转...',
@@ -364,7 +368,7 @@ export const ZH_CN = {
 
   import_excel: '你可以选择Excel文件导入',
   table: '表格',
-
+  create_your_account: '创建账号',
   attachment_manage: '附件管理',
   op_success: '操作成功',
   display_name: '展示名字',
