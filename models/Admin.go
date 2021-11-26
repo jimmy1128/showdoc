@@ -165,7 +165,7 @@ func getMemberNum(totalMember []TotalMember , itemId int)int{
 	if totalMember !=nil  {
 		for _, member := range totalMember {
 			if member.ItemId == itemId {
-				members = member.MemberNum+1
+				members = member.MemberNum
 				return members
 			} else {
 				members = 1

@@ -2,6 +2,7 @@ package models
 
 import (
 	"awesomeProject3/utils/errmsg"
+	"fmt"
 	"github.com/jinzhu/gorm"
 	"strings"
 )
@@ -20,7 +21,7 @@ type ItemMember struct {
 func SaveMember(itemId int ,catId int ,uid uint ,username string , membergroupid int)(ItemMember, int){
 	var usernameArray [] string
 	var itemMember ItemMember
-
+	//var itemMember2 ItemMember
 	var userdata []User
 	var itemMemberdata []ItemMember
 	if checkItemCreator(uid , itemId) != errmsg.SUCCESE{
@@ -34,7 +35,7 @@ func SaveMember(itemId int ,catId int ,uid uint ,username string , membergroupid
 		userdata = append(userdata , user)
 	}
 
-	db.Where("uid = ?" ,uid).Where("item_id =?",itemId).Find(&itemMember)
+	//db.Where("uid = ?" ,uid).Where("item_id =?",itemId).Find(&itemMember)
 
 	for _, userdatum := range userdata {
 		itemMember.Username = userdatum.Username
@@ -45,6 +46,8 @@ func SaveMember(itemId int ,catId int ,uid uint ,username string , membergroupid
 		itemMemberdata= append(itemMemberdata , itemMember)
 	}
 	for _, memberdatum := range itemMemberdata {
+
+		fmt.Println(memberdatum,"1")
 		err := db.Model(ItemMember{}).Create(&memberdatum).Error
 		if err != nil {
 			return itemMember,errmsg.ERROR
