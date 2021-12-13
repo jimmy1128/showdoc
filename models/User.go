@@ -28,8 +28,10 @@ type Guest struct {
 }
 
 //查询用户是否存在
-func CheckUser(name string)(code int){
-	if RegisterSetting() == "1"{
+func CheckUser(name string,status int)(code int){
+	//status = 0 等于不是admin ， 1等于是admin
+
+	if RegisterSetting() == "1" && status !=1 {
 		return errmsg.ERROR_APPLY_NEW_ACCOUNT
 	}
 	if checkAdminUser () != errmsg.SUCCESE{

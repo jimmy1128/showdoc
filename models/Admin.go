@@ -2,7 +2,6 @@ package models
 
 import (
 	"awesomeProject3/utils/errmsg"
-	"fmt"
 	"github.com/jinzhu/gorm"
 )
 
@@ -96,11 +95,10 @@ var user User
 			db.Model(User{}).Where("id =?",uid).Update("name",name)
 		}
 	}else {
-		if CheckUser(name) != errmsg.SUCCESE{
+		if CheckUser(name,1) != errmsg.SUCCESE{
 			return errmsg.ERROR_USERNAME_USED
 		}
 		user.Username = username
-		fmt.Println(password)
 		user.Password = password
 		user.Name = name
 		err := db.Create(&user).Error
