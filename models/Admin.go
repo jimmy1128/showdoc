@@ -2,6 +2,7 @@ package models
 
 import (
 	"awesomeProject3/utils/errmsg"
+	"fmt"
 	"github.com/jinzhu/gorm"
 )
 
@@ -99,7 +100,8 @@ var user User
 			return errmsg.ERROR_USERNAME_USED
 		}
 		user.Username = username
-		user.Password = ScryptPw(password)
+		fmt.Println(password)
+		user.Password = password
 		user.Name = name
 		err := db.Create(&user).Error
 		if err != nil {

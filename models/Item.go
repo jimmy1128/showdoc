@@ -308,6 +308,7 @@ func EditItem(id int, title string, description string, password string,langlist
 	}else {
 		comment = 0
 	}
+
 	maps["is_comment"] = comment
 	maps["title"] = title
 	maps["description"] = description
@@ -316,6 +317,9 @@ func EditItem(id int, title string, description string, password string,langlist
 	if password != "" {
 		maps["password"] = ScryptPw(password)
 		maps["is_private"] = 1
+	}else {
+		maps["is_private"] = 0
+		maps["password"] = ""
 	}
 
 	err = db.Model(Item{}).Where("id =?", id).Update(maps).Error
