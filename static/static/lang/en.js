@@ -29,7 +29,6 @@ export const EN_US = {
   username: 'Username',
   password: 'Password',
   add_user: 'Add User',
-  err_delete_password: 'Please clear default password!',
   create_your_account: 'Create Your Account',
   add_language: 'New Language',
   cat_lang: 'Catalogs Language',
