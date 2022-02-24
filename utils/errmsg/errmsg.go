@@ -41,6 +41,9 @@ const (
 	// code = 10000 条件和需求
 	REQUIRE_PASSWORD_PERMISSION = 10307
 	FUNCTION_UNDER_DEVELOP      = 10308
+
+	//code = 8000 avatar
+	ERROR_URL_EMPTY = 8001
 )
 
 var codeMsg = map[int]string{
@@ -68,6 +71,7 @@ var codeMsg = map[int]string{
 	FUNCTION_UNDER_DEVELOP:      "功能还在开发中",
 	ERROR_CONNECTING_SERVER:     "无法连接LDAP",
 	ERROR_ARG:                   "参数错误",
+	ERROR_URL_EMPTY:             "跳转域名不能为空",
 }
 
 func GetErrMsg(code int) string {

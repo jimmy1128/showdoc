@@ -72,6 +72,9 @@ func SaveHeader(itemId int, v uint, data string) int {
 		itemHeader.HeaderName = restlt["headerName"].(string)
 		itemHeader.HeaderUrl = restlt["headerUrl"].(string)
 		itemHeader.ItemId = uint(itemId)
+		if itemHeader.HeaderUrl == "" {
+			return errmsg.ERROR_URL_EMPTY
+		}
 		tmpStore = append(tmpStore, itemHeader.HeaderId)
 
 		if itemHeader.HeaderId == 0 {
@@ -92,6 +95,10 @@ func SaveHeader(itemId int, v uint, data string) int {
 
 func GetHeader(itemId int, langId int) ([]ItemHeader, int) {
 	var itemHeader []ItemHeader
+	if langId == 99 {
+		db.Model(ItemHeader{}).Where("item_id = ?", itemId).Find(&itemHeader)
+		return itemHeader, errmsg.SUCCESE
+	}
 	db.Model(ItemHeader{}).Where("item_id = ?", itemId).Where("cid =?", langId).Find(&itemHeader)
 	return itemHeader, errmsg.SUCCESE
 }

@@ -24,10 +24,12 @@ var (
 )
 
 func init (){
-	file , err := ini.Load("/etc/supervisord.d/conf/config.ini")
+	//file , err := ini.Load("/etc/supervisord.d/conf/config.ini")
+	file , err := ini.Load("conf/config.ini")
 	if err !=nil {
 		fmt.Println("配置文件读取错误")
 		fmt.Println(file)
+		fmt.Println(err)
 	}
 	LoadServer(file)
 	LoadData(file)
