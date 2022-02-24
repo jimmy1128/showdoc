@@ -11,6 +11,8 @@ type Lang struct {
 	ID   uint   `gorm:"primary_key;auto_increment" json:"id"`
 	Name string `gorm:"type:varchar(20);not null" json:"name"`
 	Icon string `gorm:"type:varchar(255);not null" json:"icon"`
+	CountryCode string `gorm:"type:varchar(255)" json:"country"`
+	Remark string `gorm:"type:varchar(255)" json:"remark"`
 }
 type ItemLang struct {
 	ItemLangID uint   `gorm:"primary_key;auto_increment" json:"item_lang_id"`
@@ -97,6 +99,8 @@ func EditLang(id int, data *Lang) int {
 	var maps = make(map[string]interface{})
 	maps["name"] = data.Name
 	maps["icon"] = data.Icon
+	maps["country_code"] = data.CountryCode
+	maps["remark"] = data.Remark
 	err = db.Model(&cate).Where("id =?", id).Update(maps).Error
 	if err != nil {
 		return errmsg.ERROR

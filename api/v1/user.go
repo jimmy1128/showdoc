@@ -26,7 +26,7 @@ func AddUser(c *gin.Context){
 		return
 	}
 	data.Name = data.Username
-	code = models.CheckUser(data.Username,0)
+	code = models.CheckUser(data.Username)
 	if code == errmsg.SUCCESE{
 		models.CreateUser(&data)
 	}

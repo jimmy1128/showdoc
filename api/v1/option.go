@@ -64,6 +64,30 @@ func SaveLangConfig(c *gin.Context) {
 		"message": errmsg.GetErrMsg(code),
 	})
 }
+func SaveIconConfig(c *gin.Context) {
+	session := sessions.Default(c)
+	user := session.Get("id")
+	conf, _ := strconv.Atoi(c.PostForm("open_country_icon"))
+	v, _ := user.(uint)
+
+	code = models.SaveIconConfig(v, conf)
+	c.JSON(http.StatusOK, gin.H{
+		"status":  code,
+		"message": errmsg.GetErrMsg(code),
+	})
+}
+func SaveCountryConfig(c *gin.Context) {
+	session := sessions.Default(c)
+	user := session.Get("id")
+	conf, _ := strconv.Atoi(c.PostForm("open_country_code"))
+	v, _ := user.(uint)
+
+	code = models.SaveCountryConfig(v, conf)
+	c.JSON(http.StatusOK, gin.H{
+		"status":  code,
+		"message": errmsg.GetErrMsg(code),
+	})
+}
 func LoadLangConfig(c *gin.Context) {
 	var access int
 	session := sessions.Default(c)
@@ -81,3 +105,4 @@ func LoadLangConfig(c *gin.Context) {
 		"message": errmsg.GetErrMsg(code),
 	})
 }
+

@@ -117,7 +117,8 @@ func IniRouter(){
 		auth.POST("adminSetting/saveConfig",v1.SaveConfig)
 		auth.GET("adminSetting/loadConfig",v1.LoadConfig)
 		auth.POST("adminSetting/saveLangConfig",v1.SaveLangConfig)
-
+		auth.POST("adminSetting/saveIconConfig",v1.SaveIconConfig)
+		auth.POST("adminSetting/saveCountryConfig",v1.SaveCountryConfig)
 
 		// LangConfig
 		auth.POST("lang/add",v1.AddLang)

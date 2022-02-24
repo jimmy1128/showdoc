@@ -101,6 +101,7 @@ func UpdateItem(c *gin.Context) {
 	langlist := c.PostForm("langlist")
 	isComment := c.PostForm("commendSwitch")
 
+
 	code = models.EditItem(id,title,description,password,langlist,isComment)
 
 	c.JSON(http.StatusOK,gin.H{

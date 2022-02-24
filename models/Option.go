@@ -86,6 +86,26 @@ func RegisterSetting() string {
 			return ""
 		}
 	}
+	err = db.Model(Options{}).Where("option_name = ? ", "open_country_icon").Find(&ldap).Error
+	if err == gorm.ErrRecordNotFound {
+		ldap.OptionId = 5
+		ldap.OptionName = "open_country_icon"
+		ldap.OptionValue = "1"
+		err = db.Create(&ldap).Error
+		if err != nil {
+			return ""
+		}
+	}
+	err = db.Model(Options{}).Where("option_name = ? ", "open_country_code").Find(&ldap).Error
+	if err == gorm.ErrRecordNotFound {
+		ldap.OptionId = 6
+		ldap.OptionName = "open_country_code"
+		ldap.OptionValue = "1"
+		err = db.Create(&ldap).Error
+		if err != nil {
+			return ""
+		}
+	}
 	return option.OptionValue
 }
 
@@ -123,6 +143,29 @@ func SaveLangConfig(uid uint, id int) int {
 	}
 	return errmsg.SUCCESE
 }
+func SaveIconConfig(uid uint, id int) int {
+	if checkAdmin(uid) != errmsg.SUCCESE {
+		return errmsg.ERROR
+	}
+	err = db.Model(Options{}).Where("option_name = ?", "open_country_icon").Update("option_value", id).Error
+	if err != nil {
+		return errmsg.ERROR
+	}
+	return errmsg.SUCCESE
+}
+
+func SaveCountryConfig(uid uint, id int) int {
+	if checkAdmin(uid) != errmsg.SUCCESE {
+		return errmsg.ERROR
+	}
+	fmt.Println(uid,id)
+	err = db.Model(Options{}).Where("option_name = ?", "open_country_code").Update("option_value", id).Error
+	if err != nil {
+		return errmsg.ERROR
+	}
+	return errmsg.SUCCESE
+}
+
 func LoadLangConfig(itemId int) (Lang, int) {
 	var option Options
 	var lang Lang
@@ -146,7 +189,6 @@ func LoadLangConfig(itemId int) (Lang, int) {
 	}
 	return lang, errmsg.SUCCESE
 }
-
 func CheckLdapLogin(loginUser string, password string) (User, int) {
 	var user User
 	var ldapSetting Ldap

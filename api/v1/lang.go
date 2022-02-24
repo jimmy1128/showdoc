@@ -14,8 +14,12 @@ func AddLang(c *gin.Context){
 	id ,_ := strconv.Atoi(c.PostForm("id"))
 	name  := c.PostForm("name")
 	icon  := c.PostForm("icon")
+	country  := c.PostForm("country")
+	remark  := c.PostForm("remark")
 	data.Name = name
 	data.Icon = icon
+	data.CountryCode=country
+	data.Remark = remark
 	if id != 0 {
 		code = models.EditLang(id,&data)
 	}else {

@@ -95,11 +95,11 @@ var user User
 			db.Model(User{}).Where("id =?",uid).Update("name",name)
 		}
 	}else {
-		if CheckUser(name,1) != errmsg.SUCCESE{
+		if CheckUser(name) != errmsg.SUCCESE{
 			return errmsg.ERROR_USERNAME_USED
 		}
 		user.Username = username
-		user.Password = password
+		user.Password = ScryptPw(password)
 		user.Name = name
 		err := db.Create(&user).Error
 		if err != nil {
