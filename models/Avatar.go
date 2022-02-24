@@ -60,9 +60,9 @@ func SaveHeader(itemId int, v uint, data string) int {
 	for _, header := range tmpheader {
 		store = append(store, header.HeaderId)
 	}
-
 	err = json.Unmarshal([]byte(data), &maps)
 	for _, i := range maps {
+
 		restlt := i.(map[string]interface{})
 		if restlt["headerId"] != nil {
 			itemHeader.HeaderId = uint(restlt["headerId"].(float64))
@@ -85,7 +85,8 @@ func SaveHeader(itemId int, v uint, data string) int {
 	}
 	_, removed := Arrcmp(store, tmpStore)
 	for _, u := range removed {
-		db.Model(ItemHeader{}).Where("header_id =?", u).Delete(&itemHeader)
+		//err = db.Model(ItemHeader{}).Where("header_id =? ", u).Delete(&itemHeader).Error
+		db.Delete(&ItemHeader{}, u)
 	}
 	if err != nil {
 		return errmsg.ERROR
