@@ -115,7 +115,7 @@ func IniRouter(){
 
 		// adminConfig
 		auth.POST("adminSetting/saveConfig",v1.SaveConfig)
-		auth.GET("adminSetting/loadConfig",v1.LoadConfig)
+
 		auth.POST("adminSetting/saveLangConfig",v1.SaveLangConfig)
 		auth.POST("adminSetting/saveIconConfig",v1.SaveIconConfig)
 		auth.POST("adminSetting/saveCountryConfig",v1.SaveCountryConfig)
@@ -166,6 +166,7 @@ func IniRouter(){
 		// config
 		router.POST("adminSetting/loadLangConfig",v1.LoadLangConfig)
 		router.GET("export/word",v1.ExportWord)
+		router.GET("adminSetting/loadConfig",v1.LoadConfig)
 		//Dashboard
 		router.POST("avatar/getHeader",v1.GetHeader)
 		router.POST("avatar/profile",v1.GetAvatar)
