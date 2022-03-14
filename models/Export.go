@@ -36,6 +36,7 @@ func ExportMarkdown (itemId uint , uid uint)int {
    	return errmsg.ERROR
    }
    db.Model(Item{}).Where("id =?",itemId).Find(&item)
+
 	exportJson,_ := export(item.ID,true)
 	json.Unmarshal(exportJson,&iteminfo)
 	dname, err := ioutil.TempDir("./", "showdoc_")
@@ -48,7 +49,7 @@ func ExportMarkdown (itemId uint , uid uint)int {
 	err = ioutil.WriteFile(fname,exportJson,0666)
 	//err = ioutil.WriteFile(fname1, []byte("由于页面标题可能含有特殊字符导致异常，所以markdown文件的命名均为英文（md5串），以下是页面标题和文件的对应关系：\n"),0666)
 		_markdownTofile(iteminfo.Pages,dname,exportitem)
-	Zip("./teamdoc", "showdoc.zip")
+	Zip(dname, "showdoc.zip")
 
 return errmsg.SUCCESE
 }
@@ -58,6 +59,7 @@ func export (itemId uint , uncompress bool)([]byte,int){
 	db.Model(Item{}).Select("types,title,description,password").Where("id =?",itemId).Scan(&item)
 	item.Pages = getExportContent(itemId ,uncompress)
     db.Model(ItemMember{}).Select("member_group_id,uid,username").Where("item_id = ?",itemId).Scan(&itemMember)
+
 	jsonItem, err := json.Marshal(item)
 	if err != nil {
 		 return nil,errmsg.ERROR
@@ -98,7 +100,6 @@ func _markdownTofile (catalogData ImportMenu , tempDir string,catalogs ImportCat
 			fl.Write([]byte("\n"+page.PageTitle+"-prefix_"+filename))
 		}
 	}
-
 return mainCatalogs
 }
 func getExportContent(itemId uint ,uncompress bool)ImportMenu{

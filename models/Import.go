@@ -148,6 +148,7 @@ func Auto(filename string,uid uint)int{
 		err,filedir := DeCompress(filename,"./upload/")
 
 		if err != nil {
+			fmt.Println("1")
 			return errmsg.ERROR
 		}
 		data, err := ioutil.ReadFile(filedir+"/prefix_info.json")
