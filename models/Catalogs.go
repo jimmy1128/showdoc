@@ -3,7 +3,6 @@ package models
 import (
 	"awesomeProject3/utils/errmsg"
 	"encoding/json"
-	"fmt"
 	"github.com/jinzhu/gorm"
 )
 
@@ -27,6 +26,7 @@ type CatalogsTitle struct {
 	ParentCatId uint             `gorm:"type:int;not null" json:"parent_cat_id"`
 	SNumber     uint             `gorm:"type:int;not null" json:"s_number"`
 	Cid         int              `gorm:"type:int;not null" json:"cid"`
+	Cname       string           `gorm:"type:varchar(255)" json:"lang_name"`
 	Sub         []*CatalogsTitle `json:"sub"`
 }
 type CatalogsMap struct {
@@ -98,7 +98,6 @@ func DeleteCatalogs(itemid int, id int, v int) int {
 func GetCatalogsByItemId(id uint, keyword string, langId int) ([]Catalogs, int) {
 	var catalogs []Catalogs
 	var catalogsData []Catalogs
-	fmt.Println(keyword)
 	if langId <= 0 {
 		err = db.Where("item_id=?", id).Where("level =?", 2).Preload("Lang").Find(&catalogs).Error
 		if err != nil {
@@ -244,10 +243,12 @@ func filterMemberCat(uid uint, catData []*CatalogsTitle) []*CatalogsTitle {
 func CatListName(itemId uint, keyword string, uid uint , langId int) ([]*CatalogsTitle, int) {
 	var catalogs []*CatalogsTitle
 	var catalogsData []*CatalogsTitle
+	//var catalogsData1 []*CatalogsTitle
+	var lang []Lang
+	db.Model(Lang{}).Find(&lang)
 	if itemId > 0 {
 		catalogs = getList(itemId, true , langId)
 		catalogsData = filterMemberCat(uid, catalogs)
-
 		if catalogsData == nil {
 			return catalogsData, errmsg.SUCCESE
 		}
@@ -259,6 +260,8 @@ func getList(itemId uint, isGroup bool ,langId int) []*CatalogsTitle {
 	var ret []*CatalogsTitle
 	var ret2 []*CatalogsTitle
 	var ret3 []*CatalogsTitle
+	var lang []Lang
+	db.Model(Lang{}).Find(&lang)
 	if itemId > 0 {
 		db.Model(Catalogs{}).Where("item_id =?", itemId).Order("s_number,id asc").Scan(&ret)
 	}
@@ -272,10 +275,18 @@ func getList(itemId uint, isGroup bool ,langId int) []*CatalogsTitle {
 				catalogs.Sub  =  ret3
 			}
 			for _, catalogs := range ret {
+
+					for _, l := range lang {
+						if catalogs.Cid == int(l.ID){
+							catalogs.Cname = l.Name
+						}
+					}
+
 				if catalogs.ParentCatId == 0 {
 					ret2 = append( ret2 , catalogs)
 				}
 			}
+
 		}
 		return ret2
 	} else {
