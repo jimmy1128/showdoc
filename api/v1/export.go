@@ -24,6 +24,7 @@ func ExportItem(c *gin.Context){
 
 	c.Header("Content-Length", y)
 	c.File("showdoc.zip")
+	defer os.RemoveAll("showdoc.zip")
 
 }
 
