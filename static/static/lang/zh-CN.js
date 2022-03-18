@@ -334,7 +334,7 @@ export const ZH_CN = {
   copy_item_tips1: '从你已有的项目中选择并复制',
   copy_item_tips2: '复制后将新项目重命名为：',
   import_file_tips1:
-    '导入的文件可以是<b>postman</b>的json文件、<b>swagger</b>的json文件、showdoc的<b>markdown压缩包</b>。系统会自动识别文件类型。',
+    '导入的文件可以是showdoc的<b>markdown压缩包</b>。系统会自动识别文件类型。',
   import_file_tips2: '将文件拖到此处，或<em>点击上传</em>',
   export_format_word: 'word格式',
   export_format_markdown: 'markdown压缩包',

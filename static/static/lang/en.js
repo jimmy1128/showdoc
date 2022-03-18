@@ -285,7 +285,7 @@ export const EN_US = {
   copy_item_tips1: 'Select and copy from your existing items',
   copy_item_tips2: 'After copying, rename the new item to:',
   import_file_tips1:
-    'The imported file can be the JSON file of postman, the JSON file of swagger, and the markdown zip of showdoc. The system will automatically identify the file type',
+    'The imported file can be the markdown zip of showdoc. The system will automatically identify the file type',
   import_file_tips2: 'Drag the file here, or click to upload',
   export_format_word: 'Word format',
   export_format_markdown: 'Markdown zip',
