@@ -17,7 +17,7 @@ func IniRouter(){
 	r.Use(middleware.CORSMiddleware())
 	r.Use(v1.EnableCookieSession())
 	r.LoadHTMLGlob("static/index.html")
-	r.Static("wiki/static","static/static")
+	r.Static("statics","static/static")
 	r.Static("upload",utils.Upload)
 	r.GET("/doc",func(c *gin.Context){
 		c.HTML(200,"index.html",nil)
