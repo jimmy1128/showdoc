@@ -17,11 +17,12 @@ func IniRouter(){
 	r.Use(middleware.CORSMiddleware())
 	r.Use(v1.EnableCookieSession())
 	r.LoadHTMLGlob("static/index.html")
-	r.Static("statics","static/static")
+	r.Static("docstatic","static/docstatic")
 	r.Static("upload",utils.Upload)
 	r.GET("/doc",func(c *gin.Context){
 		c.HTML(200,"index.html",nil)
 	})
+
 	r.NoRoute(v1.NoResponse)
 
 	auth := r.Group("api/v1")
