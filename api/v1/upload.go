@@ -26,7 +26,7 @@ func UpLoad(c *gin.Context) {
 
 
 	path := utils.Upload + filename
-	url = c.Request.URL.Host + "upload/" + filename
+	url = c.Request.URL.Host + "docupload/" + filename
 	log.Println(file.Filename,url)
 
 
@@ -55,7 +55,7 @@ func UpLoadImg(c *gin.Context) {
 	log.Println(file.Filename)
 
 	err = c.SaveUploadedFile(file, utils.Upload+file.Filename)
-	url = c.Request.URL.Host + "upload/" + file.Filename
+	url = c.Request.URL.Host + "docupload/" + file.Filename
 	if err != nil {
 		code = errmsg.ERROR
 	}
