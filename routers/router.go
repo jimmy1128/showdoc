@@ -20,12 +20,13 @@ func IniRouter(){
 	r.Static("docstatic","static/docstatic")
 	r.Static("upload",utils.Upload)
 	r.GET("/doc",func(c *gin.Context){
+
 		c.HTML(200,"index.html",nil)
 	})
 
 	r.NoRoute(v1.NoResponse)
 
-	auth := r.Group("api/v1")
+	auth := r.Group("doc/api/v1")
 	auth.Use(middleware.JwtToken())
 
 	{
@@ -138,7 +139,7 @@ func IniRouter(){
 
 
 	}
-	router := r.Group("api/v1")
+	router := r.Group("doc/api/v1")
 
 	{
 		//用户信息模块
