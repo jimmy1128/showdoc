@@ -26,7 +26,7 @@ func IniRouter(){
 
 	r.NoRoute(v1.NoResponse)
 
-	auth := r.Group("doc/api/v1")
+	auth := r.Group("docapi/v1")
 	auth.Use(middleware.JwtToken())
 
 	{
@@ -139,7 +139,7 @@ func IniRouter(){
 
 
 	}
-	router := r.Group("doc/api/v1")
+	router := r.Group("docapi/v1")
 
 	{
 		//用户信息模块
