@@ -4,7 +4,6 @@ import (
 	"awesomeProject3/utils"
 	"awesomeProject3/utils/errmsg"
 	"encoding/json"
-	"fmt"
 	"github.com/jinzhu/gorm"
 	"sort"
 	"strconv"
@@ -283,7 +282,7 @@ func CreateItem(data *Item, password string) int {
 		page.PageTitle = data.Title
 		page.ItemId = data.ID
 		page.CatId = 0
-		page.PageContent = "欢迎使用showdoc。点击右上方的编辑按钮进行编辑吧！"
+		page.PageContent = "欢迎使用doc。点击右上方的编辑按钮进行编辑吧！"
 		err := db.Create(&page).Error
 		if err != nil {
 			return errmsg.ERROR
@@ -322,7 +321,6 @@ func EditItem(id int, title string, description string, password string,langlist
 		maps["is_private"] = 0
 		maps["password"] = ""
 	}
-fmt.Println(maps)
 	err = db.Model(Item{}).Where("id =?", id).Update(maps).Error
 	if err != nil {
 		return errmsg.ERROR
@@ -457,10 +455,16 @@ func checkItemVisit(uid uint, itemId int, sid string) int {
 		return errmsg.SUCCESE
 	}
 	db.Model(ItemMember{}).Where("item_id =? ", itemId).Where("uid =?", uid).Find(&itemMember)
+	if itemMember.ID != 0{
+		return errmsg.SUCCESE
+	}
 	if utils.Md5(string(itemMember.Item_id)) == sid {
 		return errmsg.SUCCESE
 	}
 	db.Model(TeamItemMember{}).Where("item_id =?", itemId).Where("member_uid =?", uid).Find(&teamitemMember)
+	if teamitemMember.ID != 0{
+		return errmsg.SUCCESE
+	}
 	if utils.Md5(string(teamitemMember.Item_id)) == sid {
 		return errmsg.SUCCESE
 	}
