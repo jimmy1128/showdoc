@@ -102,7 +102,7 @@ var user User
 			return errmsg.ERROR_USERNAME_USED
 		}
 		user.Username = username
-		user.Password = ScryptPw(password)
+		user.Password = password
 		user.Name = name
 		err := db.Create(&user).Error
 		if err != nil {

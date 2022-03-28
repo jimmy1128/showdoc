@@ -4,6 +4,7 @@ import (
 	"awesomeProject3/utils"
 	"awesomeProject3/utils/errmsg"
 	"encoding/json"
+	"fmt"
 	"github.com/jinzhu/gorm"
 	"sort"
 	"strconv"
@@ -317,7 +318,11 @@ func EditItem(id int, title string, description string, password string,langlist
 		maps["password"] = ScryptPw(password)
 		maps["is_private"] = 1
 	}
-
+	if password == "" {
+		maps["is_private"] = 0
+		maps["password"] = ""
+	}
+fmt.Println(maps)
 	err = db.Model(Item{}).Where("id =?", id).Update(maps).Error
 	if err != nil {
 		return errmsg.ERROR

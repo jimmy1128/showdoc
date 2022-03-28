@@ -45,6 +45,9 @@ func List(uid int)([]Team,int){
 		db.Model(Team{}).Where("id=?",t.ID).Update(maps)
 	}
 	if err != nil {
+		if err == gorm.ErrRecordNotFound{
+			return team ,errmsg.SUCCESE
+		}
 		return team,errmsg.ERROR
 	}
 	return team,errmsg.SUCCESE
