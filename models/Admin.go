@@ -2,6 +2,7 @@ package models
 
 import (
 	"awesomeProject3/utils/errmsg"
+	"fmt"
 	"github.com/jinzhu/gorm"
 )
 
@@ -86,6 +87,7 @@ return errmsg.SUCCESE
 
 
 func AdminAddUser (uid uint, username string , password string , name string) int{
+	fmt.Println(uid,username,password,name)
 var user User
 	if uid != 0 {
 		if password != "" {
@@ -96,6 +98,7 @@ var user User
 		}
 	}else {
 		if CheckUser(username) != errmsg.SUCCESE{
+			fmt.Println(CheckUser(username))
 			return errmsg.ERROR_USERNAME_USED
 		}
 		user.Username = username

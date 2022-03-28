@@ -3,7 +3,6 @@ package models
 import (
 	"awesomeProject3/utils/errmsg"
 	"encoding/base64"
-	"fmt"
 	"github.com/jinzhu/gorm"
 	"golang.org/x/crypto/scrypt"
 	"log"
@@ -30,10 +29,7 @@ type Guest struct {
 
 //查询用户是否存在
 func CheckUser(name string)(code int){
-	fmt.Println(name)
-	if RegisterSetting() == "1"{
-		return errmsg.ERROR_APPLY_NEW_ACCOUNT
-	}
+
 	if checkAdminUser () != errmsg.SUCCESE{
 		return errmsg.ERROR_APPLY_NEW_ACCOUNT
 	}

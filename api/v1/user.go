@@ -25,6 +25,9 @@ func AddUser(c *gin.Context){
 		})
 		return
 	}
+	if models.RegisterSetting() == "1"{
+		code = errmsg.ERROR_APPLY_NEW_ACCOUNT
+	}
 	data.Name = data.Username
 	code = models.CheckUser(data.Username)
 	if code == errmsg.SUCCESE{
