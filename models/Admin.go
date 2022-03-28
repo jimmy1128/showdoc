@@ -95,7 +95,7 @@ var user User
 			db.Model(User{}).Where("id =?",uid).Update("name",name)
 		}
 	}else {
-		if CheckUser(name) != errmsg.SUCCESE{
+		if CheckUser(username) != errmsg.SUCCESE{
 			return errmsg.ERROR_USERNAME_USED
 		}
 		user.Username = username

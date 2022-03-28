@@ -3,6 +3,7 @@ package models
 import (
 	"awesomeProject3/utils/errmsg"
 	"encoding/base64"
+	"fmt"
 	"github.com/jinzhu/gorm"
 	"golang.org/x/crypto/scrypt"
 	"log"
@@ -29,6 +30,7 @@ type Guest struct {
 
 //查询用户是否存在
 func CheckUser(name string)(code int){
+	fmt.Println(name)
 	if RegisterSetting() == "1"{
 		return errmsg.ERROR_APPLY_NEW_ACCOUNT
 	}
@@ -37,7 +39,7 @@ func CheckUser(name string)(code int){
 	}
 	var users User
 	db.Select("id").Where("username =?",name).First(&users)
-	if users.ID >= 0{
+	if users.ID >= 1{
 		return errmsg.ERROR_USERNAME_USED
 	}
 	return errmsg.SUCCESE
