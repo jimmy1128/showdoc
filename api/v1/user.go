@@ -27,14 +27,15 @@ func AddUser(c *gin.Context){
 	}
 	if models.RegisterSetting() == "1"{
 		code = errmsg.ERROR_APPLY_NEW_ACCOUNT
-	}
-	data.Name = data.Username
-	code = models.CheckUser(data.Username)
-	if code == errmsg.SUCCESE{
-		models.CreateUser(&data)
-	}
-	if code == errmsg.ERROR_USERNAME_USED{
-		code = errmsg.ERROR_USERNAME_USED
+	}else {
+		data.Name = data.Username
+		code = models.CheckUser(data.Username)
+		if code == errmsg.SUCCESE {
+			models.CreateUser(&data)
+		}
+		if code == errmsg.ERROR_USERNAME_USED {
+			code = errmsg.ERROR_USERNAME_USED
+		}
 	}
 	c.JSON(http.StatusOK ,gin.H{
 		"status":code,
