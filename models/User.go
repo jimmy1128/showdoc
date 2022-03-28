@@ -37,7 +37,7 @@ func CheckUser(name string)(code int){
 	}
 	var users User
 	db.Select("id").Where("username =?",name).First(&users)
-	if users.ID >= 1{
+	if users.ID >= 0{
 		return errmsg.ERROR_USERNAME_USED
 	}
 	return errmsg.SUCCESE
