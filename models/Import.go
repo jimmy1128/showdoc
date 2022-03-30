@@ -31,6 +31,7 @@ type ImportPageInfo struct {
 	Page_content  string                `json:"page_content"`
 	S_number      string                  `json:"s_number"`
 	Page_comments string                `json:"page_comments"`
+	Cid     int       `json:"cid"`
 }
 
 type ImportCatalogInfo struct{
@@ -40,6 +41,7 @@ type ImportCatalogInfo struct{
 	ParentCatId string       `json:"parent_cat_id"`
 	Level       string       `json:"level"`
 	SNumber     string       `json:"s_number"`
+	Cid     int       `json:"cid"`
 	Pages []*ImportPageInfo `json:"pages"`
 	Catalogs []ImportCatalogInfo `json:"catalogs"`
 
@@ -125,6 +127,7 @@ func _insertCat (itemId uint , catalogs []ImportCatalogInfo , user User , parent
 			pages.PageTitle = info.PageTitle
 			pages.PageComments = info.Page_comments
 			pages.PageContent = info.Page_content
+			pages.Cid = info.Cid
 			i, _ := strconv.ParseUint(info.S_number, 10, 64)
 			pages.SNumber = uint(i)
 			pages.ItemId = itemId

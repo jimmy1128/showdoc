@@ -3,7 +3,6 @@ package models
 import (
 	"awesomeProject3/utils/errmsg"
 	"encoding/json"
-	"fmt"
 	"github.com/jinzhu/gorm"
 )
 
@@ -201,11 +200,8 @@ func GetPagesbycat(catId int, itemId int, uid uint) ([]Page, int) {
 	if CheckItemPermn(uid, itemId) != errmsg.SUCCESE {
 		return page, errmsg.ERROR_USER_NO_RIGHT
 	}
-	err = db.Model(Page{}).Where("cat_id = ?", catId).Where("item_id =?", itemId).Where("is_del != 1").Select("id ,page_title ,s_number").Order("s_number asc , id asc").Find(&page).Error
-	fmt.Println(err)
-	for _, p := range page {
-		fmt.Println(p)
-	}
+	db.Model(Page{}).Where("cat_id = ?", catId).Where("item_id =?", itemId).Where("is_del != 1").Select("id ,page_title ,s_number").Order("s_number asc , id asc").Find(&page)
+
 	return page, errmsg.SUCCESE
 }
 
