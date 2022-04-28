@@ -134,7 +134,7 @@ export const EN_US = {
   member_authority: 'Member authority',
   name: 'Name',
   team_member_authority_tips:
-    'Permission description: The editing permission means that members can create/edit project pages, and when deleted, they can only delete their own newly created/edited pages. The read-only permission means that the member can only view all pages of this project and can not add/edit/delete them.',
+    'Permission description: The editing permission means that members can create/edit project pages, and when deleted, they can only delete their own newly created/edited pages. The read-only permission means that the member can only views all pages of this project and can not add/edit/delete them.',
   member: 'Member',
   team_item: 'Item',
   member_username: 'Member username',
@@ -164,7 +164,7 @@ export const EN_US = {
   input_target_member: "input member's username",
   readonly: 'readonly',
   member_authority_tips:
-    'Permission Description: The default member can create/edit the project page, and only delete the newly created/edited page when deleting. After checking the read-only attribute, the member can only view all pages, and cannot add/edit/delete',
+    'Permission Description: The default member can create/edit the project page, and only delete the newly created/edited page when deleting. After checking the read-only attribute, the member can only views all pages, and cannot add/edit/delete',
   cancel: 'cancel',
   confirm: 'confirm',
   confirm_delete: 'confirm to delete',

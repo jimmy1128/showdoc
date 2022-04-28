@@ -4,6 +4,7 @@ import (
 	"awesomeProject3/utils/errmsg"
 	"encoding/json"
 	"github.com/jinzhu/gorm"
+	"sort"
 )
 
 type Catalogs struct {
@@ -276,13 +277,11 @@ func getList(itemId uint, isGroup bool ,langId int) []*CatalogsTitle {
 				catalogs.Sub  =  ret3
 			}
 			for _, catalogs := range ret {
-
 					for _, l := range lang {
 						if catalogs.Cid == int(l.ID){
 							catalogs.Cname = l.Name
 						}
 					}
-
 				if catalogs.ParentCatId == 0 {
 					ret2 = append( ret2 , catalogs)
 				}
@@ -299,19 +298,28 @@ func getList(itemId uint, isGroup bool ,langId int) []*CatalogsTitle {
 func _getChlid(catId uint, data []*CatalogsTitle) []*CatalogsTitle {
 	var itemData2 []*CatalogsTitle
 
-	amap := make(map[uint]*CatalogsTitle)
+	amap := make(map[int]*CatalogsTitle)
 	if data != nil && catId > 0 {
-		for _, datum := range data {
+		for i, datum := range data {
 			if datum.ParentCatId == catId {
-				amap[datum.ID] = datum
+				amap[i] = datum
 			}
 		}
 	}
-	for _,v:= range amap{
-		itemData2 = append(itemData2, v)
+
+	keys := make([]int, 0, len(amap))
+	for k := range amap {
+		keys = append(keys, k)
 	}
+	sort.Ints(keys)
+	for _, k := range keys {
+		itemData2 = append(itemData2, amap[k])
+	}
+
 	return itemData2
 }
+
+
 // catalogs 移动更新
 func BatUpdate(cats string , itemId int )([]CatalogsMap,int) {
 

@@ -119,6 +119,7 @@ func _insertCat (itemId uint , catalogs []ImportCatalogInfo , user User , parent
 		catalogsData.SNumber = uint(i)
 		catalogsData.ItemId = itemId
 		catalogsData.ParentCatId = parentCatId
+		catalogsData.Cid = catalog.Cid
 
 		db.Table("catalogs").Create(&catalogsData)
 		for _, info := range catalog.Pages {

@@ -3,6 +3,7 @@ package v1
 import (
 	"awesomeProject3/models"
 	"awesomeProject3/utils/errmsg"
+	"fmt"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -159,6 +160,7 @@ func SaveCatalogs(c *gin.Context){
 		session := sessions.Default(c)
 		user := session.Get("id")
 		v , _ := user.(uint)
+		fmt.Println(item_id,cat_id)
 		data , code := models.GetPagesbycat(cat_id , item_id , v)
 		c.JSON(http.StatusOK,gin.H{
 			"status" : code ,

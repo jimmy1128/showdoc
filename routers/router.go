@@ -17,6 +17,7 @@ func IniRouter(){
 	r.Use(middleware.CORSMiddleware())
 	r.Use(v1.EnableCookieSession())
 	r.LoadHTMLGlob("static/index.html")
+
 	r.Static("docstatic","static/docstatic")
 	r.Static("docupload",utils.Upload)
 	r.GET("/doc",func(c *gin.Context){
@@ -66,7 +67,7 @@ func IniRouter(){
 		auth.POST("catalog/getPagesBycat",v1.GetPagesByCat)
 		auth.POST("catalog/batUpdate",v1.BatUpdates)
 		//item 模块
-
+		//auth.GET("admin/list",v1.MyList) 登入item list 检查token
 		auth.POST("item/delete",v1.DeleteItem)
 		auth.POST("item/add",v1.AddItem)
 		auth.POST("item/update",v1.UpdateItem)
@@ -182,6 +183,8 @@ func IniRouter(){
 		router.GET("commentcount/:id",v1.GetCommentCount)
 		//ExportItem
 		router.GET("export/markdown/:item_id",v1.ExportItem)
+		//Export Pdf
+		router.GET("export/pdf/:item_id",v1.ExportPdf)
 
 
 	}

@@ -9,6 +9,7 @@ import (
 	"github.com/microcosm-cc/bluemonday"
 	"github.com/russross/blackfriday"
 	"io"
+	"os/exec"
 	"io/ioutil"
 	"math/rand"
 	"os"
@@ -70,16 +71,21 @@ return jsonItem , errmsg.SUCCESE
 func _markdownTofile (catalogData ImportMenu , tempDir string,catalogs ImportCatalogInfo)ImportCatalogInfo {
 	var catalogData2 ImportMenu
 	var mainCatalogs ImportCatalogInfo
+
 	if catalogData.Pages !=nil {
 		for _, page := range catalogData.Pages {
 			t := time.Now()
 			filename := "prefix_"+strconv.FormatInt(t.Unix(), 10)+ strconv.Itoa(rand.Intn(1000)) +".md"
+
 			fname1 := filepath.Join(tempDir , filename)
+
             ioutil.WriteFile(fname1, []byte(page.Page_content),0666)
 			fl, _ := os.OpenFile(tempDir+"/prefix_readme.md", os.O_APPEND|os.O_WRONLY, 0666)
 			fl.Write([]byte("\n"+page.PageTitle+"-prefix_"+filename))
+
 		}
 	}
+
 	if catalogData.Catalogs !=nil {
 		for i, catalog := range catalogData.Catalogs {
 			catalogData.Catalogs[i] = _markdownTofile(catalogData2,tempDir,catalog)
@@ -94,8 +100,12 @@ func _markdownTofile (catalogData ImportMenu , tempDir string,catalogs ImportCat
 		for _, page := range catalogs.Pages {
 			t := time.Now()
 			filename := "prefix_"+strconv.FormatInt(t.Unix(), 10)+ strconv.Itoa(rand.Intn(1000)) +".md"
+
 			fname1 := filepath.Join(tempDir , filename)
-			ioutil.WriteFile(fname1, []byte(page.Page_content),0666)
+			//dirarr = append(dirarr , fname1)
+			//new_page_content := strings.Replace(page.Page_content, "&quot;", " ", -1)
+
+			ioutil.WriteFile(fname1, []byte("## "+page.PageTitle + page.Page_content),0666)
 			fl, _ := os.OpenFile(tempDir+"/prefix_readme.md", os.O_APPEND|os.O_WRONLY, 0666)
 			fl.Write([]byte("\n"+page.PageTitle+"-prefix_"+filename))
 		}
@@ -120,6 +130,7 @@ func getExportContent(itemId uint ,uncompress bool)ImportMenu{
 		for _, c := range catalogsData2 {
 			catalogsData2 = getExportCat(c, pagesData, catalogsData)
 			for _, c2 := range catalogsData2 {
+
 				result = append(result, c2)
 			}
 		}
@@ -133,16 +144,31 @@ func getExportCat(catalogData ImportCatalogInfo, page []*ImportPageInfo, catalog
 	var sub_catalogs []ImportCatalogInfo
 	var catalogsSubData []ImportCatalogInfo
 	var mainCatalogs []ImportCatalogInfo
+	var mainCatalogs1 []ImportCatalogInfo
+	var mainCatalogs2 []ImportCatalogInfo
 	catalogData.Pages = _getExportPageByCatId(catalogData.Id, page)
 	sub_catalogs = _getExportCatByCatId(catalogData.Id, catalogs)
+	//fmt.Println(sub_catalogs)
 	if sub_catalogs != nil {
 		for _, catalog := range sub_catalogs {
-			catalogData.Catalogs = getExportCat(catalog, page, catalogs)
-			catalogsSubData = append(mainCatalogs, catalogData)
+			//fmt.Println("2",catalog)
+			//catalogData.Catalogs = sub_catalogs
+			//catalog.Catalogs = getExportCat(catalog, page, catalogs)
+			mainCatalogs1 = getExportCat(catalog, page, catalogs)
+			//fmt.Println("3",catalogData.Catalogs )
+			//catalogs2 = append(catalogs2, catalog)
+			for _, info := range mainCatalogs1 {
+				mainCatalogs2 = append(mainCatalogs2, info)
+			}
+
+			//fmt.Println("4",catalogsSubData)
 		}
+		catalogData.Catalogs = mainCatalogs2
+		catalogsSubData = append(mainCatalogs, catalogData)
 	}
 	if catalogData.Catalogs == nil {
 		catalogsSubData = append(catalogsSubData, catalogData)
+		//fmt.Println("5",catalogsSubData)
 	}
 	return catalogsSubData
 }
@@ -166,6 +192,7 @@ func _getExportCatByCatId(catId string, catalogs []ImportCatalogInfo) []ImportCa
 			if catalog.ParentCatId == catId {
 
 				catalogs2 = append(catalogs2, catalog)
+
 			}
 		}
 	}
@@ -380,4 +407,95 @@ func runApiToMd ( content string){
 
 
 	}
+}
+var (
+	ebookConvert = "mdout"
+)
+func ExportPdf (itemId uint , uid uint)int {
+	var item Item
+	var iteminfo ImportItemInfo
+	var exportitem ImportCatalogInfo
+	if CheckItemEdit(uid, itemId) == false {
+		return errmsg.ERROR
+	}
+	db.Model(Item{}).Where("id =?",itemId).Find(&item)
+
+	exportJson,_ := export(item.ID,true)
+	json.Unmarshal(exportJson,&iteminfo)
+	dname1, err := ioutil.TempDir("./", "showdoc_")
+	if err != nil {
+		return  errmsg.ERROR
+	}
+	defer os.RemoveAll(dname1)
+
+	//fname := filepath.Join(dname1 , "prefix_info.json")
+	//fname1 := filepath.Join(dname , "prefix_readme.md")
+	//err = ioutil.WriteFile(fname,exportJson,0666)
+	//err = ioutil.WriteFile(fname1, []byte("由于页面标题可能含有特殊字符导致异常，所以markdown文件的命名均为英文（md5串），以下是页面标题和文件的对应关系：\n"),0666)
+	_markdownToPdf(iteminfo.Pages,dname1,exportitem)
+	Zip(dname1, "showdoc.zip")
+
+	return errmsg.SUCCESE
+}
+func _markdownToPdf (catalogData ImportMenu , tempDir string,catalogs ImportCatalogInfo)ImportCatalogInfo {
+	var catalogData2 ImportMenu
+	var mainCatalogs ImportCatalogInfo
+	var dirarr []string
+	var dirarrs []string
+	if catalogData.Pages !=nil {
+		for _, page := range catalogData.Pages {
+			//t := time.Now()
+			filename := "prefix_"+page.PageTitle +".md"
+
+			fname1 := filepath.Join(tempDir , filename)
+			fmt.Println(fname1)
+			dirarrs = append(dirarrs , fname1)
+			new_page_content := strings.Replace(page.Page_content, "&quot;", " ", -1)
+			ioutil.WriteFile(fname1, []byte("## "+page.PageTitle + new_page_content),0666)
+			fl, _ := os.OpenFile(tempDir+"/prefix_readme.md", os.O_APPEND|os.O_WRONLY, 0666)
+			fl.Write([]byte("\n"+page.PageTitle+"-prefix_"+filename))
+
+		}
+	}
+	for _, s := range dirarrs {
+		cmd := exec.Command(ebookConvert, s)
+		//if this.Debug {
+		//	fmt.Println(cmd.Args)
+		//}
+		defer os.Remove(s)
+		cmd.Run()
+	}
+	if catalogData.Catalogs !=nil {
+		for i, catalog := range catalogData.Catalogs {
+			catalogData.Catalogs[i] = _markdownToPdf(catalogData2,tempDir,catalog)
+		}
+	}
+	if catalogs.Catalogs !=nil {
+		for i, catalog := range catalogs.Catalogs {
+			catalogs.Catalogs[i] = _markdownToPdf(catalogData2,tempDir,catalog)
+		}
+	}
+	if catalogs.Pages !=nil {
+		for _, page := range catalogs.Pages {
+			//t := time.Now()
+			filename := "prefix_"+page.PageTitle +".md"
+			fname1 := filepath.Join(tempDir , filename)
+			dirarr = append(dirarr , fname1)
+			new_page_content := strings.Replace(page.Page_content, "&quot;", " ", -1)
+			ioutil.WriteFile(fname1, []byte("## "+page.PageTitle+"\n" + new_page_content),0666)
+			fl, _ := os.OpenFile(tempDir+"/prefix_readme.md", os.O_APPEND|os.O_WRONLY, 0666)
+			fl.Write([]byte("\n"+page.PageTitle+"-prefix_"+filename))
+		}
+	}
+
+	for _, s := range dirarr {
+		//fmt.Println(s)
+		cmd := exec.Command(ebookConvert, s)
+		//if this.Debug {
+		//	fmt.Println(cmd.Args)
+		//}
+		cmd.Run()
+		defer os.Remove(s)
+	}
+	return mainCatalogs
 }

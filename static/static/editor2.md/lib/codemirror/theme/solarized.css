@@ -106,7 +106,7 @@ http://ethanschoonover.com/solarized/img/solarized-palette.png
 
 
 
-/* Little shadow on the view-port of the buffer view */
+/* Little shadow on the views-port of the buffer views */
 .cm-s-solarized.CodeMirror {
   -moz-box-shadow: inset 7px 0 12px -6px #000;
   -webkit-box-shadow: inset 7px 0 12px -6px #000;
@@ -155,7 +155,7 @@ http://ethanschoonover.com/solarized/img/solarized-palette.png
 
 /*
 Active line. Negative margin compensates left padding of the text in the
-view-port
+views-port
 */
 .cm-s-solarized.cm-s-dark .CodeMirror-activeline-background {
   background: rgba(255, 255, 255, 0.10);
