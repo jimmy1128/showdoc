@@ -9,10 +9,10 @@ import (
 	"github.com/microcosm-cc/bluemonday"
 	"github.com/russross/blackfriday"
 	"io"
-	"os/exec"
 	"io/ioutil"
 	"math/rand"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -79,7 +79,7 @@ func _markdownTofile (catalogData ImportMenu , tempDir string,catalogs ImportCat
 
 			fname1 := filepath.Join(tempDir , filename)
 
-            ioutil.WriteFile(fname1, []byte(page.Page_content),0666)
+            ioutil.WriteFile(fname1, []byte("## "+page.PageTitle + page.Page_content),0666)
 			fl, _ := os.OpenFile(tempDir+"/prefix_readme.md", os.O_APPEND|os.O_WRONLY, 0666)
 			fl.Write([]byte("\n"+page.PageTitle+"-prefix_"+filename))
 
@@ -440,31 +440,23 @@ func ExportPdf (itemId uint , uid uint)int {
 func _markdownToPdf (catalogData ImportMenu , tempDir string,catalogs ImportCatalogInfo)ImportCatalogInfo {
 	var catalogData2 ImportMenu
 	var mainCatalogs ImportCatalogInfo
-	var dirarr []string
-	var dirarrs []string
+
 	if catalogData.Pages !=nil {
 		for _, page := range catalogData.Pages {
 			//t := time.Now()
 			filename := "prefix_"+page.PageTitle +".md"
 
 			fname1 := filepath.Join(tempDir , filename)
-			fmt.Println(fname1)
-			dirarrs = append(dirarrs , fname1)
 			new_page_content := strings.Replace(page.Page_content, "&quot;", " ", -1)
 			ioutil.WriteFile(fname1, []byte("## "+page.PageTitle + new_page_content),0666)
 			fl, _ := os.OpenFile(tempDir+"/prefix_readme.md", os.O_APPEND|os.O_WRONLY, 0666)
 			fl.Write([]byte("\n"+page.PageTitle+"-prefix_"+filename))
-
+			cmd := exec.Command(ebookConvert, fname1)
+			cmd.Run()
+			defer os.Remove(fname1)
 		}
 	}
-	for _, s := range dirarrs {
-		cmd := exec.Command(ebookConvert, s)
-		//if this.Debug {
-		//	fmt.Println(cmd.Args)
-		//}
-		defer os.Remove(s)
-		cmd.Run()
-	}
+
 	if catalogData.Catalogs !=nil {
 		for i, catalog := range catalogData.Catalogs {
 			catalogData.Catalogs[i] = _markdownToPdf(catalogData2,tempDir,catalog)
@@ -477,25 +469,20 @@ func _markdownToPdf (catalogData ImportMenu , tempDir string,catalogs ImportCata
 	}
 	if catalogs.Pages !=nil {
 		for _, page := range catalogs.Pages {
+
 			//t := time.Now()
 			filename := "prefix_"+page.PageTitle +".md"
 			fname1 := filepath.Join(tempDir , filename)
-			dirarr = append(dirarr , fname1)
+			//dirarr = append(dirarr , fname1)
 			new_page_content := strings.Replace(page.Page_content, "&quot;", " ", -1)
 			ioutil.WriteFile(fname1, []byte("## "+page.PageTitle+"\n" + new_page_content),0666)
 			fl, _ := os.OpenFile(tempDir+"/prefix_readme.md", os.O_APPEND|os.O_WRONLY, 0666)
 			fl.Write([]byte("\n"+page.PageTitle+"-prefix_"+filename))
+			cmd := exec.Command(ebookConvert, fname1)
+			cmd.Run()
+			defer os.Remove(fname1)
 		}
 	}
 
-	for _, s := range dirarr {
-		//fmt.Println(s)
-		cmd := exec.Command(ebookConvert, s)
-		//if this.Debug {
-		//	fmt.Println(cmd.Args)
-		//}
-		cmd.Run()
-		defer os.Remove(s)
-	}
 	return mainCatalogs
 }
