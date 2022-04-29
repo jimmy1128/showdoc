@@ -12,6 +12,7 @@ import (
 	"io/ioutil"
 	"math/rand"
 	"os"
+	"sync"
 	"os/exec"
 	"path/filepath"
 	"strconv"
@@ -440,7 +441,7 @@ func ExportPdf (itemId uint , uid uint)int {
 func _markdownToPdf (catalogData ImportMenu , tempDir string,catalogs ImportCatalogInfo)ImportCatalogInfo {
 	var catalogData2 ImportMenu
 	var mainCatalogs ImportCatalogInfo
-
+	var n sync.WaitGroup
 	if catalogData.Pages !=nil {
 		for _, page := range catalogData.Pages {
 			//t := time.Now()
@@ -451,8 +452,9 @@ func _markdownToPdf (catalogData ImportMenu , tempDir string,catalogs ImportCata
 			ioutil.WriteFile(fname1, []byte("## "+page.PageTitle + new_page_content),0666)
 			fl, _ := os.OpenFile(tempDir+"/prefix_readme.md", os.O_APPEND|os.O_WRONLY, 0666)
 			fl.Write([]byte("\n"+page.PageTitle+"-prefix_"+filename))
-			cmd := exec.Command(ebookConvert, fname1)
-			cmd.Run()
+			n.Add(1)
+			go exeCommand(fname1, &n)
+
 			defer os.Remove(fname1)
 		}
 	}
@@ -471,18 +473,28 @@ func _markdownToPdf (catalogData ImportMenu , tempDir string,catalogs ImportCata
 		for _, page := range catalogs.Pages {
 
 			//t := time.Now()
-			filename := "prefix_"+page.PageTitle +".md"
-			fname1 := filepath.Join(tempDir , filename)
+			filename := "prefix_" + page.PageTitle + ".md"
+			fname1 := filepath.Join(tempDir, filename)
+			fmt.Println(fname1)
 			//dirarr = append(dirarr , fname1)
 			new_page_content := strings.Replace(page.Page_content, "&quot;", " ", -1)
-			ioutil.WriteFile(fname1, []byte("## "+page.PageTitle+"\n" + new_page_content),0666)
+			ioutil.WriteFile(fname1, []byte("## "+page.PageTitle+"\n"+new_page_content), 0666)
 			fl, _ := os.OpenFile(tempDir+"/prefix_readme.md", os.O_APPEND|os.O_WRONLY, 0666)
-			fl.Write([]byte("\n"+page.PageTitle+"-prefix_"+filename))
-			cmd := exec.Command(ebookConvert, fname1)
-			cmd.Run()
+			fl.Write([]byte("\n" + page.PageTitle + "-prefix_" + filename))
+
+			n.Add(1)
+			go exeCommand(fname1, &n)
 			defer os.Remove(fname1)
 		}
-	}
 
+
+	}
+	n.Wait()
 	return mainCatalogs
+}
+
+func exeCommand(fname1 string,n *sync.WaitGroup){
+	cmd := exec.Command(ebookConvert, fname1)
+	cmd.Run()
+	n.Done()
 }
